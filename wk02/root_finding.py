@@ -37,6 +37,22 @@ def bisection(f, xl, xh):
 # end of bisection()
 
 
+def newton(f, df, x0):
+    counter = 0
+    xi = float(x0)
+    while True:
+        fi = f(xi)
+        counter += 1
+        if abs(fi) < epsilon:
+            break
+        else:
+            xi += (-fi/df(xi))
+            
+    print "nr_counter =", counter
+    return xi
+# end of newton
+
+
 def func(x):
     return 1.0 * x * x - 2.0
 # end of func()
@@ -65,3 +81,7 @@ if "__main__" == __name__:
     x_bis = bisection (func, 0.01, 2.0)
     print "x_bis =", x_bis
     print "f(x_bis) =", func(x_bis)
+
+    x_nr = newton (func, dfunc, 2.0)
+    print "x_nr =", x_nr
+    print "f(x_nr) =", func(x_nr)
