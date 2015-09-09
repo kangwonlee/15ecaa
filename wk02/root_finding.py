@@ -14,6 +14,29 @@ def sequential(f, x0):
 # end of sequential()
 
 
+def bisection(f, xl, xh):
+    xl = float(xl)
+    xh = float(xh)
+    
+    counter = 0
+    while True:
+        xn = 0.5 * (xl + xh)
+
+        if f(xn) * f(xh) < 0:
+            xl = xn
+        else:
+            xh = xn
+
+        counter += 1
+
+        if abs(xh - xl) < epsilon:
+            break
+
+    print "bis_counter =", counter
+    return xn
+# end of bisection()
+
+
 def func(x):
     return 1.0 * x * x - 2.0
 # end of func()
@@ -39,3 +62,6 @@ if "__main__" == __name__:
     print "x_seq =", x_seq
     print "f(x_seq) =", func(x_seq)
 
+    x_bis = bisection (func, 0.01, 2.0)
+    print "x_bis =", x_bis
+    print "f(x_bis) =", func(x_bis)
