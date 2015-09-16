@@ -84,3 +84,6 @@ if "__main__" == __name__:
     x_nr = newton (func, dfunc, 2.0)
     print "x_nr =", x_nr
     print "f(x_nr) =", func(x_nr)
+
+    print "error   seq         bis        nr"
+    print "        %7g %7g %7g" % ( abs(2.0**0.5 - x_seq), abs(2.0**0.5 - x_bis), abs(2.0**0.5 - x_nr))
