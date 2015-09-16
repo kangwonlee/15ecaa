@@ -1,6 +1,12 @@
 # -*- coding: cp949 -*-
 def sequential(f, x0):
+    # 어떤 형태의 입력값이 들어올지 알 수 없으나
+    # xi 의 초기값은 (부동소숫점) 실수가 되어야 하므로
+    # float() 를 이용한다
     xi = float(x0)
+    # delta_x 의 의미는
+    # "아직 답을 찾지 못했을 때 xi를 얼마만큼 증가시킬 것인가"
+    # 이다
     delta_x = 1e-6
     counter = 0
     while True:
