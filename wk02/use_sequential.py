@@ -1,7 +1,8 @@
 # -*- coding: cp949 -*-
-import sequential
+import root_finding
 
-print dir(sequential)
+print dir(root_finding)
+
 
 def func(x):
     return 1.0 * x * x - 3.0
@@ -9,5 +10,4 @@ def func(x):
 # inspired by Scratch example
 
 
-print sequential.sequential(func, 0.01)
-
+print root_finding.sequential(func, 0.01)
