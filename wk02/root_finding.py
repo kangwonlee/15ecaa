@@ -35,6 +35,8 @@ def bisection(f, xl, xh):
 
         counter += 1
 
+        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (xl, f(xl), xn, f(xn), xh, f(xh), abs(xh-xl))
+
         if abs(xh - xl) < epsilon:
             break
 
