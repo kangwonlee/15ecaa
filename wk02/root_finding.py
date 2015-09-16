@@ -71,7 +71,6 @@ epsilon = 1e-4
 if "__main__" == __name__:
     # initial value
     x0 = "0.01"
-    
 
     # call sequential method
     x_seq = sequential(func, x0)
