@@ -122,7 +122,7 @@ def simpson2(f, x0, x1, n=100):
     # integration result
     result = 0.0
 
-    # for each interval
+    # for each two-interval
     # k = 0, 2, 4, ..., (n-1)
     for k in xrange(0, n, 2) :
         # k+1-th x
@@ -183,7 +183,8 @@ if "__main__" == __name__:
     F_2 = simpson2(func, x_begin, x_end, n_interval)
     print "F_2 =", F_2, "err =", F_2 - exact
 
-    from pylab import fill, show, ylim, grid
+    from pylab import fill, bar, show, xlim, ylim, grid
+    # exact
     n_plot = 100
     deltaX_plot = (float(x_end) - x_begin) / n_plot
     x = [x_begin + k*deltaX_plot for k in xrange(n_plot)]
@@ -192,6 +193,28 @@ if "__main__" == __name__:
     y += [func(x_end), 0.0, 0.0]
 
     fill(x, y)
+
+    # rect0()
+    n_plot = n_interval
+    deltaX_plot = (float(x_end) - x_begin) / n_plot
+    x = [x_begin + k*deltaX_plot for k in xrange(n_plot)]
+    x += [x_end]
+    y = [func(x[k]+0.5*deltaX_plot) for k in xrange(n_plot)]
+    y += [0]
+
+    bar(x, y, width=deltaX_plot, color='g', alpha = 0.3)
+
+    # trapezoid1()
+    n_plot = n_interval
+    deltaX_plot = (float(x_end) - x_begin) / n_plot
+    x = [x_begin + k*deltaX_plot for k in xrange(n_plot)]
+    x += [x_end, x_end, x_begin]
+    y = [func(x[k]) for k in xrange(n_plot)]
+    y += [func(x_end), 0.0, 0.0]
+
+    fill(x, y, color='r', alpha = 0.2)
+
+    xlim((x_begin, x_end))
     ylim((0.0, ylim()[1]))
     grid()
     show()
