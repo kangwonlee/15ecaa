@@ -41,7 +41,10 @@ def fwd_euler(f, x0, ti, te, deltaT):
 
     # pre-allocate memory space
     #   to store state vector of each time step
-    list_x = [tuple(x0)]    # init x buffer
+    # How can you know if this makes the program run faster?
+
+    # init x buffer
+    list_x = [tuple(x0)]
 
     # allocation loop
     #   at k = 0, x is x0
@@ -76,10 +79,11 @@ def fwd_euler(f, x0, ti, te, deltaT):
 # end function fwd_euler()
 
 
-tau = 0.5
-m = 10.0
-c = 100.0
-k = 1000.0
+# it is more than a good idea to indicate the unit of a variable
+tau_sec = 0.5
+m_kg = 10.0
+c_N_p_mps = 100.0
+k_Npm = 1000.0
 
 
 def func(xk, tk):
@@ -103,13 +107,13 @@ def func(xk, tk):
     xdot : list of derivatives
     """
     # step input
-    u = 1
+    u_N = 1
 
     y1 = xk[0]
     y2 = xk[1]
 
     y1dot = y2
-    y2dot = (u - (k*y1 + c*y2))/m
+    y2dot = (u_N - (k_Npm*y1 + c_N_p_mps*y2))/m_kg
 
     return y1dot, y2dot
 # end function func()
@@ -122,21 +126,21 @@ def exact(t):
         ISBN 0-201-55693-6, Example 4.3
     """
     # step input
-    u = 1
+    u_N = 1
     # natural frequency (rad/sec)
-    wn = sqrt(k / m)
+    wn_rad_per_sec = sqrt(k_Npm / m_kg)
     # damping ratio
-    zeta = c / (2.0 * m * wn)
+    zeta = c_N_p_mps / (2.0 * m_kg * wn_rad_per_sec)
 
     s = sqrt(1.0 - zeta * zeta)
     s1 = 1.0 / s
 
     # damped frequency (rad/sec)
-    wd = wn * s
+    wd_rad_per_sec = wn_rad_per_sec * s
     # phase (rad)
-    phi = atan(zeta * s )
+    phi_rad = atan(zeta * s)
 
-    y1 = (u / k) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
+    y1 = (u_N / k_Npm) * (1.0 - s1 * exp(-zeta * wn_rad_per_sec * t) * cos(wd_rad_per_sec * t - phi_rad))
 
     return y1
 # end function exact()
@@ -144,33 +148,33 @@ def exact(t):
 
 if "__main__" == __name__:
     help(fwd_euler)
-    ti = 0.0
-    te = 2.0
-    delta_T = 0.01
+    ti_sec = 0.0
+    te_sec = 2.0
+    delta_t_sec = 0.01
     x0 = (0.0, 0.0)
-    vT, vX = fwd_euler(func, x0, ti, te, delta_T)
-    delta_T = 0.001
-    vT01, vX01 = fwd_euler(func, x0, ti, te, delta_T)
+    time_list_0_01_sec, x_list_fwd_euler_0_01 = fwd_euler(func, x0, ti_sec, te_sec, delta_t_sec)
+    delta_t_sec = 0.001
+    time_list_0_001_sec, x_list_fwd_euler_0_001 = fwd_euler(func, x0, ti_sec, te_sec, delta_t_sec)
 
     # exact solution
-    list_x_exact = tuple([exact(tk) for tk in vT])
+    list_x_exact_0_01 = tuple([exact(tk) for tk in time_list_0_01_sec])
 
     import pylab
-    pylab.plot(vT, vX, label='fwd Euler (0.01)')
-    pylab.plot(vT01, vX01, label='fwd Euler (0.001)')
-    pylab.plot(vT, list_x_exact, 'k', label='exact')
+    pylab.plot(time_list_0_01_sec, x_list_fwd_euler_0_01, label='fwd Euler (0.01)')
+    pylab.plot(time_list_0_001_sec, x_list_fwd_euler_0_001, label='fwd Euler (0.001)')
+    pylab.plot(time_list_0_01_sec, list_x_exact_0_01, 'k', label='exact')
     pylab.legend(loc=0)
     pylab.grid(True)
     pylab.ylabel('x')
     pylab.xlabel('t')
     pylab.show()
 
-    vP, vV = zip(*vX)
-    vP01, vV01 = zip(*vX01)
+    vP, vV = zip(*x_list_fwd_euler_0_01)
+    vP01, vV01 = zip(*x_list_fwd_euler_0_001)
 
     pylab.plot(vP, vV, label='fwd Euler (0.01)')
     pylab.plot(vP01, vV01, label='fwd Euler (0.001)')
-    pylab.legend(loc = 0)
+    pylab.legend(loc=0)
     pylab.grid(True)
     pylab.ylabel('xdot')
     pylab.xlabel('x')
