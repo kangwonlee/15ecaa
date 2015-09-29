@@ -1,4 +1,4 @@
-from math import sin, cos, atan, pi, sqrt, exp
+from math import cos, atan, sqrt, exp
 
 
 def fwd_euler(f, x0, ti, te, deltaT):
@@ -128,7 +128,7 @@ def exact(t):
     # step input
     u_N = 1
     # natural frequency (rad/sec)
-    wn_rad_per_sec = sqrt(k_Npm / m_kg)
+    wn_rad_per_sec = (k_Npm / m_kg)**0.5
     # damping ratio
     zeta = c_N_p_mps / (2.0 * m_kg * wn_rad_per_sec)
 
