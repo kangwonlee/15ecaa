@@ -108,6 +108,7 @@ def func(xk, tk):
     return (y1dot, y2dot)
 # end of function func()
 
+
 def exact(t):
     """
     Exact solution of a  1-DOF mechanical vibration
@@ -117,9 +118,9 @@ def exact(t):
     # step input
     u = 1
     # natural frequency (rad/sec)
-    wm = sqrt(k/m)
+    wn = sqrt(k/m)
     # damping ratio
-    zeta = c/(2.0 * m * wm)
+    zeta = c/(2.0 * m * wn)
 
     s = sqrt(1.0 - zeta * zeta)
     s1 = 1.0 / s
@@ -134,6 +135,7 @@ def exact(t):
     return (y1)
 # end of function exact()
 
+
 if "__main__" == __name__:
     help(fwd_euler)
 
@@ -142,3 +144,9 @@ if "__main__" == __name__:
     delta_T = 0.01
     x0 = (0.0, 0.0)
     vT, vX = fwd_euler(func, x0, ti, te, delta_T)
+
+    delta_T = 0.001
+    vT01, vX01 = fwd_euler(func, x0, ti, te, delta_T)
+
+    # exact solution
+    vXexact = tuple([exact(tk) for tk in vT])
