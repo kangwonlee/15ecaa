@@ -20,7 +20,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     listX: 2-dimensional list of state x at each time step
     """
     # number of time steps
-    mTimeStep = int((te-ti) * 1.0  deltaT)
+    mTimeStep = int((te-ti) * 1.0 /  deltaT)
 
     # number of states == length of initial state vector
     nStates = len(x0)
@@ -45,7 +45,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     #   at k = 0, x is x0
     #   at k = [1, 2, ..., n-1] x is not known
     #       so use [0.0] * nStates
-    for k in listT[1:]"
+    for k in listT[1:]:
         listXappend([0.0] * nStates)
     # end apllocation loop
     # now 2d array of mTimeStep x nStates prepared
@@ -100,10 +100,39 @@ def func(xk, tk):
     # step input
     u = 1
 
-    y1, yt2 = xk[0], xk[1]
+    y1, y2 = xk[0], xk[1]
 
     y1dot = y2
-    y2dot = u - (k*y1 + c*y2))/m
+    y2dot = (u - (k*y1 + c*y2))/m
 
     return (y1dot, y2dot)
 # end of function func()
+
+def exact(t):
+    """
+    Exact solution of a  1-DOF mechanical vibration
+    Ref : Rao, Mechanical Vibration, 2nd ed,
+        ISBN 0-201-55693-6, Example 4.3
+    """
+    # step input
+    u = 1
+    # natural frequency (rad/sec)
+    wm = sqrt(k/m)
+    # damping ratio
+    zeta = c/(2.0 * m * wm)
+
+    s = sqrt(1.0 - zeta * zeta)
+    s1 = 1.0 / s
+
+    # damped frequency (rad/sec)
+    wd = wn * s
+    # phase (rad)
+    phi = atan(zeta * s)
+
+    y1 = (u/k) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd*t-phi))
+
+    return (y1)
+# end of function exact()
+
+if "__main__" == __name__:
+    help(fwd_euler)
