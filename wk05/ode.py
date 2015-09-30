@@ -20,7 +20,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     listX: 2-dimensional list of state x at each time step
     """
     # number of time steps
-    mTimeStep = int((te-ti) * 1.0 /  deltaT)
+    mTimeStep = int((te-ti) * 1.0 / deltaT)
 
     # number of states == length of initial state vector
     nStates = len(x0)
@@ -47,7 +47,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     #       so use [0.0] * nStates
     for k in listT[1:]:
         listX.append([0.0] * nStates)
-    # end apllocation loop
+    # end allocation loop
     # now 2d array of mTimeStep x nStates prepared
 
     xk = x0
@@ -58,7 +58,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
         sk = f(xk, listT[k])
 
         # next step x
-        xk1 = listX[k|+1]
+        xk1 = listX[k+1]
 
         # state loop
         for i in xrange(nStates):
