@@ -46,7 +46,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     #   at k = [1, 2, ..., n-1] x is not known
     #       so use [0.0] * nStates
     for k in listT[1:]:
-        listXappend([0.0] * nStates)
+        listX.append([0.0] * nStates)
     # end apllocation loop
     # now 2d array of mTimeStep x nStates prepared
 
@@ -136,3 +136,9 @@ def exact(t):
 
 if "__main__" == __name__:
     help(fwd_euler)
+
+    ti = 0.0
+    te = 2.0
+    delta_T = 0.01
+    x0 = (0.0, 0.0)
+    vT, vX = fwd_euler(func, x0, ti, te, delta_T)
