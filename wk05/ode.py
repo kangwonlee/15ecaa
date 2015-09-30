@@ -1,5 +1,6 @@
 from math import sin, cos, atan, pi, sqrt, exp
 
+
 def fwd_euler(f, x0, ti, te, deltaT):
     """
     Forward Euler Method for Ordinary Differential Equations
@@ -73,29 +74,30 @@ def fwd_euler(f, x0, ti, te, deltaT):
     return listT, listX
 # end function fwd_euler()
 
-tau= 0.5
+tau = 0.5
 m = 10.0
 c = 100.0
 k = 1000.0
 
+
 def func(xk, tk):
     """
-    Differentail equation
+    Differential equation
 
-    m x2dot(t) + c xdot(t) + k x[t] = u(t)
+    m x2dot(t) + c xdot(t) + k x(t) = u(t)
     u(t) = 1
 
     Use m, c, k defined outside of this function
 
     Parameters
     ----------
-    xk: state vector at time step ks
+    xk: state vector at time step k
         xk[0] = x
         xk[1] = xdot
 
     Returns
     -------
-    xdot : list of derivatives
+    ydot : list of derivatives
     """
     # step input
     u = 1
@@ -159,4 +161,15 @@ if "__main__" == __name__:
     pylab.grid(True)
     pylab.ylabel('x')
     pylab.xlabel('t')
+    pylab.show()
+
+    vP, vV = zip(*vX)
+    vP01, vV01 = zip(*vX)
+
+    pylab.plot(vP,vV, label='fwd Euler (0.01)')
+    pylab.plot(vP01, vV01, label='fwd Euler(0.001)')
+    pylab.legend(loc=0)
+    pylab.grid(True)
+    pylab.ylabel('xdot')
+    pylab.xlabel('x')
     pylab.show()
