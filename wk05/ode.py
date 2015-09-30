@@ -150,3 +150,13 @@ if "__main__" == __name__:
 
     # exact solution
     vXexact = tuple([exact(tk) for tk in vT])
+
+    import pylab
+    pylab.plot(vT, vX, label='fwd Euler(0.01)')
+    pylab.plot(vT01, vX01, label='fwd Euler(0.001)')
+    pylab.plot(vT, vXexact, 'k', label='exact')
+    pylab.legend(loc=0)
+    pylab.grid(True)
+    pylab.ylabel('x')
+    pylab.xlabel('t')
+    pylab.show()
