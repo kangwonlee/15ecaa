@@ -153,6 +153,8 @@ def runge_while (f, x_init, t_init, t_end, delta_t):
     Runge Method Solver
     Usage: listT, listX = runge_while(f, x_init, t_init, t_end, delta_t)
 
+    Calculate four slopes and take weighted average
+
     Parameters
     ----------
     f : callable(x, t)
@@ -192,8 +194,10 @@ def runge_while (f, x_init, t_init, t_end, delta_t):
     tk_half = tk + 0.5 * delta_t
     tk1 = tk + delta_t
 
-    t_end += (-deltaThalf)
+    # to make t_end the last element of t_list
+    t_end += (deltaThalf)
 
+    # time step loop
     while tk < t_end:
         xk = listX[-1]
 
