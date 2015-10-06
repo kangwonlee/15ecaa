@@ -74,6 +74,74 @@ def fwd_euler(f, x0, ti, te, deltaT):
     return listT, listX
 # end function fwd_euler()
 
+
+def mod_euler(func, x0, ti, te, deltaT):
+    """
+    Forward Euler Method Solver
+    Usage: listT, listX = mod_euler(func, x0, ti, te, deltaT)
+
+    Parameters
+    ----------
+    func : callable(x, t)
+        Computes the derivatives of x at 0.
+        Returns a list of [x0, x1, ... ]
+    x0 : list or tuple
+        Initial condition on x
+    ti : float
+        Initial time
+    te : float
+        Ending time
+    deltaT : float
+        Sampling time
+
+    Returns
+    -------
+    listT : list, shape(int(te-ti)/deltaT + 1,1)
+
+    Examples
+    --------
+    >>> lT, lX = mod_euler(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
+    >>> print lT
+    [0.0, 0.10000000000000001, 0.20000000000000001, 0.30000000000000004, 0.40000000000000002, 0.5]
+    >>> print lX
+    [[0], [0.0077254248593736849], [0.029382595321196046], [0.062135518400607666], [0.10209697840236187], [0.14470734296725662]]
+    """
+    listX = [x0]    # init x buffer
+    listT = [ti]
+
+    tk = ti
+    tk1 = tk + deltaT
+
+    te += ((-0.5) * deltaT)
+
+    while tk < te:
+        xk = listX[-1]
+
+        # step 1
+        sk = func(xk, tk)
+        xk1_p = [(x + sk[i]*deltaT) for i, x in enumerate(xk)]
+
+        # step 2
+        sk1_p = func(xk1_p, tk1)
+
+        # step 3
+        sk_c = [(0.5*(s+sk1_p[i])) for (i, s) in enumerate(sk)]
+
+        # step 4
+        xk1_c = [(x + sk_c[i] * deltaT) for i, x in enumerate(xk)]
+
+        listX.append(xk1_c)
+
+        # time advance
+        tk += deltaT
+        tk1 += deltaT
+
+        # append time
+        listT.append(tk)
+
+    return listT, listX
+
+
 tau = 0.5
 m = 10.0
 c = 100.0
@@ -147,6 +215,9 @@ if "__main__" == __name__:
     x0 = (0.0, 0.0)
     vT, vX = fwd_euler(func, x0, ti, te, delta_T)
 
+    t_list_mod_euler, x_list_mod_euler = mod_euler(func, x0, ti, te, delta_T)
+
+
     delta_T = 0.001
     vT01, vX01 = fwd_euler(func, x0, ti, te, delta_T)
 
@@ -156,6 +227,7 @@ if "__main__" == __name__:
     import pylab
     pylab.plot(vT, vX, label='fwd Euler(0.01)')
     pylab.plot(vT01, vX01, label='fwd Euler(0.001)')
+    pylab.plot(t_list_mod_euler, x_list_mod_euler, label='Modified Euler(0.01)')
     pylab.plot(vT, vXexact, 'k', label='exact')
     pylab.legend(loc=0)
     pylab.grid(True)
@@ -165,9 +237,11 @@ if "__main__" == __name__:
 
     vP, vV = zip(*vX)
     vP01, vV01 = zip(*vX)
+    p_list_mod_euler, v_list_mod_euler = zip(*x_list_mod_euler)
 
     pylab.plot(vP,vV, label='fwd Euler (0.01)')
     pylab.plot(vP01, vV01, label='fwd Euler(0.001)')
+    pylab.plot(p_list_mod_euler, v_list_mod_euler, label='Modified Euler(0.01)')
     pylab.legend(loc=0)
     pylab.grid(True)
     pylab.ylabel('xdot')
