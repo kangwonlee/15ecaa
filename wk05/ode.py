@@ -148,6 +148,81 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
     return t_list, x_list
 
 
+def runge_while (func, x0, ti, te, deltaT):
+    """
+    Runge Method Solver
+    Usage: listT, listX = runge_while(func, x0, ti, te, deltaT)
+
+    Parameters
+    ----------
+    func : callable(x, t)
+        Computes the derivatives of x at 0.
+        Returns a list of [x0, x1, ... ]
+    x0 : list or tuple
+        Initial condition on x
+    ti : float
+        Initial time
+    te : float
+        Ending time
+    deltaT : float
+        Sampling time
+
+    Returns
+    -------
+    listT : list, shape(int(te-ti)/deltaT + 1,1)
+
+
+    Examples
+    --------
+    >>> lT, lX = runge_while(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
+    >>> print lT
+    [0.0, 0.10000000000000001, 0.20000000000000001, 0.30000000000000004, 0.40000000000000002, 0.5]
+    >>> print lX
+    [[0], [0.0076608912592762328], [0.029394418941171337], [0.062350250267466614], [0.10261479161461737], [0.14559255884915154]]
+    """
+
+    listX = [x0]    # init x buffer
+    listT = [ti]
+
+    deltaThalf = 0.5 * deltaT
+    deltaTsixth = deltaT/6.0
+
+    tk = ti
+    tk_half = tk + 0.5 * deltaT
+    tk1 = tk + deltaT
+
+    te += (-deltaThalf)
+
+    while tk < te:
+        xk = listX[-1]
+
+        # step 1
+        k1 = func(xk, tk)
+
+        # step 2
+        xk1_p = [(xk[i] + k*deltaThalf) for (i, k) in enumerate(k1)]
+        k2 = func(xk1_p, tk_half)
+
+        # step 3
+        xk2_p = [(xk[i] + k*deltaThalf) for (i, k) in enumerate(k2)]
+        k3 = func(xk2_p, tk_half)
+
+        # step 4
+        xk3_p = [(xk[i] + k * deltaT) for (i, k) in enumerate(k3)]
+        k4 = func(xk3_p, tk1)
+
+        # step 5
+        xk1_c = [x + deltaTsixth*(k1[i] + 2*(k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
+
+        listX.append(xk1_c)
+        tk += deltaT
+        tk_half += deltaT
+        tk1 += deltaT
+        listT.append(tk)
+
+    return listT, listX
+
+
 tau = 0.5
 m = 10.0
 c = 100.0
@@ -220,9 +295,8 @@ if "__main__" == __name__:
     delta_T = 0.01
     x0 = (0.0, 0.0)
     vT, vX = fwd_euler(func, x0, ti, te, delta_T)
-
     t_list_mod_euler, x_list_mod_euler = mod_euler(func, x0, ti, te, delta_T)
-
+    t_list_runge, x_list_runge = runge_while(func, x0, ti, te, delta_T)
 
     delta_T = 0.001
     vT01, vX01 = fwd_euler(func, x0, ti, te, delta_T)
@@ -234,6 +308,7 @@ if "__main__" == __name__:
     pylab.plot(vT, vX, label='fwd Euler(0.01)')
     pylab.plot(vT01, vX01, label='fwd Euler(0.001)')
     pylab.plot(t_list_mod_euler, x_list_mod_euler, label='Modified Euler(0.01)')
+    pylab.plot(t_list_runge, x_list_runge, label='Runge(0.01)')
     pylab.plot(vT, vXexact, 'k', label='exact')
     pylab.legend(loc=0)
     pylab.grid(True)
@@ -244,10 +319,12 @@ if "__main__" == __name__:
     vP, vV = zip(*vX)
     vP01, vV01 = zip(*vX)
     p_list_mod_euler, v_list_mod_euler = zip(*x_list_mod_euler)
+    p_list_runge, v_list_runge = zip(*x_list_runge)
 
     pylab.plot(vP,vV, label='fwd Euler (0.01)')
     pylab.plot(vP01, vV01, label='fwd Euler(0.001)')
     pylab.plot(p_list_mod_euler, v_list_mod_euler, label='Modified Euler(0.01)')
+    pylab.plot(p_list_runge, v_list_runge, label='Runge(0.01)')
     pylab.legend(loc=0)
     pylab.grid(True)
     pylab.ylabel('xdot')
