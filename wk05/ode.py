@@ -77,26 +77,30 @@ def fwd_euler(f, x0, ti, te, deltaT):
 
 def mod_euler(f, x_init, t_start, t_end, delta_t):
     """
-    Forward Euler Method Solver
-    Usage: listT, listX = mod_euler(func, x0, ti, te, deltaT)
+    Modified Euler Method Solver
+    Usage: listT, listX = mod_euler(f, x_init, t_start, t_end, delta_t)
+
+    Assume slope changes linearly between t[k] and t[k+1]
 
     Parameters
     ----------
-    func : callable(x, t)
-        Computes the derivatives of x at 0.
+    f : callable(x, t)
+        Computes the derivatives of x at (x, t)
+        dx/dt = f(x, t)
         Returns a list of [x0, x1, ... ]
-    x0 : list or tuple
-        Initial condition on x
-    ti : float
+    x_init : list or tuple
+         initial state on x
+    t_start : float
         Initial time
-    te : float
+    t_end : float
         Ending time
     deltaT : float
         Sampling time
-
+    delta_t: time step
     Returns
     -------
-    listT : list, shape(int(te-ti)/deltaT + 1,1)
+    t_list : list, shape(int(te-ti)/deltaT + 1,1)
+    x_list : list, shape(int(te-ti)/deltaT + 1,len(x_init))
 
     Examples
     --------
@@ -112,22 +116,24 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
     tk = t_start
     tk1 = tk + delta_t
 
+    # to make t_end the last element of t_list
     t_end += ((-0.5) * delta_t)
 
+    # time step loop
     while tk < t_end:
         xk = x_list[-1]
 
-        # step 1
+        # step 1 : same as forward Euler
         sk = f(xk, tk)
         xk1_p = [(x + sk[i]*delta_t) for i, x in enumerate(xk)]
 
-        # step 2
+        # step 2 : calculate slope at (xk + f(xk, tk) * delta_t, tk + delta_t)
         sk1_p = f(xk1_p, tk1)
 
-        # step 3
+        # step 3 : average of f(xk, tk) and f(xk + f(xk, tk) * delta_t, tk + delta_t)
         sk_c = [(0.5*(s+sk1_p[i])) for (i, s) in enumerate(sk)]
 
-        # step 4
+        # step 4 : go forward using averaged slope
         xk1_c = [(x + sk_c[i] * delta_t) for i, x in enumerate(xk)]
 
         x_list.append(xk1_c)
