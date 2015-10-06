@@ -75,7 +75,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
 # end function fwd_euler()
 
 
-def mod_euler(func, x0, ti, te, deltaT):
+def mod_euler(f, x_init, t_start, t_end, delta_t):
     """
     Forward Euler Method Solver
     Usage: listT, listX = mod_euler(func, x0, ti, te, deltaT)
@@ -106,40 +106,40 @@ def mod_euler(func, x0, ti, te, deltaT):
     >>> print lX
     [[0], [0.0077254248593736849], [0.029382595321196046], [0.062135518400607666], [0.10209697840236187], [0.14470734296725662]]
     """
-    listX = [x0]    # init x buffer
-    listT = [ti]
+    x_list = [tuple(x_init)]    # init x buffer
+    t_list = [t_start]
 
-    tk = ti
-    tk1 = tk + deltaT
+    tk = t_start
+    tk1 = tk + delta_t
 
-    te += ((-0.5) * deltaT)
+    t_end += ((-0.5) * delta_t)
 
-    while tk < te:
-        xk = listX[-1]
+    while tk < t_end:
+        xk = x_list[-1]
 
         # step 1
-        sk = func(xk, tk)
-        xk1_p = [(x + sk[i]*deltaT) for i, x in enumerate(xk)]
+        sk = f(xk, tk)
+        xk1_p = [(x + sk[i]*delta_t) for i, x in enumerate(xk)]
 
         # step 2
-        sk1_p = func(xk1_p, tk1)
+        sk1_p = f(xk1_p, tk1)
 
         # step 3
         sk_c = [(0.5*(s+sk1_p[i])) for (i, s) in enumerate(sk)]
 
         # step 4
-        xk1_c = [(x + sk_c[i] * deltaT) for i, x in enumerate(xk)]
+        xk1_c = [(x + sk_c[i] * delta_t) for i, x in enumerate(xk)]
 
-        listX.append(xk1_c)
+        x_list.append(xk1_c)
 
         # time advance
-        tk += deltaT
-        tk1 += deltaT
+        tk += delta_t
+        tk1 += delta_t
 
         # append time
-        listT.append(tk)
+        t_list.append(tk)
 
-    return listT, listX
+    return t_list, x_list
 
 
 tau = 0.5
