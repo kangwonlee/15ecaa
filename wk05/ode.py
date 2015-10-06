@@ -89,7 +89,7 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
         dx/dt = f(x, t)
         Returns a list of [x0, x1, ... ]
     x_init : list or tuple
-         initial state on x
+         initial state of x
     t_start : float
         Initial time
     t_end : float
@@ -148,28 +148,29 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
     return t_list, x_list
 
 
-def runge_while (func, x0, ti, te, deltaT):
+def runge_while (f, x_init, t_init, t_end, delta_t):
     """
     Runge Method Solver
-    Usage: listT, listX = runge_while(func, x0, ti, te, deltaT)
+    Usage: listT, listX = runge_while(f, x_init, t_init, t_end, delta_t)
 
     Parameters
     ----------
-    func : callable(x, t)
+    f : callable(x, t)
         Computes the derivatives of x at 0.
-        Returns a list of [x0, x1, ... ]
-    x0 : list or tuple
-        Initial condition on x
-    ti : float
+        Returns a list of [x_init, x1, ... ]
+    x_init : list or tuple
+        Initial state of x
+    t_init : float
         Initial time
-    te : float
+    t_end : float
         Ending time
-    deltaT : float
+    delta_t : float
         Sampling time
 
     Returns
     -------
-    listT : list, shape(int(te-ti)/deltaT + 1,1)
+    t_list : list, shape(int(te-ti)/deltaT + 1,1)
+    x_list : list, shape(int(te-ti)/deltaT + 1,len(x_init))
 
 
     Examples
@@ -181,43 +182,43 @@ def runge_while (func, x0, ti, te, deltaT):
     [[0], [0.0076608912592762328], [0.029394418941171337], [0.062350250267466614], [0.10261479161461737], [0.14559255884915154]]
     """
 
-    listX = [x0]    # init x buffer
-    listT = [ti]
+    listX = [x_init]    # init x buffer
+    listT = [t_init]
 
-    deltaThalf = 0.5 * deltaT
-    deltaTsixth = deltaT/6.0
+    deltaThalf = 0.5 * delta_t
+    deltaTsixth = delta_t/6.0
 
-    tk = ti
-    tk_half = tk + 0.5 * deltaT
-    tk1 = tk + deltaT
+    tk = t_init
+    tk_half = tk + 0.5 * delta_t
+    tk1 = tk + delta_t
 
-    te += (-deltaThalf)
+    t_end += (-deltaThalf)
 
-    while tk < te:
+    while tk < t_end:
         xk = listX[-1]
 
         # step 1
-        k1 = func(xk, tk)
+        k1 = f(xk, tk)
 
         # step 2
         xk1_p = [(xk[i] + k*deltaThalf) for (i, k) in enumerate(k1)]
-        k2 = func(xk1_p, tk_half)
+        k2 = f(xk1_p, tk_half)
 
         # step 3
         xk2_p = [(xk[i] + k*deltaThalf) for (i, k) in enumerate(k2)]
-        k3 = func(xk2_p, tk_half)
+        k3 = f(xk2_p, tk_half)
 
         # step 4
-        xk3_p = [(xk[i] + k * deltaT) for (i, k) in enumerate(k3)]
-        k4 = func(xk3_p, tk1)
+        xk3_p = [(xk[i] + k * delta_t) for (i, k) in enumerate(k3)]
+        k4 = f(xk3_p, tk1)
 
         # step 5
         xk1_c = [x + deltaTsixth*(k1[i] + 2*(k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
 
         listX.append(xk1_c)
-        tk += deltaT
-        tk_half += deltaT
-        tk1 += deltaT
+        tk += delta_t
+        tk_half += delta_t
+        tk1 += delta_t
         listT.append(tk)
 
     return listT, listX
