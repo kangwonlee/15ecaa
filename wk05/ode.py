@@ -310,11 +310,11 @@ if "__main__" == __name__:
     vXexact = tuple([exact(tk) for tk in vT])
 
     import pylab
-    pylab.plot(vT, vX, label='fwd Euler(0.01)')
-    pylab.plot(vT01, vX01, label='fwd Euler(0.001)')
-    pylab.plot(t_list_mod_euler, x_list_mod_euler, label='Modified Euler(0.01)')
-    pylab.plot(t_list_runge, x_list_runge, label='Runge(0.01)')
-    pylab.plot(vT, vXexact, 'k', label='exact')
+    pylab.plot(vT, vX, 'b', label='fwd Euler(0.01)')
+    pylab.plot(vT01, vX01, 'g', label='fwd Euler(0.001)')
+    pylab.plot(t_list_mod_euler, x_list_mod_euler, '*',label='Modified Euler(0.01)')
+    pylab.plot(t_list_runge, x_list_runge, 'x-', label='Runge(0.01)')
+    pylab.plot(vT, vXexact, 'ko-', label='exact')
     pylab.legend(loc=0)
     pylab.grid(True)
     pylab.ylabel('x')
