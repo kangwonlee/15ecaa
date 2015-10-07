@@ -13,7 +13,10 @@ class NoOverChargeCard(tcc.TrafficCardClass):
         else:
             self.balance -= amount
 
+print "__name__ in over_charge_protected_traffic_card.py =", __name__
 if "__main__" == __name__:
+    # do not run below if this file is being imported
+
     my_card = NoOverChargeCard()
     print "my_card.check() =", my_card.check()
     print "my_card.charge(10000) =", my_card.charge(10000)

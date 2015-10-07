@@ -13,9 +13,10 @@ class TrafficCardClass(object):
     def check(self):
         return self.balance
 
+print "__name__ in traffic_card_class.py =", __name__
 if "__main__" == __name__:
+    # do not run below if this file is being imported
     my_card = TrafficCardClass()
-
     # no direct access to my_card.balance : encapsulation
     print "my_card.check() =", my_card.check()
     print "my_card.charge(10000) =", my_card.charge(10000)
