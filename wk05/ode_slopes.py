@@ -65,9 +65,9 @@ def ode_slopes_2states(func, radii_list, theta_deg_list, time_list):
 
 
 if "__main__" == __name__:
+    save_fig = True
 
-
-    def main_1state():
+    def main_1state(save_fig):
         # time constant
         tau = 1.0
 
@@ -95,8 +95,10 @@ if "__main__" == __name__:
 
         pylab.title(r'tau x_dot + x = 0')
 
-        pylab.show()
-        # savefig("quiver_x_dot_x_0.png", dpi = 300)
+        if save_fig:
+            pylab.savefig("quiver_x_dot_x_0.png", dpi = 300)
+        else:
+            pylab.show()
 
 
     def f_1state(x, t, tau=1.0, u=0.0):
@@ -112,7 +114,7 @@ if "__main__" == __name__:
         return (-x + u) / tau
 
 
-    main_1state()
+    main_1state(save_fig)
 
     #################################################################
 
@@ -130,7 +132,7 @@ if "__main__" == __name__:
     k = 10.0
 
 
-    def main_2states():
+    def main_2states(save_fig):
 
         time_list = np.arange(0, 20, .01)
         y_exact_list = [exact_2states(t) for t in time_list]
@@ -155,8 +157,10 @@ if "__main__" == __name__:
         pylab.title(r'10 x_ddot + 5 x_dot + 10 x = 0')
         pylab.xlabel('x')
         pylab.ylabel('x_dot')
-        pylab.show()
-        # savefig('quiver_2states.png', dpi = 300)
+        if save_fig:
+            pylab.savefig('quiver_2states.png', dpi = 300)
+        else:
+            pylab.show()
 
 
     def f_2states(y, t):
@@ -193,4 +197,4 @@ if "__main__" == __name__:
         return y1, y2
 
 
-    main_2states()
+    main_2states(save_fig)
