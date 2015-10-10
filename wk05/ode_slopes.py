@@ -1,9 +1,10 @@
-from pylab import *
+import numpy as np
+import pylab
 
 
 def ode_slope_1state_interval(func, delta_t, delta_x, te, ti, x_max, x_min):
-    time_list = arange(ti, te, delta_t)
-    x_list = arange(x_min, x_max + 0.5 * delta_x, delta_x)
+    time_list = np.arange(ti, te, delta_t)
+    x_list = np.arange(x_min, x_max + 0.5 * delta_x, delta_x)
     ode_slope_1state(func, x_list, time_list)
     return time_list
 
@@ -16,20 +17,20 @@ def ode_slope_1state(func, x_list, time_list):
     :param time_list:
     :return:
     """
-    time_mesh, x_mesh = meshgrid(time_list, x_list)
-    u_mesh = ones_like(x_mesh)
+    time_mesh, x_mesh = np.meshgrid(time_list, x_list)
+    u_mesh = np.ones_like(x_mesh)
     v_mesh = func(x_mesh, time_mesh)
     # magnitude as color
-    color_mesh = sqrt(u_mesh * u_mesh + v_mesh * v_mesh)
+    color_mesh = np.sqrt(u_mesh * u_mesh + v_mesh * v_mesh)
     # 1
-    figure()
-    quiver(time_mesh, x_mesh, u_mesh, v_mesh, color_mesh, angles='xy')
-    xlabel('t')
-    ylabel('x')
-    xlim((time_list[0] - (time_list[1] - time_list[0]) * 0.125, time_list[-1]))
-    ylim((min(x_list) - (x_list[1] - x_list[0]) * 0.125,
+    pylab.figure()
+    pylab.quiver(time_mesh, x_mesh, u_mesh, v_mesh, color_mesh, angles='xy')
+    pylab.xlabel('t')
+    pylab.ylabel('x')
+    pylab.xlim((time_list[0] - (time_list[1] - time_list[0]) * 0.125, time_list[-1]))
+    pylab.ylim((min(x_list) - (x_list[1] - x_list[0]) * 0.125,
           max(x_list) + (x_list[-1] - x_list[-2]) * 0.125))
-    grid(True)
+    pylab.grid(True)
 
 
 def ode_slopes_2states(func, radii_list, theta_deg_list, time_list):
@@ -42,25 +43,25 @@ def ode_slopes_2states(func, radii_list, theta_deg_list, time_list):
     :return:
     """
     # to convert angle unit from degree to radian
-    deg2rad = pi / 180
+    deg2rad = np.pi / 180
     # list of angles in radian
     theta_rad_list = tuple([(theta_deg * deg2rad) for theta_deg in theta_deg_list])
     # radii x angles mesh grid
-    radii_mesh, theta_rad_mesh = meshgrid(radii_list, theta_rad_list)
+    radii_mesh, theta_rad_mesh = np.meshgrid(radii_list, theta_rad_list)
     # polar coordinate to cartesian coordinate
-    y = radii_mesh * cos(theta_rad_mesh), radii_mesh * sin(theta_rad_mesh)
+    y = radii_mesh * np.cos(theta_rad_mesh), radii_mesh * np.sin(theta_rad_mesh)
     # derivatives of state at each point
     y_dot = func(y, time_list)
     # color
-    color_mesh = sqrt(y_dot[0] * y_dot[0] + y_dot[1] * y_dot[1])
+    color_mesh = np.sqrt(y_dot[0] * y_dot[0] + y_dot[1] * y_dot[1])
     # 1
-    figure()
-    quiver(y[0], y[1], y_dot[0], y_dot[1], color_mesh, angles='xy')
-    l, r, b, t = axis()
+    pylab.figure()
+    pylab.quiver(y[0], y[1], y_dot[0], y_dot[1], color_mesh, angles='xy')
+    l, r, b, t = pylab.axis()
     x_span, y2_mesh = r - l, t - b
-    axis([l - 0.05 * x_span, r + 0.05 * x_span, b - 0.05 * y2_mesh, t + 0.05 * y2_mesh])
-    axis('equal')
-    grid()
+    pylab.axis([l - 0.05 * x_span, r + 0.05 * x_span, b - 0.05 * y2_mesh, t + 0.05 * y2_mesh])
+    pylab.axis('equal')
+    pylab.grid()
 
 
 if "__main__" == __name__:
@@ -88,13 +89,13 @@ if "__main__" == __name__:
         t_list = ode_slope_1state_interval(f_1state, delta_t, delta_x, te, ti, x_max, x_min)
 
         # exact solution
-        x_exact_list = x0 * exp(tau_inverse * t_list)
+        x_exact_list = x0 * np.exp(tau_inverse * t_list)
 
-        plot(t_list, x_exact_list, 'k')
+        pylab.plot(t_list, x_exact_list, 'k')
 
-        title(r'tau x_dot + x = 0')
+        pylab.title(r'tau x_dot + x = 0')
 
-        show()
+        pylab.show()
         # savefig("quiver_x_dot_x_0.png", dpi = 300)
 
 
@@ -131,7 +132,7 @@ if "__main__" == __name__:
 
     def main_2states():
 
-        time_list = arange(0, 20, .01)
+        time_list = np.arange(0, 20, .01)
         y_exact_list = [exact_2states(t) for t in time_list]
         y_exact_list, y_dot_exact_list = zip(*y_exact_list)
 
@@ -144,17 +145,17 @@ if "__main__" == __name__:
         delta_angle_deg = 5
 
         # list of radii
-        radii_list = arange(1.0*y_limit/n_radii, y_limit, 1.0*y_limit/n_radii)
+        radii_list = np.arange(1.0*y_limit/n_radii, y_limit, 1.0*y_limit/n_radii)
         # list of angles in degree
         theta_deg_list = tuple(range(0, 360, delta_angle_deg))
         ode_slopes_2states(f_2states, radii_list, theta_deg_list, time_list)
 
-        plot(y_exact_list, y_dot_exact_list, 'k')
+        pylab.plot(y_exact_list, y_dot_exact_list, 'k')
 
-        title(r'10 x_ddot + 5 x_dot + 10 x = 0')
-        xlabel('x')
-        ylabel('x_dot')
-        show()
+        pylab.title(r'10 x_ddot + 5 x_dot + 10 x = 0')
+        pylab.xlabel('x')
+        pylab.ylabel('x_dot')
+        pylab.show()
         # savefig('quiver_2states.png', dpi = 300)
 
 
@@ -186,9 +187,9 @@ if "__main__" == __name__:
         # 10 x_ddot + 5 x_dot + 10 x = 0, x(0) = 5, x_dot(0) = 0
         sqrt_15 = 15**0.5
         wdt = sqrt_15 * t * 0.25
-        y1 = ((sqrt_15 / 3.0)*sin(wdt)
-              + 5.0 * cos(wdt)) * exp(-0.25*t)
-        y2 = -(1.0 + 1.0/3.0) * sqrt_15 * exp(-0.25*t) * sin(wdt)
+        y1 = ((sqrt_15 / 3.0)*np.sin(wdt)
+              + 5.0 * np.cos(wdt)) * np.exp(-0.25*t)
+        y2 = -(1.0 + 1.0/3.0) * sqrt_15 * np.exp(-0.25*t) * np.sin(wdt)
         return y1, y2
 
 
