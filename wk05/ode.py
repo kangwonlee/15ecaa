@@ -79,6 +79,84 @@ def fwd_euler(f, x0, ti, te, deltaT):
 # end function bwd_euler()
 
 
+def mod_euler(f, x0, ti, te, deltaT):
+    """
+
+    Modified Euler Method for Ordinary Differential Equations
+
+    Assume slope is constant between t[k] and t[k+1]
+
+    Parameters
+    ----------
+    f : dx/dt = f(x, t)
+    x0 : initial state
+    ti : initial time
+    te : final time
+    deltaT : time step
+
+    Returns
+    -------
+    listT: 1-dimensional list of time at each time step
+    listX: 2-dimensional list of state x at each time step
+    """
+    # number of time steps
+    n_time_steps = int((te - ti) * 1.0 / deltaT)
+
+    # number of states == length of initial state vector
+    n_states = len(x0)
+
+    # tuple of time step index
+    #   0, 1, ..., mTimeStep - 1
+    list_k = tuple(range(n_time_steps))
+    # tuple of time step
+    #   because time step will be constant,
+    #   define as a tuple instead of a list
+    list_t = tuple([ti + deltaT*i for i in list_k])
+    # if ti, te, deltaT are given as 0.0, 1.0, 0.1
+    #   then mTimeStep will be 10
+    #   and listT will be [0:0.1:0.9];
+    #       len (listT) == 10
+
+    # pre-allocate memory space
+    #   to store state vector of each time step
+    # How can you know if this makes the program run faster?
+
+    # init x buffer
+    list_x = [tuple(x0)]
+
+    # allocation loop
+    #   at k = 0, x is x0
+    #   at k = [1, 2, ..., n-1], x is not know
+    #       so use [0.0] * nStates
+    for k in list_t[1:]:
+        list_x.append([0.0] * n_states)
+    # end allocation loop
+    # now 2d array of mTimeStep x nStates prepared
+
+    xk = x0
+
+    # time step loop
+    for k in list_k[:-1]:
+        # derivatives at current time step
+        sk = f(xk, list_t[k])
+
+        # go one step forward
+        xk1 = list_x[k+1]
+
+        # state loop
+        for i in xrange(n_states):
+            # apply forward Euler method
+            xk1[i] = xk[i] + sk[i] * deltaT
+        # end state loop at time step k
+
+        # update xk to next step
+        xk = xk1
+    # end time step loop
+
+    return list_t, list_x
+# end function bwd_euler()
+
+
 # it is more than a good idea to indicate the unit of a variable
 tau_sec = 0.5
 m_kg = 10.0
