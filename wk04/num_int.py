@@ -114,10 +114,11 @@ def simpson2(f, x0, x1, n=100):
     # calculate x interval
 
     print "n =", n
-    print "n%2 =", n%2
+    print "n%2 =", n % 2
 
     # if n is an odd number make it an even number
-    if (n%2) : n += 1
+    if n % 2:
+        n += 1
     delta_x = (float(x1) - float(x0)) / n
 
     xk = x0
