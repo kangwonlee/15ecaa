@@ -76,7 +76,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     # end time step loop
 
     return list_t, list_x
-# end function fwd_euler()
+# end function bwd_euler()
 
 
 # it is more than a good idea to indicate the unit of a variable
