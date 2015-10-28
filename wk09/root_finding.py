@@ -30,21 +30,38 @@ def bisection(f, xl, xh, epsilon=1e-6):
     fxh = f(xh)
 
     if 0 < fxl * fxh :
+        # 프로그램에서 오류가 발생했음을 알림
         print "Incorrect initial condition"
-        raise
+        # raise Exception
+        return None
 
     while True:
         xn = 0.5 * (xl + xh)
+        fxn = f(xn)
 
-        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (xl, f(xl), xn, f(xn), xh, f(xh), abs(xh-xl))
+        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (xl, fxl, xn, fxn, xh, fxh, abs(xh-xl))
 
-        if f(xn) * f(xh) < 0:
+        if fxn * fxh < 0:
+            # xn 에서의 함수값과 xh 에서의 함수값의 부호가 반대
+            # f(x) = 0 을 만족시키는 근이 xn 과 xh 사이에 있음
+            # xl ~ xn 사이의 구간을 버림
+            # xl 을 xn 으로 덮어 씀
             xl = xn
-        else:
+            fxl = fxn
+        elif fxn * fxl < 0:
+            # xn 에서의 함수값과 xl 에서의 함수값의 부호가 반대
+            # f(x) = 0 을 만족시키는 근이 xl 과 xn 사이에 있음
+            # xn ~ xh 사이의 구간을 버림
+            # xh 를 xn 으로 덮어 씀
             xh = xn
+            fxh = fxn
+        else:
+            # 프로그램에서 오류가 발생했음을 알림
+            print "Incorrect initial condition"
+            # raise Exception
+            return None
 
         counter += 1
-
 
         if abs(xh - xl) < epsilon:
             break
