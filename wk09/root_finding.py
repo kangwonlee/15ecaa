@@ -25,6 +25,14 @@ def bisection(f, xl, xh, epsilon=1e-6):
     xh = float(xh)
     
     counter = 0
+
+    fxl = f(xl)
+    fxh = f(xh)
+
+    if 0 < fxl * fxh :
+        print "Incorrect initial condition"
+        raise
+
     while True:
         xn = 0.5 * (xl + xh)
 
