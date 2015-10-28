@@ -3,7 +3,9 @@ import root_finding
 
 
 def main():
-    result = root_finding.bisection(problem_to_solve, root_finding.epsilon * 2, 1.0, 1e-9)
+    x_l_init = root_finding.epsilon * 2
+    x_h_init = 1.0
+    result = root_finding.bisection(problem_to_solve, x_l_init, x_h_init, 1e-9)
     print "result =", result
 
 
