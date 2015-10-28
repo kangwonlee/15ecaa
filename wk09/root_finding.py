@@ -25,8 +25,11 @@ def bisection(f, xl, xh, epsilon=1e-6):
     xh = float(xh)
     
     counter = 0
+    function_call_counter = 0
 
+    function_call_counter += 1
     fxl = f(xl)
+    function_call_counter += 1
     fxh = f(xh)
 
     if 0 < fxl * fxh :
@@ -37,9 +40,10 @@ def bisection(f, xl, xh, epsilon=1e-6):
 
     while True:
         xn = 0.5 * (xl + xh)
+        function_call_counter += 1
         fxn = f(xn)
 
-        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (xl, fxl, xn, fxn, xh, fxh, abs(xh-xl))
+        print "%3d xl = %8g f(xl) = %+8g xn = %+8g f(xn) = %+8g xh = %+8g f(xh) = %8g |xh-xl| = %-8g" % (counter, xl, fxl, xn, fxn, xh, fxh, abs(xh-xl))
 
         if fxn * fxh < 0:
             # xn 에서의 함수값과 xh 에서의 함수값의 부호가 반대
@@ -67,6 +71,7 @@ def bisection(f, xl, xh, epsilon=1e-6):
             break
 
     print "bis_counter =", counter
+    print "function_call_counter =", function_call_counter
     return xn
 # end of bisection()
 
