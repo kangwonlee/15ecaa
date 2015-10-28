@@ -1,6 +1,6 @@
 import math
 import num_int
-
+import pylab
 
 def main():
     y_min = 0.0
@@ -13,6 +13,14 @@ def main():
     print "area =", area
     print "moment =", moment_first
     print("center =", center)
+
+    y_list = pylab.arange(y_min, y_max, 1e-6)
+    w_list = [f(y) for y in y_list]
+
+    pylab.plot(y_list, w_list)
+    pylab.axis('equal')
+    pylab.grid()
+    pylab.show()
 
 
 def f(y):
