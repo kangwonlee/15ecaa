@@ -2,27 +2,26 @@ import math
 import root_finding
 
 
+class Experiment(object):
+    def __init__(self):
+        self.force_N = 100.0
+        self.safety_factor = 2.0
+        self.stress_max_Pa = 207e6
+
+    def problem_to_solve(self, radius_m):
+        return circular_section_stress(radius_m, self.force_N) \
+               - self.stress_max_Pa / self.safety_factor
+
+
 def main():
-    global force_N
-    force_N = float(raw_input("Enter force (N):"))
+    experiment = Experiment()
+
+    experiment.force_N = float(raw_input("Enter force (N):"))
 
     x_l_init = root_finding.epsilon * 2
     x_h_init = 1.0
-    result = root_finding.bisection(problem_to_solve, x_l_init, x_h_init, 1e-9)
+    result = root_finding.bisection(experiment.problem_to_solve, x_l_init, x_h_init, 1e-9)
     print "result =", result
-
-
-def problem_to_solve(radius_m):
-    global force_N
-    stress_max_Pa = 207e6
-    safety_factor = 2.0
-    return circular_section_stress(radius_m, force_N) - stress_max_Pa / safety_factor
-
-
-def df_dr(radius_m):
-    global force_N
-    result = (force_N + (-2.0) / math.pi) / (radius_m**3)
-    return result
 
 
 def circular_section_stress(r_m, force_N):
