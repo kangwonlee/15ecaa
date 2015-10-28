@@ -19,3 +19,10 @@ print "sqrt(2) =", sqrt(2).evalf(100)
 
 print "1/2 + 1/3 =", Rational(1, 2) + Rational(1, 3)
 
+F, r, sigma_max, sf = symbols('F r sigma_max safety_factor')
+
+area = pi * r * r
+sigma = F / area
+solution = solve([sigma - sigma_max/sf], r)
+print "solution =", simplify(solution)
+
