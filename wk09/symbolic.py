@@ -139,3 +139,8 @@ print "Matrix([[1,0], [0,1]]) =", Matrix([[1,0], [0,1]])
 A = Matrix([[1,x], [y,1]])
 print "A =", A
 print "A**2 =", A**2
+
+'''2.10.5.2'''
+f = Function('f')
+print "f(x).diff(x, x) + f(x) =", f(x).diff(x, x) + f(x)
+print "dsolve(f(x).diff(x, x) + f(x)) =", dsolve(f(x).diff(x, x) + f(x))
