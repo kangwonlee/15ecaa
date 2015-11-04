@@ -96,5 +96,28 @@ pylab.plot(x_deg, y_series_2, label='series 2')
 pylab.plot(x_deg, y_series_3, label='series 3')
 pylab.grid()
 pylab.legend(loc=0)
-pylab.show()
+#pylab.show()
+
+'''2.10.3.5'''
+print "integrate(6*x**5, x) =", integrate(6*x**5, x)
+
+print "integrate(sin(x), x) =", integrate(sin(x), x)
+
+print "integrate(log(x), x) =", integrate(log(x), x)
+
+print "integrate(2*x + sinh(x), x) =", integrate(2*x + sinh(x), x)
+
+print "integrate(exp(-x**2)*erf(x), x) =", integrate(exp(-x**2)*erf(x), x)
+
+print "integrate(x**3, (x, -1, 1)) =", integrate(x**3, (x, -1, 1))
+
+print "integrate(sin(x), (x, 0, pi/2)) =", integrate(sin(x), (x, 0, pi/2))
+
+print "integrate(cos(x), (x, -pi/2, pi/2)) =", integrate(cos(x), (x, -pi/2, pi/2))
+
+print "integrate(exp(-x), (x, 0, oo)) =", integrate(exp(-x), (x, 0, oo))
+
+print "integrate(exp(-x**2), (x, -oo, oo)) =", integrate(exp(-x**2), (x, -oo, oo))
+
+
 
