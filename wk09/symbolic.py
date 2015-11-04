@@ -119,5 +119,17 @@ print "integrate(exp(-x), (x, 0, oo)) =", integrate(exp(-x), (x, 0, oo))
 
 print "integrate(exp(-x**2), (x, -oo, oo)) =", integrate(exp(-x**2), (x, -oo, oo))
 
+'''2.10.4'''
+print "solve(x**4 - 1, x) =", solve(x**4 - 1, x)
 
+print "solve([x + 5*y - 2, -3*x + 6*y - 15], [x,y]) =", solve([x + 5*y - 2, -3*x + 6*y - 15], [x,y])
 
+print "solve(exp(x) + 1, x) =", solve(exp(x) + 1, x)
+
+f = x**4 - 3*x**2 + 1
+print "factor(f) =", factor(f)
+
+print "factor(f, modulus=5) =", factor(f, modulus=5)
+
+print "satisfiable(x&y) =", satisfiable(x & y)
+print "satisfiable(x^y) =", satisfiable(x ^ y)
