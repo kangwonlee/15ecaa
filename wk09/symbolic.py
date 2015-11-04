@@ -1,5 +1,7 @@
 # -*- coding: cp949 -*-
 from sympy import *
+
+'''2.10.1.1'''
 a = Rational(1, 2)
 print "a =", a
 
@@ -15,6 +17,7 @@ print "oo =", oo
 
 print "oo > 99999 =", oo > 99999
 
+'''2.10.1.2'''
 print "sqrt(2) =", sqrt(2).evalf(100)
 
 print "1/2 + 1/3 =", Rational(1, 2) + Rational(1, 3)
@@ -77,4 +80,21 @@ print "diff(sin(2*x), x, 3) =", diff(sin(2*x), x, 3)
 print "series(cos(x), x) =", series(cos(x), x)
 
 print "series(1/cos(x), x) =", series(1/cos(x), x)
+
+# Series 설명을 위하여 그래프를 그림
+import pylab
+x_deg = pylab.arange(-90, 90+1)
+x_rad = pylab.deg2rad(x_deg)
+y_cos = pylab.cos(x_rad)
+y_series_1 = 1*pylab.ones_like(x_rad)
+y_series_2 = 1 - x_rad**2/2
+y_series_3 = 1 - x_rad**2/2 + x_rad**4/24
+
+pylab.plot(x_deg, y_cos, label='cos')
+pylab.plot(x_deg, y_series_1, label='series 1')
+pylab.plot(x_deg, y_series_2, label='series 2')
+pylab.plot(x_deg, y_series_3, label='series 3')
+pylab.grid()
+pylab.legend(loc=0)
+pylab.show()
 
