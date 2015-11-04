@@ -133,3 +133,9 @@ print "factor(f, modulus=5) =", factor(f, modulus=5)
 
 print "satisfiable(x&y) =", satisfiable(x & y)
 print "satisfiable(x^y) =", satisfiable(x ^ y)
+
+'''2.10.5.1'''
+print "Matrix([[1,0], [0,1]]) =", Matrix([[1,0], [0,1]])
+A = Matrix([[1,x], [y,1]])
+print "A =", A
+print "A**2 =", A**2
