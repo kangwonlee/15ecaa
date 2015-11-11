@@ -1,4 +1,5 @@
 # -*- coding: cp949 -*-
+import linear_algebra as la
 from pprint import pprint
 
 
@@ -18,6 +19,7 @@ def gauss_jordan(A):
         AI_row[n_column + i_row] = 1.0
         AI.append(AI_row)
 
+    print "Augmented matrix"
     pprint(AI, width=40)
 
     # pivot 반복문
@@ -33,9 +35,12 @@ def gauss_jordan(A):
             if j_row != i_pivot:
                 ratio = -AI[j_row][i_pivot]
                 # 열 반복문
-                for k_column in xrange(n_column + 1):
+                for k_column in xrange(n_column * 2):
                     AI[j_row][k_column] += ratio * AI[i_pivot][k_column]
     # 이 반복문이 끝나고 나면 주 대각선 이외의 요소는 모두 0
+
+    print "After Gauss Jordan"
+    pprint (AI)
 
     # 오른쪽의 행렬을 떼어냄
     result = []
@@ -49,4 +54,11 @@ if "__main__" == __name__:
     A = [[3, 2, 1],
          [2, 3, 2],
          [1, 2, 3]]
-    print gauss_jordan(A, width = 40)
+
+    A_inverse = gauss_jordan(A)
+    print "A inverse"
+    pprint(A_inverse)
+
+    I_expected = la.multiply_matrix_matrix(A, A_inverse)
+    print "I expected"
+    pprint(I_expected)
