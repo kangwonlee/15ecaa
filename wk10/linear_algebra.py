@@ -24,6 +24,21 @@ def multiply_matrix_vector(A, x):
     return result
 
 
+def multiply_matrix_matrix(A, B):
+    n_row = len(A)
+    n_column = len(B[0])
+
+    BT = zip(*B)
+
+    result = []
+    for i in xrange(n_row):
+        result.append([0.0] * n_column)
+        for j in xrange(n_column):
+            result[i][j] = dot(A[i], BT[j])
+
+    return result
+
+
 def main():
     a_vector = [1.0, 0.0]
     b_vector = [3.0, 4.0]
@@ -38,14 +53,17 @@ def main():
     x_vector = [3.0, 4.0]
     A_x = multiply_matrix_vector(A_matrix, x_vector)
 
+    print "A =", A_matrix
+    print "x =", x_vector
+    print "A*x =", A_x
 
     B_matrix = [[100, 101],
                 [110, 111]]
 
-
     print "A =", A_matrix
-    print "x =", x_vector
-    print "A*x =", A_x
+    print "B =", B_matrix
+    print "A*B =", multiply_matrix_matrix(A_matrix, B_matrix)
+
 
 if "__main__" == __name__:
     main()
