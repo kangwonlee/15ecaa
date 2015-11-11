@@ -1,4 +1,5 @@
 # -*- coding: cp949 -*-
+import linear_algebra as la
 from pprint import pprint
 
 
@@ -61,6 +62,9 @@ def main():
          3]
 
     x = gauss_elimination(A, b)
+
+    Ax = la.multiply_matrix_vector(A, x)
+    print Ax, '==', b
 
 
 if "__main__" == __name__:
