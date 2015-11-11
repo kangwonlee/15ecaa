@@ -19,9 +19,7 @@ def multiply_matrix_vector(A, x):
 
     result = [0.0] * n_row
     for i in xrange(n_row):
-        result[i] = 0.0
-        for j in xrange(n_column):
-            result[i] += A[i][j] * x[j]
+        result[i] = dot(A[i], x)
 
     return result
 
@@ -39,6 +37,11 @@ def main():
                 [1.0, 0.0]]
     x_vector = [3.0, 4.0]
     A_x = multiply_matrix_vector(A_matrix, x_vector)
+
+
+    B_matrix = [[100, 101],
+                [110, 111]]
+
 
     print "A =", A_matrix
     print "x =", x_vector
