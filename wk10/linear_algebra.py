@@ -27,14 +27,28 @@ def multiply_matrix_vector(A, x):
 def multiply_matrix_matrix(A, B):
     n_row = len(A)
     n_column = len(B[0])
+    n_dummy = len(A[0])
+    n_dummy2 = len(B)
 
-    BT = zip(*B)
+    # 행렬 크기 확인
+    if n_dummy != n_dummy2:
+        print "Incorrect Matrix Size"
+        return None
 
+    # 행렬을 저장할 공간을 지정
     result = []
-    for i in xrange(n_row):
+    for i_row in xrange(n_row):
+        # 각 행을 저장할 공간을 지정
         result.append([0.0] * n_column)
+
+    # 행 반복문
+    for i in xrange(n_row):
+        # 열 반복문
         for j in xrange(n_column):
-            result[i][j] = dot(A[i], BT[j])
+            result[i][j] = 0.0
+            # dummy index
+            for k in xrange(n_dummy):
+                result[i][j] += A[i][k] * B[k][j]
 
     return result
 
