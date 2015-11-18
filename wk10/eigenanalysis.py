@@ -5,27 +5,36 @@ from pprint import pprint
 
 
 def power_method(A, epsilon=1e-9):
+    # 행렬의 크기
     n = len(A)
 
+    # 가장 큰 고유치를 담게 될 변수
     lambda_k = 0.0
+    # 위 고유치의 고유 벡터를 저장할 장소
     x0 = [1.0] * n
 
     counter = 0
     while True:
+        # 행렬 곱셈
         y1 = la.multiply_matrix_vector(A, x0)
 
+        # y1 벡터에서 절대값이 가장 큰 요소를 찾음
         lambda_k1 = abs(y1[0])
         for y1i in y1[1:]:
             if abs(y1i) > lambda_k1:
                 lambda_k1 = abs(y1i)
 
+        # 위에서 찾은 값으로 y1의 모든 요소를 나누어서 x 벡터에 저장
+        # "위에서 찾은 값으로 y1 을 normalize 한다"
         for k in xrange(n):
             x0[k] = y1[k] / lambda_k1
 
+        # 이전 단계의 가장 큰 고유치와 비교
         if abs(lambda_k1 - lambda_k) < epsilon:
             break
         lambda_k = lambda_k1
 
+        # 사용이 왼료된 y1 벡터의 메모리 공간을 반환
         del y1
         counter += 1
 
