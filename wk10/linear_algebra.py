@@ -71,6 +71,17 @@ def main():
     print "x =", x_vector
     print "A*x =", A_x
 
+    A_matrix2 = [[0.0, 1.0],
+                 [1.0, 0.0]]
+    x_vector2T = [[3.0, 4.0]]
+    x_vector2 = zip(*x_vector2T)
+
+    A_x2 = multiply_matrix_matrix(A_matrix2, x_vector2)
+
+    print "A2 =", A_matrix2
+    print "x2 =", x_vector2
+    print "A2*x2 =", A_x2
+
     B_matrix = [[100, 101],
                 [110, 111]]
 
