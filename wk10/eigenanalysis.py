@@ -12,36 +12,43 @@ def power_method(A, epsilon=1e-9):
     # 가장 큰 고유치를 담게 될 변수
     lambda_k = 0.0
     # 위 고유치의 고유 벡터를 저장할 장소
-    x0 = [1.0] * n
+    zk = [1.0] * n
 
     counter = 0
+    # k : 반복횟수
+    # i : i 번째 고유치, 고유 벡터
     while True:
         # 행렬 곱셈
-        y1 = la.multiply_matrix_vector(A, x0)
+        # k 가 큰 값이라면 z_k 는 첫번째 고유벡터와 거의 같은 방향이므로
+        # y_k+1 = A z_k = lambda_1 z_k
+        # z_k 의 가장 큰 요소는 1 이었으므로
+        # y_k+1 의 가장 큰 요소가 lambda_1 인 것이라고 볼 수 있다.
+        yk1 = la.multiply_matrix_vector(A, zk)
 
-        # y1 벡터에서 절대값이 가장 큰 요소를 찾음
-        lambda_k1 = abs(y1[0])
-        for y1i in y1[1:]:
-            if abs(y1i) > abs(lambda_k1):
-                lambda_k1 = y1i
+        # yk1 벡터에서 절대값이 가장 큰 요소를 찾음
+        lambda_k1 = abs(yk1[0])
+        for yk1_i in yk1[1:]:
+            if abs(yk1_i) > abs(lambda_k1):
+                lambda_k1 = yk1_i
 
-        # 위에서 찾은 값으로 y1의 모든 요소를 나누어서 x 벡터에 저장
-        # "위에서 찾은 값으로 y1 을 normalize 한다"
-        for k in xrange(n):
-            x0[k] = y1[k] / lambda_k1
+        # 위에서 찾은 값으로 yk1 모든 요소를 나누어서 zk 벡터에 저장
+        # "위에서 찾은 값으로 yk1 을 normalize 한다"
+        # zk 의 가장 큰 요소는 1이 됨
+        for i in xrange(n):
+            zk[i] = yk1[i] / lambda_k1
 
-        # 이전 단계의 가장 큰 고유치와 비교
+        # 이전 단계의 가장 큰 요소와 비교
         if abs(lambda_k1 - lambda_k) < epsilon:
             break
         lambda_k = lambda_k1
 
         # 사용이 왼료된 y1 벡터의 메모리 공간을 반환
-        del y1
+        del yk1
         counter += 1
 
     print("power method counter = %d" % counter)
 
-    return lambda_k1, x0
+    return lambda_k1, zk
 
 
 def alloc_vec(n):
