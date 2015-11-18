@@ -1,7 +1,8 @@
 # -*- coding: cp949 -*-
-import linear_algebra as la
 import math
 from pprint import pprint
+
+import linear_algebra as la
 
 
 def power_method(A, epsilon=1e-9):
@@ -21,8 +22,8 @@ def power_method(A, epsilon=1e-9):
         # y1 벡터에서 절대값이 가장 큰 요소를 찾음
         lambda_k1 = abs(y1[0])
         for y1i in y1[1:]:
-            if abs(y1i) > lambda_k1:
-                lambda_k1 = abs(y1i)
+            if abs(y1i) > abs(lambda_k1):
+                lambda_k1 = y1i
 
         # 위에서 찾은 값으로 y1의 모든 요소를 나누어서 x 벡터에 저장
         # "위에서 찾은 값으로 y1 을 normalize 한다"
