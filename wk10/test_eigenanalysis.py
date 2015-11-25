@@ -18,26 +18,23 @@ class TestEigenAnalysis(unittest.TestCase):
             self.assertAlmostEqual(Ax1i, lamda1 * x1i)
 
     def test_jacobi_method(self):
-        A = [[-2.0, -1.0],
-             [-1.0, -3.0]]
+        A = [[-1.0, -0.5, -0.2],
+             [-0.5, -2.0, -1.0],
+             [-0.2, -1.0, -3.0]]
 
         lamda1, x1 = ea.jacobi_method (A)
+        self.assertEqual(len(A), len(lamda1))
+        self.assertEqual(len(A[0]), len(lamda1[0]))
         self.assertEqual(len(A), len(x1))
         self.assertEqual(len(A[0]), len(x1[0]))
 
-
-        from pprint import pprint
-
-        pprint(lamda1)
-
-        pprint(x1)
-
         Ax1 = la.multiply_matrix_matrix(A, x1)
-
         # check A V = Lambda V
         for k_pivot in xrange(len(A)):
+            # diagonal term
             lambda_i = lamda1[k_pivot][k_pivot]
 
+            # off diagonal
             for i_row in xrange(len(A)):
                 self.assertAlmostEqual(Ax1[i_row][k_pivot],lambda_i * x1[i_row][k_pivot])
 
@@ -48,13 +45,8 @@ class TestEigenAnalysis(unittest.TestCase):
             # check diagonal
             self.assertAlmostEqual(x1TAx1[i_row][i_row], lamda1[i_row][i_row])
             # check off-diagonal
-            for j_column in xrange(1, len(A)):
+            for j_column in xrange(i_row + 1, len(A)):
                 self.assertAlmostEqual(x1TAx1[i_row][j_column], 0.0)
-
-
-        pprint(x1TAx1)
-
-
 
 
 if "__main__" == __name__:
