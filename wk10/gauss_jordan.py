@@ -20,7 +20,8 @@ def gauss_jordan(A):
         AI.append(AI_row)
 
     print "Augmented matrix"
-    pprint(AI, width=40)
+    print '1234567890' * 7
+    pprint(AI, width=30)
 
     # pivot ¹Ýº¹¹®
     for i_pivot in xrange(n_row):
