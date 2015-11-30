@@ -167,7 +167,7 @@ def cholesky_decomposition(A):
     L matrix such that L LT == A
     """
     """
-    Following formulation from 1. For programming convenience, index now starts from 0.
+    Referenced following formulation from 1. Partially changed for 0 starting indexes.
     L = [[l_00,    0,    0],
          [l_10, l_11,    0],
          [l_20, l_21, l_22]]
@@ -182,6 +182,11 @@ def cholesky_decomposition(A):
     l_kk = ( A_kk - sum([l_kj ** 2 for j in xrange(0, k - 1)]) ) ** 0.5
     """
 
+    """
+    matrix multiplication
+
+    """
+
     L = [[0.0] * len(A)]
 
     L[0][0] = A[0][0] ** 0.5
@@ -189,19 +194,19 @@ def cholesky_decomposition(A):
 
     for k in xrange(1, len(A)):
         l_k = [0.0] * len(A)
+        L.append(l_k)
+
         l_k[0] = A[k][0] * l_00_i
         for i in xrange(1, k):
             l_ki_l00 = A[k][i]
             for j in xrange(i):
-                l_ki_l00 += -L[i][j] * L[j][k]
-            l_k[i] = l_ki_l00 * l_00_i
+                l_ki_l00 += -L[i][j] * L[k][j]
+            l_k[i] = l_ki_l00 /L[i][i]
 
         l_k[k] = A[k][k]
         for j in xrange(k):
             l_k[k] += -l_k[j] ** 2
         l_k[k] **= 0.5
-
-        L.append(l_k)
 
     return L
 
