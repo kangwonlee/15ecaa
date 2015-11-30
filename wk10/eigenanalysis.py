@@ -194,19 +194,20 @@ def cholesky_decomposition(A):
 
     for k in xrange(1, len(A)):
         l_k = [0.0] * len(A)
-        L.append(l_k)
 
         l_k[0] = A[k][0] * l_00_i
         for i in xrange(1, k):
             l_ki_l00 = A[k][i]
             for j in xrange(i):
-                l_ki_l00 += -L[i][j] * L[k][j]
+                l_ki_l00 += -L[i][j] * l_k[j]
             l_k[i] = l_ki_l00 /L[i][i]
 
         l_k[k] = A[k][k]
         for j in xrange(k):
             l_k[k] += -l_k[j] ** 2
         l_k[k] **= 0.5
+
+        L.append(l_k)
 
     return L
 
