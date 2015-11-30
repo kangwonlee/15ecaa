@@ -156,6 +156,56 @@ def jacobi_method(A, epsilon = 1e-9, bVerbose=False):
     return A0, X
 
 
+def cholesky_decomposition(A):
+    """
+    ref:
+    1. carstart, Cholesky decomposition, http://carstart.tistory.com/155, 2010 Nov 16 (accessed 2015 Nov 30).
+    2. Susan Blackford, Generalized Symmetric Definite Eigenproblems, http://www.netlib.org/lapack/lug/node54.html, 1999 Oct 01 (accessed 2015 Nov 30).
+    :param A:
+    Symmetric Matrix
+    :return:
+    L matrix such that L LT == A
+    """
+    """
+    Following formulation from 1. For programming convenience, index now starts from 0.
+    L = [[l_00,    0,    0],
+         [l_10, l_11,    0],
+         [l_20, l_21, l_22]]
+
+    L LT = [[l_00 ** 2,             l_00 l_01,                         l_00 l_02],
+            [l_10 l_00, l_01 ** 2 + l_11 ** 2,             l_10 l_02 + l_11 l_12],
+            [l_20 l_00, l_20 l_01 + l_21 l_11, l_02 ** 2 + l_12 ** 2 + l_22 ** 2]]
+
+    l_00 = A_00 ** 0.5
+    l_k0 = A_k0 / l_00 for k in range(1, n))
+    l_ki = (1/l_00) * (A_ki - sum([l_ij l_jk for j in xrange(0, i - 1)]) ) for i in xrange(1, k - 1)
+    l_kk = ( A_kk - sum([l_kj ** 2 for j in xrange(0, k - 1)]) ) ** 0.5
+    """
+
+    L = [[0.0] * len(A)]
+
+    L[0][0] = A[0][0] ** 0.5
+    l_00_i = 1.0 / L[0][0]
+
+    for k in xrange(1, len(A)):
+        l_k = [0.0] * len(A)
+        l_k[0] = A[k][0] * l_00_i
+        for i in xrange(1, k):
+            l_ki_l00 = A[k][i]
+            for j in xrange(i):
+                l_ki_l00 += -L[i][j] * L[j][k]
+            l_k[i] = l_ki_l00 * l_00_i
+
+        l_k[k] = A[k][k]
+        for j in xrange(k):
+            l_k[k] += -l_k[j] ** 2
+        l_k[k] **= 0.5
+
+        L.append(l_k)
+
+    return L
+
+
 if "__main__" == __name__:
     A = [[2.0, 1.0],
          [1.0, 3.0]]
