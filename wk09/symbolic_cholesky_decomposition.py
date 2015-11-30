@@ -7,11 +7,15 @@ def main():
     # (accessed 2015 Dec 01)
     M = sp.Matrix(3, 3, lambda i, j: sp.var('M_%d%d' % (i+1,j+1)))
 
-    for i in xrange(2):
-        for j in xrange(i+1, 3):
-            M[i, j] = 0
+    make_lower_triangle(M)
 
     print(M)
+
+
+def make_lower_triangle(M):
+    for i in xrange(2):
+        for j in xrange(i + 1, 3):
+            M[i, j] = 0
 
 
 if "__main__" == __name__:
