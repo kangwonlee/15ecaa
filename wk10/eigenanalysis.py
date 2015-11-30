@@ -192,16 +192,19 @@ def cholesky_decomposition(A):
     L[0][0] = A[0][0] ** 0.5
     l_00_i = 1.0 / L[0][0]
 
+    # row loop
     for k in xrange(1, len(A)):
         l_k = [0.0] * len(A)
 
         l_k[0] = A[k][0] * l_00_i
         square_sum = l_k[0] ** 2
+        # column loop before diagonal
         for i in xrange(1, k):
             l_ki_l00 = A[k][i]
+            # dummy index
             for j in xrange(i):
                 l_ki_l00 += -L[i][j] * l_k[j]
-            l_k[i] = l_ki_l00 /L[i][i]
+            l_k[i] = l_ki_l00 / L[i][i]
             square_sum += l_k[i] ** 2
 
         l_k[k] = (A[k][k] - square_sum) ** 0.5
