@@ -5,11 +5,14 @@ def main():
     # Brendan Wood, MRocklin, Amelio Vazquez-Reina, Automatically populating matrix elements in SymPy,
     # http://stackoverflow.com/questions/6877061/automatically-populating-matrix-elements-in-sympy, 2011 Aug 02,
     # (accessed 2015 Dec 01)
-    M = sp.Matrix(3, 3, lambda i, j: sp.var('M_%d%d' % (i+1,j+1)))
+    L = sp.Matrix(3, 3, lambda i, j: sp.var('L_%d%d' % (i+1, j+1)))
 
-    make_lower_triangle(M)
+    make_lower_triangle(L)
 
-    print(M)
+    LLT = L * L.transpose()
+
+    print(L)
+    print(LLT)
 
 
 def make_lower_triangle(M):
