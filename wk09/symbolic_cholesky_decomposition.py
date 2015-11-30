@@ -7,12 +7,16 @@ def main():
     # (accessed 2015 Dec 01)
     L = sp.Matrix(3, 3, lambda i, j: sp.var('L_%d%d' % (i+1, j+1)))
 
+    # symmetric matrix
+    A = sp.Matrix(3, 3, lambda i, j: sp.var('A_%d%d' % tuple(sorted((i+1, j+1)))))
+
     make_lower_triangle(L)
 
     LLT = L * L.transpose()
 
     print(L)
     print(LLT)
+    print(A)
 
 
 def make_lower_triangle(M):
