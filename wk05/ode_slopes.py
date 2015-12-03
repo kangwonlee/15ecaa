@@ -29,7 +29,7 @@ def ode_slope_1state(func, x_list, time_list):
     pylab.ylabel('x')
     pylab.xlim((time_list[0] - (time_list[1] - time_list[0]) * 0.125, time_list[-1]))
     pylab.ylim((min(x_list) - (x_list[1] - x_list[0]) * 0.125,
-          max(x_list) + (x_list[-1] - x_list[-2]) * 0.125))
+                max(x_list) + (x_list[-1] - x_list[-2]) * 0.125))
     pylab.grid(True)
 
 
@@ -67,6 +67,7 @@ def ode_slopes_2states(func, radii_list, theta_deg_list, time_list):
 if "__main__" == __name__:
     save_fig = True
 
+
     def main_1state(save_fig):
         # time constant
         tau = 1.0
@@ -96,7 +97,7 @@ if "__main__" == __name__:
         pylab.title(r'tau x_dot + x = 0')
 
         if save_fig:
-            pylab.savefig("quiver_x_dot_x_0.png", dpi = 300)
+            pylab.savefig("quiver_x_dot_x_0.png", dpi=300)
         else:
             pylab.show()
 
@@ -147,7 +148,7 @@ if "__main__" == __name__:
         delta_angle_deg = 5
 
         # list of radii
-        radii_list = np.arange(1.0*y_limit/n_radii, y_limit, 1.0*y_limit/n_radii)
+        radii_list = np.arange(1.0 * y_limit / n_radii, y_limit, 1.0 * y_limit / n_radii)
         # list of angles in degree
         theta_deg_list = tuple(range(0, 360, delta_angle_deg))
         ode_slopes_2states(f_2states, radii_list, theta_deg_list, time_list)
@@ -158,7 +159,7 @@ if "__main__" == __name__:
         pylab.xlabel('x')
         pylab.ylabel('x_dot')
         if save_fig:
-            pylab.savefig('quiver_2states.png', dpi = 300)
+            pylab.savefig('quiver_2states.png', dpi=300)
         else:
             pylab.show()
 
@@ -189,11 +190,11 @@ if "__main__" == __name__:
         :return: (y1, y2)
         """
         # 10 x_ddot + 5 x_dot + 10 x = 0, x(0) = 5, x_dot(0) = 0
-        sqrt_15 = 15**0.5
+        sqrt_15 = 15 ** 0.5
         wdt = sqrt_15 * t * 0.25
-        y1 = ((sqrt_15 / 3.0)*np.sin(wdt)
-              + 5.0 * np.cos(wdt)) * np.exp(-0.25*t)
-        y2 = -(1.0 + 1.0/3.0) * sqrt_15 * np.exp(-0.25*t) * np.sin(wdt)
+        y1 = ((sqrt_15 / 3.0) * np.sin(wdt)
+              + 5.0 * np.cos(wdt)) * np.exp(-0.25 * t)
+        y2 = -(1.0 + 1.0 / 3.0) * sqrt_15 * np.exp(-0.25 * t) * np.sin(wdt)
         return y1, y2
 
 

@@ -1,9 +1,8 @@
-from matplotlib.colors import LogNorm
 from pylab import *
 
-#normal distribution center at x=0 and y=5
+# normal distribution center at x=0 and y=5
 x = randn(100000)
-y = randn(100000)+5
+y = randn(100000) + 5
 
 H, xedges, yedges = histogram2d(x, y, bins=40)
 

@@ -92,7 +92,7 @@ def calc_theta(ars, arr, ass):
     return theta_rad
 
 
-def jacobi_method(A, epsilon = 1e-9, bVerbose=False):
+def jacobi_method(A, epsilon=1e-9, bVerbose=False):
     n = len(A)
 
     A0 = alloc_mat(n, n)
@@ -138,11 +138,11 @@ def jacobi_method(A, epsilon = 1e-9, bVerbose=False):
 
             xkr = X[k][r]
             xks = X[k][s]
-            X[k][r] = xkr * cos + xks *sin
-            X[k][s] = xks * cos - xkr *sin
+            X[k][r] = xkr * cos + xks * sin
+            X[k][s] = xks * cos - xkr * sin
 
-        A0[r][r] = arr * cos*cos + 2.0 * ars * sin * cos + ass * sin*sin
-        A0[s][s] = arr * sin*sin - 2.0 * ars * sin * cos + ass * cos*cos
+        A0[r][r] = arr * cos * cos + 2.0 * ars * sin * cos + ass * sin * sin
+        A0[s][s] = arr * sin * sin - 2.0 * ars * sin * cos + ass * cos * cos
         A0[r][s] = A0[s][r] = 0.0
         if bVerbose:
             print "A0"
@@ -160,7 +160,8 @@ def cholesky_decomposition(A):
     """
     ref:
     1. carstart, Cholesky decomposition, http://carstart.tistory.com/155, 2010 Nov 16 (accessed 2015 Nov 30).
-    2. Susan Blackford, Generalized Symmetric Definite Eigenproblems, http://www.netlib.org/lapack/lug/node54.html, 1999 Oct 01 (accessed 2015 Nov 30).
+    2. Susan Blackford, Generalized Symmetric Definite Eigenproblems, http://www.netlib.org/lapack/lug/node54.html,
+        1999 Oct 01 (accessed 2015 Nov 30).
     :param A:
     Symmetric Matrix
     :return:

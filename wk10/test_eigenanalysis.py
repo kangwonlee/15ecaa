@@ -1,9 +1,9 @@
 import unittest
+from pprint import pprint
 
 import eigenanalysis as ea
 import linear_algebra as la
 
-from pprint import pprint
 
 class TestEigenAnalysis(unittest.TestCase):
     def test_power_method(self):
@@ -23,7 +23,7 @@ class TestEigenAnalysis(unittest.TestCase):
              [-0.5, -2.0, -1.0],
              [-0.2, -1.0, -3.0]]
 
-        lamda1, x1 = ea.jacobi_method (A)
+        lamda1, x1 = ea.jacobi_method(A)
         self.assertEqual(len(A), len(lamda1))
         self.assertEqual(len(A[0]), len(lamda1[0]))
         self.assertEqual(len(A), len(x1))
@@ -37,7 +37,7 @@ class TestEigenAnalysis(unittest.TestCase):
 
             # off diagonal
             for i_row in xrange(len(A)):
-                self.assertAlmostEqual(Ax1[i_row][k_pivot],lambda_i * x1[i_row][k_pivot])
+                self.assertAlmostEqual(Ax1[i_row][k_pivot], lambda_i * x1[i_row][k_pivot])
 
         # check VT A V = Lambda
         x1TAx1 = la.multiply_matrix_matrix(zip(*x1), Ax1)
@@ -75,10 +75,10 @@ class TestEigenAnalysis(unittest.TestCase):
                 self.assertAlmostEqual(A[i_row][j_column], A_expected[i_row][j_column])
 
     def test_cholesky_decomposition_01(self):
-        A = [[64.0,  32.0,   2.0,   1.0],
-             [32.0, 128.0,  16.0,   4.0],
-             [ 2.0,  16.0, 256.0,   8.0],
-             [ 1.0,   4.0,   8.0, 512.0]]
+        A = [[64.0, 32.0, 2.0, 1.0],
+             [32.0, 128.0, 16.0, 4.0],
+             [2.0, 16.0, 256.0, 8.0],
+             [1.0, 4.0, 8.0, 512.0]]
 
         L_expected = [[8.0, 0.0, 0.0, 0.0],
                       [4.0, 10.583005244258363, 0.0, 0.0],
@@ -100,6 +100,7 @@ class TestEigenAnalysis(unittest.TestCase):
             self.assertEqual(len(A), len(L[i_row]))
             for j_column in xrange(0, len(A)):
                 self.assertAlmostEqual(A[i_row][j_column], A_expected[i_row][j_column])
+
 
 if "__main__" == __name__:
     unittest.main()

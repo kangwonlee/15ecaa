@@ -17,13 +17,15 @@ def sequential(f, x0):
         counter += 1
     print "seq_counter =", counter
     return xi
+
+
 # end of sequential()
 
 
 def bisection(f, xl, xh, epsilon=1e-6):
     xl = float(xl)
     xh = float(xh)
-    
+
     counter = 0
     function_call_counter = 0
 
@@ -32,7 +34,7 @@ def bisection(f, xl, xh, epsilon=1e-6):
     function_call_counter += 1
     fxh = f(xh)
 
-    if 0 < fxl * fxh :
+    if 0 < fxl * fxh:
         # 프로그램에서 오류가 발생했음을 알림
         print "Incorrect initial condition"
         # raise Exception
@@ -43,7 +45,8 @@ def bisection(f, xl, xh, epsilon=1e-6):
         function_call_counter += 1
         fxn = f(xn)
 
-        print "%3d xl = %8g f(xl) = %+8g xn = %+8g f(xn) = %+8g xh = %+8g f(xh) = %8g |xh-xl| = %-8g" % (counter, xl, fxl, xn, fxn, xh, fxh, abs(xh-xl))
+        print "%3d xl = %8g f(xl) = %+8g xn = %+8g f(xn) = %+8g xh = %+8g f(xh) = %8g |xh-xl| = %-8g" % (
+        counter, xl, fxl, xn, fxn, xh, fxh, abs(xh - xl))
 
         if fxn * fxh < 0:
             # xn 에서의 함수값과 xh 에서의 함수값의 부호가 반대
@@ -73,6 +76,8 @@ def bisection(f, xl, xh, epsilon=1e-6):
     print "bis_counter =", counter
     print "function_call_counter =", function_call_counter
     return xn
+
+
 # end of bisection()
 
 
@@ -85,21 +90,27 @@ def newton(f, df, x0):
         if abs(fi) < epsilon:
             break
         else:
-            xi += (-fi/df(xi))
-            
+            xi += (-fi / df(xi))
+
     print "nr_counter =", counter
     return xi
+
+
 # end of newton
 
 
 def func(x):
     return 1.0 * x * x - 2.0
+
+
 # end of func()
 # inspired by Scratch example
 
 
 def dfunc(x):
     return 2.0 * x
+
+
 # end of dfunc()
 # for later use
 
@@ -116,13 +127,13 @@ if "__main__" == __name__:
     print "x_seq =", x_seq
     print "f(x_seq) =", func(x_seq)
 
-    x_bis = bisection (func, 0.01, 2.0)
+    x_bis = bisection(func, 0.01, 2.0)
     print "x_bis =", x_bis
     print "f(x_bis) =", func(x_bis)
 
-    x_nr = newton (func, dfunc, 2.0)
+    x_nr = newton(func, dfunc, 2.0)
     print "x_nr =", x_nr
     print "f(x_nr) =", func(x_nr)
 
     print "error   seq         bis        nr"
-    print "        %7g %7g %7g" % ( abs(2.0**0.5 - x_seq), abs(2.0**0.5 - x_bis), abs(2.0**0.5 - x_nr))
+    print "        %7g %7g %7g" % (abs(2.0 ** 0.5 - x_seq), abs(2.0 ** 0.5 - x_bis), abs(2.0 ** 0.5 - x_nr))

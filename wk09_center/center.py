@@ -1,6 +1,9 @@
 import math
-import num_int
+
 import pylab
+
+import num_int
+
 
 def main():
     y_min = 0.0
@@ -26,7 +29,7 @@ def main():
 def f(y):
     if 0.0 <= y < 0.02:
         r = 0.01
-        result = 0.04 + math.sqrt( r*r - (y-r)**2 )
+        result = 0.04 + math.sqrt(r * r - (y - r) ** 2)
         # result = 0.06
     elif 0.02 <= y < 0.10:
         result = 0.02

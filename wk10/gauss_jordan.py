@@ -1,6 +1,7 @@
 # -*- coding: cp949 -*-
-import linear_algebra as la
 from pprint import pprint
+
+import linear_algebra as la
 
 
 def gauss_jordan(A):
@@ -14,7 +15,7 @@ def gauss_jordan(A):
         AI_row = [0.0] * (n_column * 2)
         for j_column in xrange(n_column):
             AI_row[j_column] = A[i_row][j_column]
-        for j_column in xrange(n_column, n_column*2):
+        for j_column in xrange(n_column, n_column * 2):
             AI_row[j_column] = 0.0
         AI_row[n_column + i_row] = 1.0
         AI.append(AI_row)
@@ -41,7 +42,7 @@ def gauss_jordan(A):
     # 이 반복문이 끝나고 나면 주 대각선 이외의 요소는 모두 0
 
     print "After Gauss Jordan"
-    pprint (AI)
+    pprint(AI)
 
     # 오른쪽의 행렬을 떼어냄
     result = []

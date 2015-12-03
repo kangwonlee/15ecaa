@@ -17,13 +17,15 @@ def sequential(f, x0):
         counter += 1
     print "seq_counter =", counter
     return xi
+
+
 # end of sequential()
 
 
 def bisection(f, xl, xh):
     xl = float(xl)
     xh = float(xh)
-    
+
     counter = 0
     while True:
         xn = 0.5 * (xl + xh)
@@ -35,13 +37,16 @@ def bisection(f, xl, xh):
 
         counter += 1
 
-        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (xl, f(xl), xn, f(xn), xh, f(xh), abs(xh-xl))
+        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (
+        xl, f(xl), xn, f(xn), xh, f(xh), abs(xh - xl))
 
         if abs(xh - xl) < epsilon:
             break
 
     print "bis_counter =", counter
     return xn
+
+
 # end of bisection()
 
 
@@ -54,21 +59,27 @@ def newton(f, df, x0):
         if abs(fi) < epsilon:
             break
         else:
-            xi += (-fi/df(xi))
-            
+            xi += (-fi / df(xi))
+
     print "nr_counter =", counter
     return xi
+
+
 # end of newton
 
 
 def func(x):
     return 1.0 * x * x - 2.0
+
+
 # end of func()
 # inspired by Scratch example
 
 
 def dfunc(x):
     return 2.0 * x
+
+
 # end of dfunc()
 # for later use
 
@@ -85,13 +96,13 @@ if "__main__" == __name__:
     print "x_seq =", x_seq
     print "f(x_seq) =", func(x_seq)
 
-    x_bis = bisection (func, 0.01, 2.0)
+    x_bis = bisection(func, 0.01, 2.0)
     print "x_bis =", x_bis
     print "f(x_bis) =", func(x_bis)
 
-    x_nr = newton (func, dfunc, 2.0)
+    x_nr = newton(func, dfunc, 2.0)
     print "x_nr =", x_nr
     print "f(x_nr) =", func(x_nr)
 
     print "error   seq         bis        nr"
-    print "        %7g %7g %7g" % ( abs(2.0**0.5 - x_seq), abs(2.0**0.5 - x_bis), abs(2.0**0.5 - x_nr))
+    print "        %7g %7g %7g" % (abs(2.0 ** 0.5 - x_seq), abs(2.0 ** 0.5 - x_bis), abs(2.0 ** 0.5 - x_nr))

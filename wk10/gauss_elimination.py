@@ -1,6 +1,7 @@
 # -*- coding: cp949 -*-
-import linear_algebra as la
 from pprint import pprint
+
+import linear_algebra as la
 
 
 def gauss_elimination(A, b):

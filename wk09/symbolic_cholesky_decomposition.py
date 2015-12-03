@@ -1,5 +1,6 @@
-import sympy as sp
 from pprint import pprint
+
+import sympy as sp
 
 
 def main():

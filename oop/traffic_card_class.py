@@ -13,6 +13,7 @@ class TrafficCardClass(object):
     def check(self):
         return self.balance
 
+
 print "__name__ in traffic_card_class.py =", __name__
 if "__main__" == __name__:
     # do not run below if this file is being imported
