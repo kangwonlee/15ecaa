@@ -256,7 +256,7 @@ def general_eigenproblem_symmetric(A, B):
 
     :param A: n x n matrix
     :param B: n x n matrix
-    :return W: n x n eigenvalue matrix
+    :return w: 1 x n eigenvalue vector
     :return Z: n x n eigenvector matrix
     """
 
@@ -281,12 +281,18 @@ def general_eigenproblem_symmetric(A, B):
     del C[:]
     del C
 
+    # diagonal elements
+    w = [Wi[i] for i, Wi in enumerate(W)]
+
+    del W[:]
+    del W
+
     Z = la.multiply_matrix_matrix(LT_inv, Y)
 
     del Y[:]
     del Y
 
-    return W, Z
+    return w, Z
 
 
 if "__main__" == __name__:
