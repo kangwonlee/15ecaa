@@ -101,6 +101,30 @@ class TestEigenAnalysis(unittest.TestCase):
             for j_column in xrange(0, len(A)):
                 self.assertAlmostEqual(A[i_row][j_column], A_expected[i_row][j_column])
 
+    def test_general_eigenproblem_symmetric_00(self):
+        A = [[7100, -1100, -1000],
+             [-1100, 1100, 0],
+             [-1000, 0, 1000]]
+        B = [[10000., 0., 0.],
+             [0., 200., 0.],
+             [0., 0., 210.]]
+
+        W, Z = ea.general_eigenproblem_symmetric(A, B)
+
+        left = la.multiply_matrix_matrix(A, Z)
+        WB = la.multiply_matrix_matrix(W, B)
+        right = la.multiply_matrix_matrix(WB, Z)
+
+        del WB[:]
+        del WB
+
+        self.assertEqual(len(left), len(right))
+
+        for li, ri in zip(left, right):
+            self.assertEqual(len(li), len(ri))
+            for lij, rij in zip(li, ri):
+                self.assertAlmostEqual(lij, rij)
+
 
 if "__main__" == __name__:
     unittest.main()

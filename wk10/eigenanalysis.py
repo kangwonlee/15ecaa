@@ -3,6 +3,7 @@ import math
 from pprint import pprint
 
 import linear_algebra as la
+import gauss_jordan as gj
 
 
 def power_method(A, epsilon=1e-9):
@@ -231,6 +232,61 @@ def cholesky_decomposition(A):
         L.append(l_k)
 
     return L
+
+
+def general_eigenproblem_symmetric(A, B):
+    """
+    Solve Az = lambda Bz using Cholesky decomposition
+    Let
+        B = L LT
+    and
+        z = LT**(-1)y
+    then
+        A LT**(-1)y = lambda L LT LT**(-1)y = lambda L y
+    Mutiplying L**(-1) gives
+        L**(-1) A LT**(-1)y = lambda L**(-1) L y = lambda y
+    So let
+        C = L**(-1) A LT**(-1)
+    and find eigenvalues and eigenvectors of C.
+    Later
+        Z = LT**(-1)Y
+
+    ref: Susan Blackford, Generalized Symmetric Definite Eigenproblems, http://www.netlib.org/lapack/lug/node54.html,
+            1999 Oct 01 (accessed 2015 Nov 30).
+
+    :param A: n x n matrix
+    :param B: n x n matrix
+    :return W: n x n eigenvalue matrix
+    :return Z: n x n eigenvector matrix
+    """
+
+    L = cholesky_decomposition(B)
+    LT = zip(*L)
+
+    L_inv = gj.gauss_jordan(L)
+    LT_inv = gj.gauss_jordan(LT)
+
+    del L[:], LT[:]
+    del L, LT
+
+    L_inv_A = la.multiply_matrix_matrix(L_inv, A)
+
+    del L_inv[:]
+    del L_inv
+
+    C = la.multiply_matrix_matrix(L_inv_A, LT_inv)
+
+    W, Y = jacobi_method(C)
+
+    del C[:]
+    del C
+
+    Z = la.multiply_matrix_matrix(LT_inv, Y)
+
+    del Y[:]
+    del Y
+
+    return W, Z
 
 
 if "__main__" == __name__:
