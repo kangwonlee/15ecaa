@@ -184,11 +184,6 @@ def cholesky_decomposition(A):
     l_kk = ( A_kk - sum([l_kj ** 2 for j in xrange(0, k - 1)]) ) ** 0.5
     """
 
-    """
-    matrix multiplication
-
-    """
-
     L = [[0.0] * len(A)]
 
     # first row first column element of L matrix
