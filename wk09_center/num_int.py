@@ -25,7 +25,7 @@ def rect0(f, x0, x1, n=100):
     # generate list x
     # k = 0, 1, 2, ..., (n-1)
     # list of mid point of each rectangle
-    x = [x0 + deltaX * (0.5+k) for k in xrange(n)]
+    x = [x0 + deltaX * (0.5 + k) for k in xrange(n)]
 
     # integration result
     result = 0.0
@@ -43,6 +43,8 @@ def rect0(f, x0, x1, n=100):
 
     # return integration result
     return result
+
+
 # end of function rect0()
 
 
@@ -90,6 +92,8 @@ def trapezoid1(f, x0, x1, n=100):
 
     # return integration result
     return result
+
+
 # end of function trapezoid1()
 
 
@@ -124,7 +128,7 @@ def simpson2(f, x0, x1, n=100):
 
     # for each two-interval
     # k = 0, 2, 4, ..., (n-1)
-    for k in xrange(0, n, 2) :
+    for k in xrange(0, n, 2):
         # k+1-th x
         xk1 = xk + delta_x
         # k+1-th f(x)
@@ -136,7 +140,7 @@ def simpson2(f, x0, x1, n=100):
         fxk2 = f(xk2)
 
         # k-th area
-        F_k = (fxk + 4*fxk1 + fxk2) * (delta_x / 3.0)
+        F_k = (fxk + 4 * fxk1 + fxk2) * (delta_x / 3.0)
         # accumulate to integration result
         result += F_k
         xk = xk2
@@ -145,16 +149,22 @@ def simpson2(f, x0, x1, n=100):
 
     # return integration result
     return result
+
+
 # end of function simpson2()
 
 
 def func(x):
     return exp(x)
+
+
 # end of function func()
 
 
 def Func(x):
     return exp(x)
+
+
 # end of function Func()
 
 
@@ -187,7 +197,7 @@ if "__main__" == __name__:
     # exact
     n_plot = 100
     deltaX_plot = (float(x_end) - x_begin) / n_plot
-    x = [x_begin + k*deltaX_plot for k in xrange(n_plot)]
+    x = [x_begin + k * deltaX_plot for k in xrange(n_plot)]
     x += [x_end, x_end, x_begin]
     y = [func(x[k]) for k in xrange(n_plot)]
     y += [func(x_end), 0.0, 0.0]
@@ -197,22 +207,22 @@ if "__main__" == __name__:
     # rect0()
     n_plot = n_interval
     deltaX_plot = (float(x_end) - x_begin) / n_plot
-    x = [x_begin + k*deltaX_plot for k in xrange(n_plot)]
+    x = [x_begin + k * deltaX_plot for k in xrange(n_plot)]
     x += [x_end]
-    y = [func(x[k]+0.5*deltaX_plot) for k in xrange(n_plot)]
+    y = [func(x[k] + 0.5 * deltaX_plot) for k in xrange(n_plot)]
     y += [0]
 
-    bar(x, y, width=deltaX_plot, color='g', alpha = 0.3)
+    bar(x, y, width=deltaX_plot, color='g', alpha=0.3)
 
     # trapezoid1()
     n_plot = n_interval
     deltaX_plot = (float(x_end) - x_begin) / n_plot
-    x = [x_begin + k*deltaX_plot for k in xrange(n_plot)]
+    x = [x_begin + k * deltaX_plot for k in xrange(n_plot)]
     x += [x_end, x_end, x_begin]
     y = [func(x[k]) for k in xrange(n_plot)]
     y += [func(x_end), 0.0, 0.0]
 
-    fill(x, y, color='r', alpha = 0.2)
+    fill(x, y, color='r', alpha=0.2)
 
     xlim((x_begin, x_end))
     ylim((0.0, ylim()[1]))

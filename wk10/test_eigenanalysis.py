@@ -3,7 +3,6 @@ import unittest
 import eigenanalysis as ea
 import linear_algebra as la
 
-from pprint import pprint
 
 class TestEigenAnalysis(unittest.TestCase):
     def test_power_method(self):
@@ -23,7 +22,7 @@ class TestEigenAnalysis(unittest.TestCase):
              [-0.5, -2.0, -1.0],
              [-0.2, -1.0, -3.0]]
 
-        lamda1, x1 = ea.jacobi_method (A)
+        lamda1, x1 = ea.jacobi_method(A)
         self.assertEqual(len(A), len(lamda1))
         self.assertEqual(len(A[0]), len(lamda1[0]))
         self.assertEqual(len(A), len(x1))
@@ -37,7 +36,7 @@ class TestEigenAnalysis(unittest.TestCase):
 
             # off diagonal
             for i_row in xrange(len(A)):
-                self.assertAlmostEqual(Ax1[i_row][k_pivot],lambda_i * x1[i_row][k_pivot])
+                self.assertAlmostEqual(Ax1[i_row][k_pivot], lambda_i * x1[i_row][k_pivot])
 
         # check VT A V = Lambda
         x1TAx1 = la.multiply_matrix_matrix(zip(*x1), Ax1)
@@ -50,56 +49,75 @@ class TestEigenAnalysis(unittest.TestCase):
                 self.assertAlmostEqual(x1TAx1[i_row][j_column], 0.0)
 
     def test_cholesky_decomposition_00(self):
-        A = [[4.0, 0.5, 0.2],
-             [0.5, 2.0, 1.0],
-             [0.2, 1.0, 3.0]]
+        A = [[16.0, 12.0,  4.0,],
+             [12.0, 34.0, 13.0,],
+             [ 4.0, 13.0, 41.0,]]
 
-        L_expected = [[2.0, 0.0, 0.0],
-                      [0.25, 1.3919410907075056, 0.0],
-                      [0.1, 0.700460677904422, 1.580934799006486]]
+        L_expected = ((4, 0, 0),
+                      (3, 5, 0),
+                      (1, 2, 6),)
 
         L = ea.cholesky_decomposition(A)
-        print("Cholesky Decomposition:")
-        pprint(L)
 
         A_expected = la.multiply_matrix_matrix(L, zip(*L))
-        print("L LT:")
-        pprint(A_expected)
 
         # check size
         self.assertEqual(len(A), len(L))
 
+        # check row
         for i_row in xrange(0, len(A)):
             self.assertEqual(len(A), len(L[i_row]))
             for j_column in xrange(0, len(A)):
                 self.assertAlmostEqual(A[i_row][j_column], A_expected[i_row][j_column])
+                self.assertAlmostEqual(L_expected[i_row][j_column], L[i_row][j_column])
 
     def test_cholesky_decomposition_01(self):
-        A = [[64.0,  32.0,   2.0,   1.0],
-             [32.0, 128.0,  16.0,   4.0],
-             [ 2.0,  16.0, 256.0,   8.0],
-             [ 1.0,   4.0,   8.0, 512.0]]
+        L_expected = [[10.0, 0.0, 0.0, 0.0],
+                      [4.0, 9.0, 0.0, 0.0],
+                      [3.0, 5.0, 8.0, 0.0],
+                      [1.0, 2.0, 6.0, 7.0]]
 
-        L_expected = [[8.0, 0.0, 0.0, 0.0],
-                      [4.0, 10.583005244258363, 0.0, 0.0],
-                      [0.25, 1.417366773784602, 15.935136379352748, 0.0],
-                      [0.125, 0.3307189138830738, 0.47065803652096727, 22.619758641786127]]
+        A = la.multiply_matrix_matrix(L_expected, zip(*L_expected))
 
         L = ea.cholesky_decomposition(A)
-        print("Cholesky Decomposition:")
-        pprint(L)
 
         A_expected = la.multiply_matrix_matrix(L, zip(*L))
-        print("L LT:")
-        pprint(A_expected)
 
         # check size
         self.assertEqual(len(A), len(L))
 
+        # check row
         for i_row in xrange(0, len(A)):
             self.assertEqual(len(A), len(L[i_row]))
             for j_column in xrange(0, len(A)):
                 self.assertAlmostEqual(A[i_row][j_column], A_expected[i_row][j_column])
+                self.assertAlmostEqual(L_expected[i_row][j_column], L[i_row][j_column])
+
+    def test_general_eigenproblem_symmetric_00(self):
+        """
+        Az = labmda Bz
+        """
+        A = [[7100, -1100, -1000],
+             [-1100, 1100, 0],
+             [-1000, 0, 1000]]
+        B = [[10000., 0., 0.],
+             [0., 200., 0.],
+             [0., 0., 210.]]
+
+        w, Z = ea.general_eigenproblem_symmetric(A, B)
+
+        ZT = zip(*Z)
+
+        for wi, zi in zip(w, ZT):
+
+            left = la.multiply_matrix_vector(A, zi)
+            Bz = la.multiply_matrix_vector(B, zi)
+
+            self.assertEqual(len(left), len(Bz))
+
+            for li, ri in zip(left, Bz):
+                self.assertAlmostEqual(li, wi * ri)
+
 
 if "__main__" == __name__:
     unittest.main()

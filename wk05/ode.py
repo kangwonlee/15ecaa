@@ -1,4 +1,4 @@
-from math import sin, cos, atan, pi, sqrt, exp
+from math import cos, atan, sqrt, exp
 
 
 def fwd_euler(f, x0, ti, te, deltaT):
@@ -21,7 +21,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     listX: 2-dimensional list of state x at each time step
     """
     # number of time steps
-    mTimeStep = int((te-ti) * 1.0 / deltaT)
+    mTimeStep = int((te - ti) * 1.0 / deltaT)
 
     # number of states == length of initial state vector
     nStates = len(x0)
@@ -32,7 +32,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
     # tuple of time step
     #   because time step will be constant,
     #   define as a tuple instead of a list
-    listT = tuple(([ti + deltaT*i for i in listK]))
+    listT = tuple(([ti + deltaT * i for i in listK]))
     # if ti, te, deltaT are given as 0.0, 1.0, 0.1
     #   then mTimeStep wil be 10
     #   and listT will be [0:0.1:0.9];
@@ -40,7 +40,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
 
     # pre-allocate memory space
     #   to store state vector of each time step
-    listX = [tuple(x0)]     # init x buffer
+    listX = [tuple(x0)]  # init x buffer
 
     # allocation loop
     #   at k = 0, x is x0
@@ -59,12 +59,12 @@ def fwd_euler(f, x0, ti, te, deltaT):
         sk = f(xk, listT[k])
 
         # next step x
-        xk1 = listX[k+1]
+        xk1 = listX[k + 1]
 
         # state loop
         for i in xrange(nStates):
             # apply forward Euler method
-            xk1[i] = xk[i] + sk[i]*deltaT
+            xk1[i] = xk[i] + sk[i] * deltaT
         # end state loop at time step k
 
         # update xk to next step
@@ -72,6 +72,8 @@ def fwd_euler(f, x0, ti, te, deltaT):
     # end time step loop
 
     return listT, listX
+
+
 # end function fwd_euler()
 
 
@@ -110,7 +112,7 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
     >>> print lX
     [[0], [0.0077254248593736849], [0.029382595321196046], [0.062135518400607666], [0.10209697840236187], [0.14470734296725662]]
     """
-    x_list = [tuple(x_init)]    # init x buffer
+    x_list = [tuple(x_init)]  # init x buffer
     t_list = [t_start]
 
     tk = t_start
@@ -125,13 +127,13 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
 
         # step 1 : same as forward Euler
         sk = f(xk, tk)
-        xk1_p = [(x + sk[i]*delta_t) for i, x in enumerate(xk)]
+        xk1_p = [(x + sk[i] * delta_t) for i, x in enumerate(xk)]
 
         # step 2 : calculate slope at (xk + f(xk, tk) * delta_t, tk + delta_t)
         sk1_p = f(xk1_p, tk1)
 
         # step 3 : average of f(xk, tk) and f(xk + f(xk, tk) * delta_t, tk + delta_t)
-        sk_c = [(0.5*(s+sk1_p[i])) for (i, s) in enumerate(sk)]
+        sk_c = [(0.5 * (s + sk1_p[i])) for (i, s) in enumerate(sk)]
 
         # step 4 : go forward using averaged slope
         xk1_c = [(x + sk_c[i] * delta_t) for i, x in enumerate(xk)]
@@ -148,7 +150,7 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
     return t_list, x_list
 
 
-def runge_while (f, x_init, t_init, t_end, delta_t):
+def runge_while(f, x_init, t_init, t_end, delta_t):
     """
     Runge Method Solver
     Usage: listT, listX = runge_while(f, x_init, t_init, t_end, delta_t)
@@ -184,11 +186,11 @@ def runge_while (f, x_init, t_init, t_end, delta_t):
     [[0], [0.0076608912592762328], [0.029394418941171337], [0.062350250267466614], [0.10261479161461737], [0.14559255884915154]]
     """
 
-    listX = [x_init]    # init x buffer
+    listX = [x_init]  # init x buffer
     listT = [t_init]
 
     deltaThalf = 0.5 * delta_t
-    deltaTsixth = delta_t/6.0
+    deltaTsixth = delta_t / 6.0
 
     tk = t_init
     tk_half = tk + 0.5 * delta_t
@@ -205,11 +207,11 @@ def runge_while (f, x_init, t_init, t_end, delta_t):
         k1 = f(xk, tk)
 
         # step 2
-        xk1_p = [(xk[i] + k*deltaThalf) for (i, k) in enumerate(k1)]
+        xk1_p = [(xk[i] + k * deltaThalf) for (i, k) in enumerate(k1)]
         k2 = f(xk1_p, tk_half)
 
         # step 3
-        xk2_p = [(xk[i] + k*deltaThalf) for (i, k) in enumerate(k2)]
+        xk2_p = [(xk[i] + k * deltaThalf) for (i, k) in enumerate(k2)]
         k3 = f(xk2_p, tk_half)
 
         # step 4
@@ -217,7 +219,7 @@ def runge_while (f, x_init, t_init, t_end, delta_t):
         k4 = f(xk3_p, tk1)
 
         # step 5
-        xk1_c = [x + deltaTsixth*(k1[i] + 2*(k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
+        xk1_c = [x + deltaTsixth * (k1[i] + 2 * (k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
 
         listX.append(xk1_c)
         tk += delta_t
@@ -259,9 +261,11 @@ def func(xk, tk):
     y1, y2 = xk[0], xk[1]
 
     y1dot = y2
-    y2dot = (u - (k*y1 + c*y2))/m
+    y2dot = (u - (k * y1 + c * y2)) / m
 
     return (y1dot, y2dot)
+
+
 # end of function func()
 
 
@@ -274,9 +278,9 @@ def exact(t):
     # step input
     u = 1
     # natural frequency (rad/sec)
-    wn = sqrt(k/m)
+    wn = sqrt(k / m)
     # damping ratio
-    zeta = c/(2.0 * m * wn)
+    zeta = c / (2.0 * m * wn)
 
     s = sqrt(1.0 - zeta * zeta)
     s1 = 1.0 / s
@@ -286,9 +290,11 @@ def exact(t):
     # phase (rad)
     phi = atan(zeta * s)
 
-    y1 = (u/k) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd*t-phi))
+    y1 = (u / k) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
 
     return (y1)
+
+
 # end of function exact()
 
 
@@ -310,9 +316,10 @@ if "__main__" == __name__:
     vXexact = tuple([exact(tk) for tk in vT])
 
     import pylab
+
     pylab.plot(vT, vX, 'b', label='fwd Euler(0.01)')
     pylab.plot(vT01, vX01, 'g', label='fwd Euler(0.001)')
-    pylab.plot(t_list_mod_euler, x_list_mod_euler, '*',label='Modified Euler(0.01)')
+    pylab.plot(t_list_mod_euler, x_list_mod_euler, '*', label='Modified Euler(0.01)')
     pylab.plot(t_list_runge, x_list_runge, 'x-', label='Runge(0.01)')
     pylab.plot(vT, vXexact, 'ko-', label='exact')
     pylab.legend(loc=0)
@@ -326,7 +333,7 @@ if "__main__" == __name__:
     p_list_mod_euler, v_list_mod_euler = zip(*x_list_mod_euler)
     p_list_runge, v_list_runge = zip(*x_list_runge)
 
-    pylab.plot(vP,vV, label='fwd Euler (0.01)')
+    pylab.plot(vP, vV, label='fwd Euler (0.01)')
     pylab.plot(vP01, vV01, label='fwd Euler(0.001)')
     pylab.plot(p_list_mod_euler, v_list_mod_euler, label='Modified Euler(0.01)')
     pylab.plot(p_list_runge, v_list_runge, label='Runge(0.01)')

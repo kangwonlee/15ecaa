@@ -3,6 +3,7 @@ import math
 from pprint import pprint
 
 import linear_algebra as la
+import gauss_jordan as gj
 
 
 def power_method(A, epsilon=1e-9):
@@ -92,7 +93,7 @@ def calc_theta(ars, arr, ass):
     return theta_rad
 
 
-def jacobi_method(A, epsilon = 1e-9, bVerbose=False):
+def jacobi_method(A, epsilon=1e-9, bVerbose=False):
     n = len(A)
 
     A0 = alloc_mat(n, n)
@@ -138,11 +139,11 @@ def jacobi_method(A, epsilon = 1e-9, bVerbose=False):
 
             xkr = X[k][r]
             xks = X[k][s]
-            X[k][r] = xkr * cos + xks *sin
-            X[k][s] = xks * cos - xkr *sin
+            X[k][r] = xkr * cos + xks * sin
+            X[k][s] = xks * cos - xkr * sin
 
-        A0[r][r] = arr * cos*cos + 2.0 * ars * sin * cos + ass * sin*sin
-        A0[s][s] = arr * sin*sin - 2.0 * ars * sin * cos + ass * cos*cos
+        A0[r][r] = arr * cos * cos + 2.0 * ars * sin * cos + ass * sin * sin
+        A0[s][s] = arr * sin * sin - 2.0 * ars * sin * cos + ass * cos * cos
         A0[r][s] = A0[s][r] = 0.0
         if bVerbose:
             print "A0"
@@ -160,7 +161,8 @@ def cholesky_decomposition(A):
     """
     ref:
     1. carstart, Cholesky decomposition, http://carstart.tistory.com/155, 2010 Nov 16 (accessed 2015 Nov 30).
-    2. Susan Blackford, Generalized Symmetric Definite Eigenproblems, http://www.netlib.org/lapack/lug/node54.html, 1999 Oct 01 (accessed 2015 Nov 30).
+    2. Susan Blackford, Generalized Symmetric Definite Eigenproblems, http://www.netlib.org/lapack/lug/node54.html,
+        1999 Oct 01 (accessed 2015 Nov 30).
     :param A:
     Symmetric Matrix
     :return:
@@ -182,36 +184,110 @@ def cholesky_decomposition(A):
     l_kk = ( A_kk - sum([l_kj ** 2 for j in xrange(0, k - 1)]) ) ** 0.5
     """
 
-    """
-    matrix multiplication
-
-    """
-
     L = [[0.0] * len(A)]
 
+    # first row first column element of L matrix
     L[0][0] = A[0][0] ** 0.5
+    # inverse of L[0][0]
     l_00_i = 1.0 / L[0][0]
 
     # row loop
     for k in xrange(1, len(A)):
+        # space for k-th row of L matrix
         l_k = [0.0] * len(A)
 
+        # first column of k-th row of L matrix
         l_k[0] = A[k][0] * l_00_i
+
+        # initialized square sum of k-th row
+        #   to calculate diagonal element
         square_sum = l_k[0] ** 2
-        # column loop before diagonal
+        # column loop before diagonal element
+        #   i will have values 1 ~ (k-1)
         for i in xrange(1, k):
-            l_ki_l00 = A[k][i]
-            # dummy index
+            # initialize L[k][i]*L[i][i] with A[k][i]
+            #   later divide with L[i][i] to get L[k][i]
+            l_ki_l_ii = A[k][i]
+            # dummy index column loop
+            #  j will have values 0 ~ (i-1)
+            #   inverse of matrix multiplication
             for j in xrange(i):
-                l_ki_l00 += -L[i][j] * l_k[j]
-            l_k[i] = l_ki_l00 / L[i][i]
+                l_ki_l_ii += -L[i][j] * l_k[j]
+            # divide with L[i][i] to get L[k][i]
+            l_k[i] = l_ki_l_ii / L[i][i]
+
+            # accumulate square sum of L[k][i]
+            #   to calculate diagonal element
             square_sum += l_k[i] ** 2
 
+        # diagonal element
         l_k[k] = (A[k][k] - square_sum) ** 0.5
 
+        # add k-th row to L
         L.append(l_k)
 
     return L
+
+
+def general_eigenproblem_symmetric(A, B):
+    """
+    Solve Az = lambda Bz using Cholesky decomposition
+    Let
+        B = L LT
+    and
+        z = LT**(-1)y
+    then
+        A LT**(-1)y = lambda L LT LT**(-1)y = lambda L y
+    Mutiplying L**(-1) gives
+        L**(-1) A LT**(-1)y = lambda L**(-1) L y = lambda y
+    So let
+        C = L**(-1) A LT**(-1)
+    and find eigenvalues and eigenvectors of C.
+    Later
+        Z = LT**(-1)Y
+
+    ref: Susan Blackford, Generalized Symmetric Definite Eigenproblems, http://www.netlib.org/lapack/lug/node54.html,
+            1999 Oct 01 (accessed 2015 Nov 30).
+
+    :param A: n x n matrix
+    :param B: n x n matrix
+    :return w: 1 x n eigenvalue vector
+    :return Z: n x n eigenvector matrix
+    """
+
+    L = cholesky_decomposition(B)
+    LT = zip(*L)
+
+    L_inv = gj.gauss_jordan(L)
+    LT_inv = gj.gauss_jordan(LT)
+
+    del L[:], LT[:]
+    del L, LT
+
+    L_inv_A = la.multiply_matrix_matrix(L_inv, A)
+
+    del L_inv[:]
+    del L_inv
+
+    C = la.multiply_matrix_matrix(L_inv_A, LT_inv)
+
+    W, Y = jacobi_method(C)
+
+    del C[:]
+    del C
+
+    # diagonal elements
+    w = [Wi[i] for i, Wi in enumerate(W)]
+
+    del W[:]
+    del W
+
+    Z = la.multiply_matrix_matrix(LT_inv, Y)
+
+    del Y[:]
+    del Y
+
+    return w, Z
 
 
 if "__main__" == __name__:

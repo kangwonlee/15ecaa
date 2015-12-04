@@ -1,4 +1,6 @@
 import traffic_card_class as tcc
+
+
 # because name is traffic_card_class too long, use as "tcc" instead
 
 
@@ -12,6 +14,7 @@ class NoOverChargeCard(tcc.TrafficCardClass):
             self.balance = 0
         else:
             self.balance -= amount
+
 
 print "__name__ in over_charge_protected_traffic_card.py =", __name__
 if "__main__" == __name__:
