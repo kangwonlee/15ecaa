@@ -157,3 +157,7 @@ forced_vib_eq = m * x(t).diff(t, t) + c * x(t).diff(t) + k * x(t) - sin(t)
 result = dsolve(forced_vib_eq)
 print("forced vibration result:")
 print(result)
+
+# ref: Brendan Wood, MRocklin, Amelio Vazquez-Reina, Automatically populating matrix elements in SymPy, http://stackoverflow.com/questions/6877061/automatically-populating-matrix-elements-in-sympy 2013 Dec 17 (Accessed 2016 01 01).
+M = MatrixSymbol('M', 3, 2)
+print('Matrix(M) =', Matrix(M))
