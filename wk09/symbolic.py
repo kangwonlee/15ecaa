@@ -1,4 +1,6 @@
 # -*- coding: cp949 -*-
+from pprint import pprint
+
 from sympy import *
 
 print('''2.10.1.1''')
@@ -160,4 +162,14 @@ print(result)
 
 # ref: Brendan Wood, MRocklin, Amelio Vazquez-Reina, Automatically populating matrix elements in SymPy, http://stackoverflow.com/questions/6877061/automatically-populating-matrix-elements-in-sympy 2013 Dec 17 (Accessed 2016 01 01).
 M = MatrixSymbol('M', 3, 2)
-print('Matrix(M) =', Matrix(M))
+print('Matrix(M) =')
+pprint(Matrix(M))
+
+
+def matrix(s, n, m):
+    return Matrix(n, m, lambda i, j: var('%s_%d%d' % (s, i + 1, j + 1)))
+
+
+K = matrix('K', 4, 4)
+print('K =')
+pprint(K)
