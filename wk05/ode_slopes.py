@@ -137,7 +137,7 @@ if "__main__" == __name__:
 
         time_list = np.arange(0, 20, .01)
         y_exact_list = [exact_2states(t) for t in time_list]
-        y_exact_list, y_dot_exact_list = zip(*y_exact_list)
+        y_exact_list, y_dot_exact_list = list(zip(*y_exact_list))
 
         y_limit = 5
 

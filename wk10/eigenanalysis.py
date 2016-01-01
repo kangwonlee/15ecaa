@@ -35,7 +35,7 @@ def power_method(A, epsilon=1e-9):
         # 위에서 찾은 값으로 yk1 모든 요소를 나누어서 zk 벡터에 저장
         # "위에서 찾은 값으로 yk1 을 normalize 한다"
         # zk 의 가장 큰 요소는 1이 됨
-        for i in xrange(n):
+        for i in range(n):
             zk[i] = yk1[i] / lambda_k1
 
         # 이전 단계의 가장 큰 요소와 비교
@@ -47,7 +47,7 @@ def power_method(A, epsilon=1e-9):
         del yk1
         counter += 1
 
-    print("power method counter = %d" % counter)
+    print(("power method counter = %d" % counter))
 
     return lambda_k1, zk
 
@@ -58,14 +58,14 @@ def alloc_vec(n):
 
 def alloc_mat(m, n):
     result = alloc_vec(m)
-    for k in xrange(m):
+    for k in range(m):
         result[k] = alloc_vec(n)
     return result
 
 
 def identity(n_row):
     identity_matrix = alloc_mat(n_row, n_row)
-    for iPivot in xrange(n_row):
+    for iPivot in range(n_row):
         identity_matrix[iPivot][iPivot] = 1.0
     return identity_matrix
 
@@ -76,8 +76,8 @@ def find_r_s(A0, n):
     ars = A0[r][s]
     abs_ars = abs(ars)
 
-    for i in xrange(n - 1):
-        for j in xrange(i + 1, n):
+    for i in range(n - 1):
+        for j in range(i + 1, n):
             aij = abs(A0[i][j])
             if aij > abs_ars:
                 r = i
@@ -97,8 +97,8 @@ def jacobi_method(A, epsilon=1e-9, bVerbose=False):
     n = len(A)
 
     A0 = alloc_mat(n, n)
-    for i in xrange(n):
-        for j in xrange(n):
+    for i in range(n):
+        for j in range(n):
             A0[i][j] = A[i][j]
 
     X = identity(n)
@@ -111,19 +111,19 @@ def jacobi_method(A, epsilon=1e-9, bVerbose=False):
         if abs_ars < epsilon:
             break
         if bVerbose:
-            print "ars =", ars
-            print "r, s =", r, s
+            print("ars =", ars)
+            print("r, s =", r, s)
 
         arr = A0[r][r]
         ass = A0[s][s]
 
         theta_rad = calc_theta(ars, arr, ass)
         if bVerbose:
-            print "theta =", theta_rad * 180 / math.pi, "(deg)"
+            print("theta =", theta_rad * 180 / math.pi, "(deg)")
         cos = math.cos(theta_rad)
         sin = math.sin(theta_rad)
 
-        for k in xrange(n):
+        for k in range(n):
             if k == r:
                 pass
             elif k == s:
@@ -146,13 +146,13 @@ def jacobi_method(A, epsilon=1e-9, bVerbose=False):
         A0[s][s] = arr * sin * sin - 2.0 * ars * sin * cos + ass * cos * cos
         A0[r][s] = A0[s][r] = 0.0
         if bVerbose:
-            print "A0"
+            print("A0")
             pprint(A0)
-            print "X"
+            print("X")
             pprint(X)
         counter += 1
 
-    print("Jacobi method counter = %d" % counter)
+    print(("Jacobi method counter = %d" % counter))
 
     return A0, X
 
@@ -192,7 +192,7 @@ def cholesky_decomposition(A):
     l_00_i = 1.0 / L[0][0]
 
     # row loop
-    for k in xrange(1, len(A)):
+    for k in range(1, len(A)):
         # space for k-th row of L matrix
         l_k = [0.0] * len(A)
 
@@ -204,14 +204,14 @@ def cholesky_decomposition(A):
         square_sum = l_k[0] ** 2
         # column loop before diagonal element
         #   i will have values 1 ~ (k-1)
-        for i in xrange(1, k):
+        for i in range(1, k):
             # initialize L[k][i]*L[i][i] with A[k][i]
             #   later divide with L[i][i] to get L[k][i]
             l_ki_l_ii = A[k][i]
             # dummy index column loop
             #  j will have values 0 ~ (i-1)
             #   inverse of matrix multiplication
-            for j in xrange(i):
+            for j in range(i):
                 l_ki_l_ii += -L[i][j] * l_k[j]
             # divide with L[i][i] to get L[k][i]
             l_k[i] = l_ki_l_ii / L[i][i]
@@ -256,7 +256,7 @@ def general_eigenproblem_symmetric(A, B):
     """
 
     L = cholesky_decomposition(B)
-    LT = zip(*L)
+    LT = list(zip(*L))
 
     L_inv = gj.gauss_jordan(L)
     LT_inv = gj.gauss_jordan(LT)
@@ -295,10 +295,10 @@ if "__main__" == __name__:
          [1.0, 3.0]]
 
     lamda1, x1 = power_method(A)
-    print "lambda =", lamda1
-    print "x =", x1
+    print("lambda =", lamda1)
+    print("x =", x1)
 
     lamda, x = jacobi_method(A)
-    print "lambda =", lamda
-    print "x ="
+    print("lambda =", lamda)
+    print("x =")
     pprint(x)

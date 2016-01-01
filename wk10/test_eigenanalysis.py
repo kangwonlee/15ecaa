@@ -30,22 +30,22 @@ class TestEigenAnalysis(unittest.TestCase):
 
         Ax1 = la.multiply_matrix_matrix(A, x1)
         # check A V = Lambda V
-        for k_pivot in xrange(len(A)):
+        for k_pivot in range(len(A)):
             # diagonal term
             lambda_i = lamda1[k_pivot][k_pivot]
 
             # off diagonal
-            for i_row in xrange(len(A)):
+            for i_row in range(len(A)):
                 self.assertAlmostEqual(Ax1[i_row][k_pivot], lambda_i * x1[i_row][k_pivot])
 
         # check VT A V = Lambda
-        x1TAx1 = la.multiply_matrix_matrix(zip(*x1), Ax1)
+        x1TAx1 = la.multiply_matrix_matrix(list(zip(*x1)), Ax1)
 
-        for i_row in xrange(0, len(A) - 1):
+        for i_row in range(0, len(A) - 1):
             # check diagonal
             self.assertAlmostEqual(x1TAx1[i_row][i_row], lamda1[i_row][i_row])
             # check off-diagonal
-            for j_column in xrange(i_row + 1, len(A)):
+            for j_column in range(i_row + 1, len(A)):
                 self.assertAlmostEqual(x1TAx1[i_row][j_column], 0.0)
 
     def test_cholesky_decomposition_00(self):
@@ -59,15 +59,15 @@ class TestEigenAnalysis(unittest.TestCase):
 
         L = ea.cholesky_decomposition(A)
 
-        A_expected = la.multiply_matrix_matrix(L, zip(*L))
+        A_expected = la.multiply_matrix_matrix(L, list(zip(*L)))
 
         # check size
         self.assertEqual(len(A), len(L))
 
         # check row
-        for i_row in xrange(0, len(A)):
+        for i_row in range(0, len(A)):
             self.assertEqual(len(A), len(L[i_row]))
-            for j_column in xrange(0, len(A)):
+            for j_column in range(0, len(A)):
                 self.assertAlmostEqual(A[i_row][j_column], A_expected[i_row][j_column])
                 self.assertAlmostEqual(L_expected[i_row][j_column], L[i_row][j_column])
 
@@ -77,19 +77,19 @@ class TestEigenAnalysis(unittest.TestCase):
                       [3.0, 5.0, 8.0, 0.0],
                       [1.0, 2.0, 6.0, 7.0]]
 
-        A = la.multiply_matrix_matrix(L_expected, zip(*L_expected))
+        A = la.multiply_matrix_matrix(L_expected, list(zip(*L_expected)))
 
         L = ea.cholesky_decomposition(A)
 
-        A_expected = la.multiply_matrix_matrix(L, zip(*L))
+        A_expected = la.multiply_matrix_matrix(L, list(zip(*L)))
 
         # check size
         self.assertEqual(len(A), len(L))
 
         # check row
-        for i_row in xrange(0, len(A)):
+        for i_row in range(0, len(A)):
             self.assertEqual(len(A), len(L[i_row]))
-            for j_column in xrange(0, len(A)):
+            for j_column in range(0, len(A)):
                 self.assertAlmostEqual(A[i_row][j_column], A_expected[i_row][j_column])
                 self.assertAlmostEqual(L_expected[i_row][j_column], L[i_row][j_column])
 
@@ -106,7 +106,7 @@ class TestEigenAnalysis(unittest.TestCase):
 
         w, Z = ea.general_eigenproblem_symmetric(A, B)
 
-        ZT = zip(*Z)
+        ZT = list(zip(*Z))
 
         for wi, zi in zip(w, ZT):
 

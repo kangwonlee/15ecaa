@@ -13,9 +13,9 @@ def main():
 
     center = moment_first / area
 
-    print "area =", area
-    print "moment =", moment_first
-    print("center =", center)
+    print("area =", area)
+    print("moment =", moment_first)
+    print(("center =", center))
 
     y_list = pylab.arange(y_min, y_max, 1e-6)
     w_list = [f(y) for y in y_list]

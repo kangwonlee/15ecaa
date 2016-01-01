@@ -15,7 +15,7 @@ def sequential(f, x0):
             break
         xi += delta_x
         counter += 1
-    print "seq_counter =", counter
+    print("seq_counter =", counter)
     return xi
 
 
@@ -37,13 +37,13 @@ def bisection(f, xl, xh):
 
         counter += 1
 
-        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (
-        xl, f(xl), xn, f(xn), xh, f(xh), abs(xh - xl))
+        print("xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (
+        xl, f(xl), xn, f(xn), xh, f(xh), abs(xh - xl)))
 
         if abs(xh - xl) < epsilon:
             break
 
-    print "bis_counter =", counter
+    print("bis_counter =", counter)
     return xn
 
 
@@ -61,7 +61,7 @@ def newton(f, df, x0):
         else:
             xi += (-fi / df(xi))
 
-    print "nr_counter =", counter
+    print("nr_counter =", counter)
     return xi
 
 
@@ -93,16 +93,16 @@ if "__main__" == __name__:
 
     # call sequential method
     x_seq = sequential(func, x0)
-    print "x_seq =", x_seq
-    print "f(x_seq) =", func(x_seq)
+    print("x_seq =", x_seq)
+    print("f(x_seq) =", func(x_seq))
 
     x_bis = bisection(func, 0.01, 2.0)
-    print "x_bis =", x_bis
-    print "f(x_bis) =", func(x_bis)
+    print("x_bis =", x_bis)
+    print("f(x_bis) =", func(x_bis))
 
     x_nr = newton(func, dfunc, 2.0)
-    print "x_nr =", x_nr
-    print "f(x_nr) =", func(x_nr)
+    print("x_nr =", x_nr)
+    print("f(x_nr) =", func(x_nr))
 
-    print "error   seq         bis        nr"
-    print "        %7g %7g %7g" % (abs(2.0 ** 0.5 - x_seq), abs(2.0 ** 0.5 - x_bis), abs(2.0 ** 0.5 - x_nr))
+    print("error   seq         bis        nr")
+    print("        %7g %7g %7g" % (abs(2.0 ** 0.5 - x_seq), abs(2.0 ** 0.5 - x_bis), abs(2.0 ** 0.5 - x_nr)))

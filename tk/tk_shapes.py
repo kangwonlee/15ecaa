@@ -13,7 +13,7 @@ last modified: January 2011
 website: www.zetcode.com
 """
 
-from Tkinter import Tk, Canvas, Frame, BOTH
+from tkinter import Tk, Canvas, Frame, BOTH
 
 
 class Example(Frame):

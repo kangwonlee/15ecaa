@@ -62,7 +62,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
         xk1 = listX[k + 1]
 
         # state loop
-        for i in xrange(nStates):
+        for i in range(nStates):
             # apply forward Euler method
             xk1[i] = xk[i] + sk[i] * deltaT
         # end state loop at time step k
@@ -328,10 +328,10 @@ if "__main__" == __name__:
     pylab.xlabel('t')
     pylab.show()
 
-    vP, vV = zip(*vX)
-    vP01, vV01 = zip(*vX)
-    p_list_mod_euler, v_list_mod_euler = zip(*x_list_mod_euler)
-    p_list_runge, v_list_runge = zip(*x_list_runge)
+    vP, vV = list(zip(*vX))
+    vP01, vV01 = list(zip(*vX))
+    p_list_mod_euler, v_list_mod_euler = list(zip(*x_list_mod_euler))
+    p_list_runge, v_list_runge = list(zip(*x_list_runge))
 
     pylab.plot(vP, vV, label='fwd Euler (0.01)')
     pylab.plot(vP01, vV01, label='fwd Euler(0.001)')

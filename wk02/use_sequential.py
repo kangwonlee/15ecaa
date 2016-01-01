@@ -1,7 +1,7 @@
 # -*- coding: cp949 -*-
 import root_finding
 
-print dir(root_finding)
+print(dir(root_finding))
 
 
 def func(x):
@@ -12,4 +12,4 @@ def func(x):
 # inspired by Scratch example
 
 
-print root_finding.sequential(func, 0.01)
+print(root_finding.sequential(func, 0.01))

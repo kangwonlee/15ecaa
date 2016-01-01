@@ -17,12 +17,12 @@ class Experiment(object):
 def main():
     experiment = Experiment()
 
-    experiment.force_N = float(raw_input("Enter force (N):"))
+    experiment.force_N = float(input("Enter force (N):"))
 
     x_l_init = root_finding.epsilon * 2
     x_h_init = 1.0
     result = root_finding.bisection(experiment.problem_to_solve, x_l_init, x_h_init, 1e-9)
-    print "result =", result
+    print("result =", result)
 
 
 def circular_section_stress(r_m, force_N):

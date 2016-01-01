@@ -1,6 +1,7 @@
 from pprint import pprint
 
 import sympy as sp
+from functools import reduce
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
 
     print(eq)
 
-    solution = sp.solve(eq, reduce(lambda x, y: x + y, [[L[i, j] for j in xrange(3)] for i in xrange(3)]))
+    solution = sp.solve(eq, reduce(lambda x, y: x + y, [[L[i, j] for j in range(3)] for i in range(3)]))
     simplified_solution = sp.simplify(solution)
 
     print("solution")
@@ -34,8 +35,8 @@ def main():
 
 
 def make_lower_triangle(M):
-    for i in xrange(2):
-        for j in xrange(i + 1, 3):
+    for i in range(2):
+        for j in range(i + 1, 3):
             M[i, j] = 0
 
 
