@@ -3,6 +3,13 @@ import random
 random.seed()
 
 import pylab
+import os
+import sys
+
+sys.path.append(os.path.join('..', 'wk10'))
+
+import linear_algebra as la
+import gauss_jordan as gj
 
 
 def normal_samples(n, mu = 0.0, sigma = 0.1):
@@ -19,7 +26,31 @@ def normal_samples(n, mu = 0.0, sigma = 0.1):
 def main():
     x_list, y_contaminated, y_list = generate_data()
 
+    a = pseudo_inverse(x_list, y_contaminated)
+
+    print('a =', a)
+
     generate_plot(x_list, y_contaminated, y_list)
+
+
+def pseudo_inverse(x_list, y_contaminated):
+    """
+    # y = x a
+    # xT y =  xT x a
+    # inv(xT x )xT y =  inv(xT x ) xT x a
+    :param x_list:
+    :param y_contaminated:
+    :return:
+    """
+    x_matrix_transpose = [x_list,
+                          [1.0] * len(x_list)]
+    x_matrix = list(zip(*x_matrix_transpose))
+    xtx = la.multiply_matrix_matrix(x_matrix_transpose, x_matrix)
+    xtx_inv = gj.gauss_jordan(xtx)
+    xtx_inv_xt = la.multiply_matrix_matrix(xtx_inv, x_matrix_transpose)
+    y_matrix = list(zip(*[y_contaminated]))
+    a = la.multiply_matrix_matrix(xtx_inv_xt, y_matrix)
+    return a
 
 
 def generate_plot(x_list, y_contaminated, y_list):
