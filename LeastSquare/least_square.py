@@ -30,7 +30,7 @@ def main():
 
     print('a =', a)
 
-    generate_plot(x_list, y_contaminated, y_list)
+    generate_plot(x_list, y_contaminated, y_list, a)
 
 
 def pseudo_inverse(x_list, y_contaminated):
@@ -50,12 +50,18 @@ def pseudo_inverse(x_list, y_contaminated):
     xtx_inv_xt = la.multiply_matrix_matrix(xtx_inv, x_matrix_transpose)
     y_matrix = list(zip(*[y_contaminated]))
     a = la.multiply_matrix_matrix(xtx_inv_xt, y_matrix)
-    return a
+    at = list(zip(*a))[0]
+    return at
 
 
-def generate_plot(x_list, y_contaminated, y_list):
+def generate_plot(x_list, y_contaminated, y_list, a):
     pylab.plot(x_list, y_list, '.', label='true')
     pylab.plot(x_list, y_contaminated, '.', label='contaminated')
+
+    y_reconstructed = [a[0] * x + a[1] for x in x_list]
+
+    pylab.plot(x_list, y_reconstructed, label='reconstructed')
+
     pylab.grid()
     pylab.xlabel('x')
     pylab.xlabel('y')
