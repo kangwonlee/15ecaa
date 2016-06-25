@@ -4,8 +4,26 @@ import linear_algebra as lin_alg
 import gauss_jordan as gj
 import random
 
+random.seed()
+
 
 class TestVectorMatrix(unittest.TestCase):
+    def assertSequenceAlmostEqual(self, seq_a, seq_b, msg=None):
+        """
+        :param seq_a: a list or a tuple
+        :param seq_b: a list or a tuple
+        :param msg: default None
+        :return:
+        """
+
+        self.assertEqual(len(seq_a), len(seq_b))
+        for aij, bij in zip(seq_a, seq_b):
+            self.assertAlmostEqual(aij, bij, msg=msg)
+
+    def test_assertSequenceAlmostEqual(self):
+        x = [random.random(), random.random()]
+        self.assertSequenceAlmostEqual(x, x)
+
     def assertMatrixAlmostEqual(self, mat_a, mat_b, msg=None):
         """
         :param mat_a: list of list
