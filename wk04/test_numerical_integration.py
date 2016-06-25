@@ -14,6 +14,11 @@ class TestNumericalIntegration(unittest.TestCase):
         expected = 0.0
         self.assertAlmostEqual(result, expected)
 
+    def test_trapezoid1(self):
+        result = ni.trapezoid1(f, 0.0, 10.0, n=15)
+        expected = 0.0
+        self.assertAlmostEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
