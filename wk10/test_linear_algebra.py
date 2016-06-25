@@ -11,6 +11,14 @@ class TestLinearAlgebra(unittest.TestCase):
         expected = 0.0
         self.assertAlmostEqual(result, expected)
 
+    def test_multiply_matrix_vector(self):
+        x = [[1.0, 0.0],
+             [0.0, 1.0]]
+        y = [2.0, -1.0]
+        result = lin_alg.multiply_matrix_vector(x, y)
+        expected = [2.0, -1.0]
+        self.assertAlmostEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
