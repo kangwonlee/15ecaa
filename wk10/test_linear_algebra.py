@@ -33,9 +33,7 @@ class TestVectorMatrix(unittest.TestCase):
 
         self.assertEqual(len(mat_a), len(mat_b))
         for a_row, b_row in zip(mat_a, mat_b):
-            self.assertEqual(len(a_row), len(b_row))
-            for aij, bij in zip(a_row, b_row):
-                self.assertAlmostEqual(aij, bij, msg=msg)
+            self.assertSequenceAlmostEqual(a_row, b_row)
 
     def test_assertMatrixAlmostEqual(self):
         n = 3
@@ -57,7 +55,7 @@ class TestLinearAlgebra(TestVectorMatrix):
         y = [2.0, -1.0]
         result = lin_alg.multiply_matrix_vector(x, y)
         expected = [2.0, -1.0]
-        self.assertAlmostEqual(result, expected)
+        self.assertSequenceAlmostEqual(result, expected)
 
 
 def random_matrix(n):
