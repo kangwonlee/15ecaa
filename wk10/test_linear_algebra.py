@@ -20,10 +20,6 @@ class TestVectorMatrix(unittest.TestCase):
         for aij, bij in zip(seq_a, seq_b):
             self.assertAlmostEqual(aij, bij, msg=msg)
 
-    def test_assertSequenceAlmostEqual(self):
-        x = [random.random(), random.random()]
-        self.assertSequenceAlmostEqual(x, x)
-
     def assertMatrixAlmostEqual(self, mat_a, mat_b, msg=None):
         """
         :param mat_a: list of list
@@ -35,10 +31,25 @@ class TestVectorMatrix(unittest.TestCase):
         for a_row, b_row in zip(mat_a, mat_b):
             self.assertSequenceAlmostEqual(a_row, b_row)
 
+
+class TestTestVectorMatrix(TestVectorMatrix):
+    def test_assertSequenceAlmostEqual(self):
+        x = [random.random(), random.random()]
+        y = [random.random(), random.random()]
+        self.assertSequenceAlmostEqual(x, x)
+        # https://docs.python.org/2.7/library/unittest.html#unittest.TestCase.assertRaises
+        with self.assertRaises(AssertionError):
+            self.assertSequenceAlmostEqual(x, y)
+
     def test_assertMatrixAlmostEqual(self):
         n = 3
         i_3_3 = identity_matrix(n)
-        self.assertAlmostEqual(i_3_3, i_3_3)
+        j_3_3 = identity_matrix(n)
+        j_3_3[0][0] += random.random()
+        self.assertMatrixAlmostEqual(i_3_3, i_3_3)
+        # https://docs.python.org/2.7/library/unittest.html#unittest.TestCase.assertRaises
+        with self.assertRaises(AssertionError):
+            self.assertMatrixAlmostEqual(i_3_3, j_3_3)
 
 
 class TestLinearAlgebra(TestVectorMatrix):
