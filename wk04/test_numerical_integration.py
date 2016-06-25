@@ -19,6 +19,11 @@ class TestNumericalIntegration(unittest.TestCase):
         expected = 0.0
         self.assertAlmostEqual(result, expected)
 
+    def test_simpson2(self):
+        result = ni.simpson2(f, 0.0, 10.0, n=15)
+        expected = 0.0
+        self.assertAlmostEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
