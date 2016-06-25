@@ -5,7 +5,27 @@ import gauss_jordan as gj
 import random
 
 
-class TestLinearAlgebra(unittest.TestCase):
+class TestVectorMatrix(unittest.TestCase):
+    def assertMatrixAlmostEqual(self, mat_a, mat_b, msg=None):
+        """
+        :param mat_a: list of list
+        :param mat_b: list of list
+        :return:
+        """
+
+        self.assertEqual(len(mat_a), len(mat_b))
+        for a_row, b_row in zip(mat_a, mat_b):
+            self.assertEqual(len(a_row), len(b_row))
+            for aij, bij in zip(a_row, b_row):
+                self.assertAlmostEqual(aij, bij, msg=msg)
+
+    def test_assertMatrixAlmostEqual(self):
+        n = 3
+        i_3_3 = identity_matrix(n)
+        self.assertAlmostEqual(i_3_3, i_3_3)
+
+
+class TestLinearAlgebra(TestVectorMatrix):
     def test_dot(self):
         x = [1.0, 2.0]
         y = [2.0, -1.0]
@@ -47,25 +67,7 @@ def identity_matrix(n):
     return result
 
 
-class TestGaussJordan(unittest.TestCase):
-    def assertMatrixAlmostEqual(self, mat_a, mat_b, msg=None):
-        """
-        :param mat_a: list of list
-        :param mat_b: list of list
-        :return:
-        """
-
-        self.assertEqual(len(mat_a), len(mat_b))
-        for a_row, b_row in zip(mat_a, mat_b):
-            self.assertEqual(len(a_row), len(b_row))
-            for aij, bij in zip(a_row, b_row):
-                self.assertAlmostEqual(aij, bij, msg=msg)
-
-    def test_assertMatrixAlmostEqual(self):
-        n = 3
-        i_3_3 = identity_matrix(n)
-        self.assertAlmostEqual(i_3_3, i_3_3)
-
+class TestGaussJordan(TestVectorMatrix):
     def test_gauss_jordan(self):
         n = 3
         m_3_3 = random_matrix(n)
