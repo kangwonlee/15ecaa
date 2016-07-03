@@ -1,4 +1,10 @@
 # -*- coding: cp949 -*-
+
+
+# |x| < epsilon == (x = 0)
+epsilon = 1e-4
+
+
 def sequential(f, x0):
     # 어떤 형태의 입력값이 들어올지 알 수 없으나
     # xi 의 초기값은 (부동소숫점) 실수가 되어야 하므로
@@ -22,9 +28,10 @@ def sequential(f, x0):
 # end of sequential()
 
 
-def bisection(f, xl, xh):
+def bisection(f, xl, xh, epsilon=epsilon, b_verbose=False):
     xl = float(xl)
     xh = float(xh)
+    xn = xl
 
     counter = 0
     while True:
@@ -37,13 +44,16 @@ def bisection(f, xl, xh):
 
         counter += 1
 
-        print "xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (
-        xl, f(xl), xn, f(xn), xh, f(xh), abs(xh - xl))
+        if b_verbose:
+            print ("xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (
+                xl, f(xl), xn, f(xn), xh, f(xh), abs(xh - xl)))
 
         if abs(xh - xl) < epsilon:
             break
 
-    print "bis_counter =", counter
+    if b_verbose:
+        print "bis_counter =", counter
+
     return xn
 
 
@@ -83,10 +93,6 @@ def dfunc(x):
 # end of dfunc()
 # for later use
 
-
-# |x| < epsilon == (x = 0)
-epsilon = 1e-4
-
 if "__main__" == __name__:
     # initial value
     x0 = "0.01"
@@ -96,7 +102,7 @@ if "__main__" == __name__:
     print "x_seq =", x_seq
     print "f(x_seq) =", func(x_seq)
 
-    x_bis = bisection(func, 0.01, 2.0)
+    x_bis = bisection(func, 0.01, 2.0, b_verbose=True)
     print "x_bis =", x_bis
     print "f(x_bis) =", func(x_bis)
 
