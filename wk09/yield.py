@@ -1,5 +1,10 @@
 import math
 
+# set path to root_finding.py
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.pardir, 'wk02')))
 import root_finding
 
 
