@@ -12,7 +12,7 @@
 epsilon = 1e-4
 
 
-def sequential(f, x0, delta_x=1e-6, epsilon=epsilon):
+def sequential(f, x0, delta_x=1e-6, epsilon=epsilon, b_verbose=False):
     """
     sequential method
     x0 로 부터 시작해서  delta_x 만큼씩 증가시키면서 |f(x)| 값이 epsilon 값 보다 작아지는지 관찰함
@@ -20,6 +20,7 @@ def sequential(f, x0, delta_x=1e-6, epsilon=epsilon):
     :param x0: x의 초기값
     :param delta_x: x를 한번에 delta_x 만큼씩 증가시킴
     :param epsilon: 오차 허용 범위
+    :param b_verbose: 추가 정보 표시. 정해 주지 않으면 False
 
     :return: |f(x)| < epsilon 인 x
     """
@@ -47,8 +48,9 @@ def sequential(f, x0, delta_x=1e-6, epsilon=epsilon):
         # 반복문이 한번 실행 되었으므로 counter 를 1 증가 시킴
         counter += 1
 
-    # 반복문이 실행된 횟수를 표시
-    print "seq_counter =", counter
+    if b_verbose:
+        # 반복문이 실행된 횟수를 표시
+        print "seq_counter =", counter
 
     # 반복문에서 찾은 결과를 반환
     return xi
@@ -139,7 +141,7 @@ def newton(f, df, x0, epsilon=epsilon, b_verbose=False):
     :param df: f(x) 의 미분
     :param x0: x의 초기값
     :param epsilon: 오차 허용 한도
-    :param b_verbose: 중간 과정 표시. 정해 주지 않으면 False
+    :param b_verbose: 추가 정보 표시. 정해 주지 않으면 False
     :return: |f(x)| < epsilon 인 x
     """
     # xi 를 (부동소숫점) 실수로 초기화
@@ -171,8 +173,6 @@ def newton(f, df, x0, epsilon=epsilon, b_verbose=False):
 
     # xi 를 반환
     return xi
-
-
 # end of newton
 
 
@@ -195,7 +195,7 @@ if "__main__" == __name__:
     # initial value
     x0 = "0.01"
 
-    x_seq = sequential(func, x0)
+    x_seq = sequential(func, x0, b_verbose=True)
     print "x_seq =", x_seq
     print "f(x_seq) =", func(x_seq)
 
@@ -203,7 +203,7 @@ if "__main__" == __name__:
     print "x_bis =", x_bis
     print "f(x_bis) =", func(x_bis)
 
-    x_nr = newton(func, dfunc, 2.0)
+    x_nr = newton(func, dfunc, 2.0, b_verbose=True)
     print "x_nr =", x_nr
     print "f(x_nr) =", func(x_nr)
 
