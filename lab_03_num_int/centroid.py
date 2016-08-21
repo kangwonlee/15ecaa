@@ -3,10 +3,7 @@ import math
 import pylab
 
 # set path to root_finding.py
-import os
-import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.pardir, 'wk04')))
 import num_int
 
 
@@ -16,16 +13,18 @@ def main():
     area = num_int.trapezoid1(f, y_min, y_max, 120)
     moment_first = num_int.trapezoid1(g, y_min, y_max, 120)
 
-    center = moment_first / area
+    centroid = moment_first / area
 
     print "area =", area
     print "moment =", moment_first
-    print("center =", center)
+    print("centroid = %g" % centroid)
 
     y_list = pylab.arange(y_min, y_max, 1e-6)
     w_list = [f(y) for y in y_list]
 
-    pylab.plot(y_list, w_list)
+    pylab.fill_between(y_list, w_list)
+    pylab.axvline(x=centroid, c='r')
+
     pylab.axis('equal')
     pylab.grid()
     pylab.show()

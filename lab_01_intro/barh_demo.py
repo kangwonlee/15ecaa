@@ -3,7 +3,7 @@
 Simple demo of a horizontal bar chart.
 간단한 수평 막대 그래프 예제
 """
-# “lines_bars_and_markers example code: barh_demo.py” lines_bars_and_markers example code: barh_demo.py — Matplotlib 1.5.1 documentation. [Online]. Available: http://matplotlib.org/examples/lines_bars_and_markers/barh_demo.html. [Accessed: 21-Aug-2016].
+# "lines_bars_and_markers example code: barh_demo.py" lines_bars_and_markers example code: barh_demo.py — Matplotlib 1.5.1 documentation. [Online]. Available: http://matplotlib.org/examples/lines_bars_and_markers/barh_demo.html. [Accessed: 21-Aug-2016].
 
 # matplotlib.pyplot 이라는 모듈에 그래프 관련 기능이 담겨 있음
 # 해당 모듈의 기능을 사용하기 위해 plt 라는 이름으로 불러 옴

@@ -2,8 +2,8 @@
 import math
 from pprint import pprint
 
-import linear_algebra as la
 import gauss_jordan as gj
+import linear_algebra as la
 
 
 def power_method(A, epsilon=1e-9):
