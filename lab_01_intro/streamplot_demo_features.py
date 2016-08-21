@@ -9,7 +9,9 @@ example shows a few features of the stream plot function:
     * Varying the line width along a stream line.
 """
 
-# "images_contours_and_fields example code: streamplot_demo_features.py" images_contours_and_fields example code: streamplot_demo_features.py — Matplotlib 1.5.1 documentation. [Online]. Available: http://matplotlib.org/examples/images_contours_and_fields/streamplot_demo_features.html. [Accessed: 21-Aug-2016].
+# "images_contours_and_fields example code: streamplot_demo_features.py" images_contours_and_fields example code:
+# streamplot_demo_features.py — Matplotlib 1.5.1 documentation. [Online]. Available:
+# http://matplotlib.org/examples/images_contours_and_fields/streamplot_demo_features.html. [Accessed: 21-Aug-2016].
 
 
 import matplotlib.pyplot as plt
