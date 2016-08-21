@@ -1,4 +1,4 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf8 -*-
 import math
 from pprint import pprint
 
@@ -7,43 +7,43 @@ import linear_algebra as la
 
 
 def power_method(A, epsilon=1e-9):
-    # Çà·ÄÀÇ Å©±â
+    # í–‰ë ¬ì˜ í¬ê¸°
     n = len(A)
 
-    # °¡Àå Å« °íÀ¯Ä¡¸¦ ´ã°Ô µÉ º¯¼ö
+    # ê°€ìž¥ í° ê³ ìœ ì¹˜ë¥¼ ë‹´ê²Œ ë  ë³€ìˆ˜
     lambda_k = 0.0
-    # À§ °íÀ¯Ä¡ÀÇ °íÀ¯ º¤ÅÍ¸¦ ÀúÀåÇÒ Àå¼Ò
+    # ìœ„ ê³ ìœ ì¹˜ì˜ ê³ ìœ  ë²¡í„°ë¥¼ ì €ìž¥í•  ìž¥ì†Œ
     zk = [1.0] * n
 
     counter = 0
-    # k : ¹Ýº¹È½¼ö
-    # i : i ¹øÂ° °íÀ¯Ä¡, °íÀ¯ º¤ÅÍ
+    # k : ë°˜ë³µíšŸìˆ˜
+    # i : i ë²ˆì§¸ ê³ ìœ ì¹˜, ê³ ìœ  ë²¡í„°
     while True:
-        # Çà·Ä °ö¼À
-        # k °¡ Å« °ªÀÌ¶ó¸é z_k ´Â Ã¹¹øÂ° °íÀ¯º¤ÅÍ¿Í °ÅÀÇ °°Àº ¹æÇâÀÌ¹Ç·Î
+        # í–‰ë ¬ ê³±ì…ˆ
+        # k ê°€ í° ê°’ì´ë¼ë©´ z_k ëŠ” ì²«ë²ˆì§¸ ê³ ìœ ë²¡í„°ì™€ ê±°ì˜ ê°™ì€ ë°©í–¥ì´ë¯€ë¡œ
         # y_k+1 = A z_k = lambda_1 z_k
-        # z_k ÀÇ °¡Àå Å« ¿ä¼Ò´Â 1 ÀÌ¾úÀ¸¹Ç·Î
-        # y_k+1 ÀÇ °¡Àå Å« ¿ä¼Ò°¡ lambda_1 ÀÎ °ÍÀÌ¶ó°í º¼ ¼ö ÀÖ´Ù.
+        # z_k ì˜ ê°€ìž¥ í° ìš”ì†ŒëŠ” 1 ì´ì—ˆìœ¼ë¯€ë¡œ
+        # y_k+1 ì˜ ê°€ìž¥ í° ìš”ì†Œê°€ lambda_1 ì¸ ê²ƒì´ë¼ê³  ë³¼ ìˆ˜ ìžˆë‹¤.
         yk1 = la.multiply_matrix_vector(A, zk)
 
-        # yk1 º¤ÅÍ¿¡¼­ Àý´ë°ªÀÌ °¡Àå Å« ¿ä¼Ò¸¦ Ã£À½
+        # yk1 ë²¡í„°ì—ì„œ ì ˆëŒ€ê°’ì´ ê°€ìž¥ í° ìš”ì†Œë¥¼ ì°¾ìŒ
         lambda_k1 = abs(yk1[0])
         for yk1_i in yk1[1:]:
             if abs(yk1_i) > abs(lambda_k1):
                 lambda_k1 = yk1_i
 
-        # À§¿¡¼­ Ã£Àº °ªÀ¸·Î yk1 ¸ðµç ¿ä¼Ò¸¦ ³ª´©¾î¼­ zk º¤ÅÍ¿¡ ÀúÀå
-        # "À§¿¡¼­ Ã£Àº °ªÀ¸·Î yk1 À» normalize ÇÑ´Ù"
-        # zk ÀÇ °¡Àå Å« ¿ä¼Ò´Â 1ÀÌ µÊ
+        # ìœ„ì—ì„œ ì°¾ì€ ê°’ìœ¼ë¡œ yk1 ëª¨ë“  ìš”ì†Œë¥¼ ë‚˜ëˆ„ì–´ì„œ zk ë²¡í„°ì— ì €ìž¥
+        # "ìœ„ì—ì„œ ì°¾ì€ ê°’ìœ¼ë¡œ yk1 ì„ normalize í•œë‹¤"
+        # zk ì˜ ê°€ìž¥ í° ìš”ì†ŒëŠ” 1ì´ ë¨
         for i in xrange(n):
             zk[i] = yk1[i] / lambda_k1
 
-        # ÀÌÀü ´Ü°èÀÇ °¡Àå Å« ¿ä¼Ò¿Í ºñ±³
+        # ì´ì „ ë‹¨ê³„ì˜ ê°€ìž¥ í° ìš”ì†Œì™€ ë¹„êµ
         if abs(lambda_k1 - lambda_k) < epsilon:
             break
         lambda_k = lambda_k1
 
-        # »ç¿ëÀÌ ¿Þ·áµÈ y1 º¤ÅÍÀÇ ¸Þ¸ð¸® °ø°£À» ¹ÝÈ¯
+        # ì‚¬ìš©ì´ ì™¼ë£Œëœ y1 ë²¡í„°ì˜ ë©”ëª¨ë¦¬ ê³µê°„ì„ ë°˜í™˜
         del yk1
         counter += 1
 

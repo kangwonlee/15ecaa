@@ -1,4 +1,4 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf8 -*-
 from pprint import pprint
 
 import linear_algebra as la
@@ -6,15 +6,15 @@ import linear_algebra as la
 
 def gauss_elimination(A, b):
     """
-    1Â÷ ´Ù¿ø ¿¬¸³ ¹æÁ¤½Ä Ax = b ¿¡¼­ x ¸¦ ±¸ÇÔ
-    A: °è¼ö Çà·Ä
-    b: »ó¼ö º¤ÅÍ
+    1ì°¨ ë‹¤ì› ì—°ë¦½ ë°©ì •ì‹ Ax = b ì—ì„œ x ë¥¼ êµ¬í•¨
+    A: ê³„ìˆ˜ í–‰ë ¬
+    b: ìƒìˆ˜ ë²¡í„°
     """
 
     n_row = len(A)
     n_column = len(A[0])
 
-    # Augmented Matrix ¸¦ ¸¸µê
+    # Augmented Matrix ë¥¼ ë§Œë“¦
 
     Ab = []
     for i_row in xrange(n_row):
@@ -24,22 +24,22 @@ def gauss_elimination(A, b):
         Ab_row[n_column] = b[i_row]
         Ab.append(Ab_row)
 
-    # pivot ¹İº¹¹®
+    # pivot ë°˜ë³µë¬¸
     for i_pivot in xrange(n_row):
-        # pivot ¾Æ·¡ Çà ¹İº¹¹®
+        # pivot ì•„ë˜ í–‰ ë°˜ë³µë¬¸
         for j_row in xrange(i_pivot + 1, n_row):
             ratio = -Ab[j_row][i_pivot] / float(Ab[i_pivot][i_pivot])
-            # ¿­ ¹İº¹¹®
+            # ì—´ ë°˜ë³µë¬¸
             for k_column in xrange(n_column + 1):
                 Ab[j_row][k_column] += ratio * Ab[i_pivot][k_column]
-    # ÀÌ ¹İº¹¹®ÀÌ ³¡³ª°í ³ª¸é ÁÖ ´ë°¢¼± ¾Æ·¡ ¿ä¼Ò´Â ¸ğµÎ 0
+    # ì´ ë°˜ë³µë¬¸ì´ ëë‚˜ê³  ë‚˜ë©´ ì£¼ ëŒ€ê°ì„  ì•„ë˜ ìš”ì†ŒëŠ” ëª¨ë‘ 0
 
     pprint(Ab)
 
-    # °á°ú ÀúÀå °ø°£ ÁöÁ¤
+    # ê²°ê³¼ ì €ì¥ ê³µê°„ ì§€ì •
     x = [0.0] * n_row
 
-    # ÈÄÁø´ëÀÔ¹ı
+    # í›„ì§„ëŒ€ì…ë²•
 
     for i_row in xrange(n_row - 1, -1, -1):
         s = Ab[i_row][-1]
