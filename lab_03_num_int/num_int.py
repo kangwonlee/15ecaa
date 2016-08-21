@@ -17,7 +17,8 @@ def rect0(f, xi, xe, n=100):
     :param n: 구간을 나누는 갯수
     :return: f(x) 를 xi ~ xe 구간에서 정적분한 근사값
     """
-    # n개로 나눈 구간의 길이를 정함
+    # 초기화 시작
+    # n개로 나눈 각 구간의 길이를 정함
     delta_x = (float(xe) - float(xi)) / n
 
     # 각 구간 시작 지점 x 값의 list 를 만듦
@@ -28,8 +29,11 @@ def rect0(f, xi, xe, n=100):
     # 적분 결과를 저장할 변수를 초기화
     result = 0.0
 
-    # 각 구간별 반복문
-    # k = 0, 1, 2, ..., (n-1)
+    # 초기화 끝
+
+    # 주 반복문 main loop
+    # 각 구간별로 연산을 반복 실시
+    # k = 0, 1, 2, ..., (n-1)ㅁ
     for k in xrange(n):
         # k 번째 x 값을 위에서 만든 list 에서 찾음
         xk = x[k]
@@ -37,59 +41,60 @@ def rect0(f, xi, xe, n=100):
         area_k = f(xk) * delta_x
         # 적분 결과에 누적시킴
         result += area_k
-    # 구간별 반복문 끝
+    # 주 반복문 끝
 
     # 적분 결과를 반환함
     return result
 
 
-def trapezoid1(f, x0, x1, n=100):
+def trapezoid1(f, xi, xe, n=100):
     """
-    Numerical integration
+    1차 수치 적분
+    xi ~ xe 사이를 n 개의 구간으로 나눔
+    한 구간 안에서는 f(x) 가 1차 직선일 것이라고 가정함
 
-    Assume f(x) is a straight line between x[k] and x[k+1]
-
-    Parameters
-    ----------
-    f:function to be integrated
-    x0:lower bound of integration
-    x1:upper bound of integration
-    n:number of intervals
-
-    Return:
-    ------
-    Numerical integration of function f(x) in interval [x0, x1]
+    :param f: 적분될 함수
+    :param xi: 정적분 시작 지점
+    :param xe: 정적분 끝 지점
+    :param n: 구간을 나누는 갯수
+    :return: f(x) 를 xi ~ xe 구간에서 정적분한 근사값
     """
-    # initialization
-    # calculate x interval
-    delta_x = (float(x1) - float(x0)) / n
+    # 초기화 시작
+    # n개로 나눈 각 구간의 길이를 정함
+    delta_x = (float(xe) - float(xi)) / n
 
-    xk = x0
+    # 적분 구간 시작 지점 k번째 x 초기화
+    xk = xi
+    # 적분 구간 시작 지점 함수값 k번째 f(x) 초기화
     fxk = f(xk)
 
-    # integration result
+    # 적분 결과를 저장할 변수를 초기화
     result = 0.0
 
-    # for each interval
+    # 초기화 끝
+
+    # 주 반복문 main loop
+    # 각 구간별로 연산을 반복 실시
     # k = 0, 1, 2, ..., (n-1)
     for k in xrange(n):
-        # k+1-th x
+        # 적분 구간 끝 지점 k+1 번째 x 계산
         xk1 = xk + delta_x
-        # k+1-th f(x)
+        # 적분 구간 끝 지점 k+1 번째 f(x) 계산
         fxk1 = f(xk1)
-        # k-th area
-        F_k = (fxk + fxk1) * delta_x * 0.5
-        # accumulate to integration result
-        result += F_k
+        # k 번째 구간의 면적을 사다리꼴 공식으로 계산
+        area_k = (fxk + fxk1) * delta_x * 0.5
+        # 적분 결과에 누적시킴
+        result += area_k
+
+        # 현재 구간의 끝점이 다음 구간의 시작점이 됨
+        # k+1 번째 x 값을 다음 구간 시작점의 x 값으로 지정
         xk = xk1
+        # k+1 번째 f(x) 값을 다음 구간 시작점의 f(x) 값으로 지정
         fxk = fxk1
-    # end k loop
+    # 주 반복문 끝
 
-    # return integration result
+    # 적분 결과를 반환함
     return result
-
-
-# end of function trapezoid1()
 
 
 def simpson2(f, x0, x1, n=100):
