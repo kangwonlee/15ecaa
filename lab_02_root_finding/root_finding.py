@@ -1,12 +1,12 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf8 -*-
 """
-1º¯¼ö ¹æÁ¤½ÄÀÇ ÇØ
-¾î¶² (ºñ¼±Çü) ÇÔ¼ö f(x) °ªÀÌ 0 ÀÌ µÇµµ·Ï ¸¸µå´Â x ¸¦ Ã£À½
+1ë³€ìˆ˜ ë°©ì •ì‹ì˜ í•´
+ì–´ë–¤ (ë¹„ì„ í˜•) í•¨ìˆ˜ f(x) ê°’ì´ 0 ì´ ë˜ë„ë¡ ë§Œë“œëŠ” x ë¥¼ ì°¾ìŒ
 """
 
-# ÄÄÇ»ÅÍÀÇ ¸Þ¸ð¸®¿¡´Â ¿ø·¡´Â Á¦ÇÑµÈ ÀÚ¸´¼öÀÇ 2Áø¼ö¸¸ ÀúÀåÇÒ ¼ö ÀÖÀ½
-# ½Ç¼ö¸¦ ÀúÀåÇÏ·Á¸é ¿ÀÂ÷°¡ ¹ß»ýÇÏ°Ô µÊ
-# epsilon Àº Çã¿ë µÇ´Â ¿ÀÂ÷ ¹üÀ§¸¦ ÀÇ¹ÌÇÔ
+# ì»´í“¨í„°ì˜ ë©”ëª¨ë¦¬ì—ëŠ” ì›ëž˜ëŠ” ì œí•œëœ ìžë¦¿ìˆ˜ì˜ 2ì§„ìˆ˜ë§Œ ì €ìž¥í•  ìˆ˜ ìžˆìŒ
+# ì‹¤ìˆ˜ë¥¼ ì €ìž¥í•˜ë ¤ë©´ ì˜¤ì°¨ê°€ ë°œìƒí•˜ê²Œ ë¨
+# epsilon ì€ í—ˆìš© ë˜ëŠ” ì˜¤ì°¨ ë²”ìœ„ë¥¼ ì˜ë¯¸í•¨
 # |x| < epsilon == (x = 0)
 # |x - y| < epsilon == (x == y)
 epsilon = 1e-4
@@ -15,44 +15,44 @@ epsilon = 1e-4
 def sequential(f, x0, delta_x=1e-6, epsilon=epsilon, b_verbose=False):
     """
     sequential method
-    x0 ·Î ºÎÅÍ ½ÃÀÛÇØ¼­  delta_x ¸¸Å­¾¿ Áõ°¡½ÃÅ°¸é¼­ |f(x)| °ªÀÌ epsilon °ª º¸´Ù ÀÛ¾ÆÁö´ÂÁö °üÂûÇÔ
-    :param f: f(x) = 0 ÀÎ x¸¦ Ã£°íÀÚ ÇÏ´Â ÇÔ¼ö
-    :param x0: xÀÇ ÃÊ±â°ª
-    :param delta_x: x¸¦ ÇÑ¹ø¿¡ delta_x ¸¸Å­¾¿ Áõ°¡½ÃÅ´
-    :param epsilon: ¿ÀÂ÷ Çã¿ë ¹üÀ§
-    :param b_verbose: Ãß°¡ Á¤º¸ Ç¥½Ã. Á¤ÇØ ÁÖÁö ¾ÊÀ¸¸é False
+    x0 ë¡œ ë¶€í„° ì‹œìž‘í•´ì„œ  delta_x ë§Œí¼ì”© ì¦ê°€ì‹œí‚¤ë©´ì„œ |f(x)| ê°’ì´ epsilon ê°’ ë³´ë‹¤ ìž‘ì•„ì§€ëŠ”ì§€ ê´€ì°°í•¨
+    :param f: f(x) = 0 ì¸ xë¥¼ ì°¾ê³ ìž í•˜ëŠ” í•¨ìˆ˜
+    :param x0: xì˜ ì´ˆê¸°ê°’
+    :param delta_x: xë¥¼ í•œë²ˆì— delta_x ë§Œí¼ì”© ì¦ê°€ì‹œí‚´
+    :param epsilon: ì˜¤ì°¨ í—ˆìš© ë²”ìœ„
+    :param b_verbose: ì¶”ê°€ ì •ë³´ í‘œì‹œ. ì •í•´ ì£¼ì§€ ì•Šìœ¼ë©´ False
 
-    :return: |f(x)| < epsilon ÀÎ x
+    :return: |f(x)| < epsilon ì¸ x
     """
-    # ¾î¶² ÇüÅÂÀÇ ÀÔ·Â°ªÀÌ µé¾î¿ÃÁö ¾Ë ¼ö ¾øÀ¸³ª
-    # xi ÀÇ ÃÊ±â°ªÀº (ºÎµ¿¼Ò¼ýÁ¡) ½Ç¼ö°¡ µÇ¾î¾ß ÇÏ¹Ç·Î
-    # float() ¸¦ ÀÌ¿ë
+    # ì–´ë–¤ í˜•íƒœì˜ ìž…ë ¥ê°’ì´ ë“¤ì–´ì˜¬ì§€ ì•Œ ìˆ˜ ì—†ìœ¼ë‚˜
+    # xi ì˜ ì´ˆê¸°ê°’ì€ (ë¶€ë™ì†Œìˆ«ì ) ì‹¤ìˆ˜ê°€ ë˜ì–´ì•¼ í•˜ë¯€ë¡œ
+    # float() ë¥¼ ì´ìš©
     xi = float(x0)
-    # delta_x ÀÇ ÀÇ¹Ì´Â
-    # "¾ÆÁ÷ ´äÀ» Ã£Áö ¸øÇßÀ» ¶§ xi¸¦ ¾ó¸¶¸¸Å­ Áõ°¡½ÃÅ³ °ÍÀÎ°¡"
+    # delta_x ì˜ ì˜ë¯¸ëŠ”
+    # "ì•„ì§ ë‹µì„ ì°¾ì§€ ëª»í–ˆì„ ë•Œ xië¥¼ ì–¼ë§ˆë§Œí¼ ì¦ê°€ì‹œí‚¬ ê²ƒì¸ê°€"
 
-    # counter ´Â ¾Æ·¡ ¹«ÇÑ ¹Ýº¹¹®À» ½ÇÇàÇÑ È½¼ö
+    # counter ëŠ” ì•„ëž˜ ë¬´í•œ ë°˜ë³µë¬¸ì„ ì‹¤í–‰í•œ íšŸìˆ˜
     counter = 0
 
-    # ¹«ÇÑ ¹Ýº¹¹®
+    # ë¬´í•œ ë°˜ë³µë¬¸
     while True:
         # f(x)
         fi = f(xi)
-        # |f(x)| < epsilon ÀÌ¸é
+        # |f(x)| < epsilon ì´ë©´
         if abs(fi) < epsilon:
-            # ¹«ÇÑ ¹Ýº¹¹®À» Áß´Ü
+            # ë¬´í•œ ë°˜ë³µë¬¸ì„ ì¤‘ë‹¨
             break
-        # ±×·¸Áö ¾ÊÀ¸¸é
-        # x ¸¦ delta_x ¸¸Å­ Áõ°¡½ÃÅ´
+        # ê·¸ë ‡ì§€ ì•Šìœ¼ë©´
+        # x ë¥¼ delta_x ë§Œí¼ ì¦ê°€ì‹œí‚´
         xi += delta_x
-        # ¹Ýº¹¹®ÀÌ ÇÑ¹ø ½ÇÇà µÇ¾úÀ¸¹Ç·Î counter ¸¦ 1 Áõ°¡ ½ÃÅ´
+        # ë°˜ë³µë¬¸ì´ í•œë²ˆ ì‹¤í–‰ ë˜ì—ˆìœ¼ë¯€ë¡œ counter ë¥¼ 1 ì¦ê°€ ì‹œí‚´
         counter += 1
 
     if b_verbose:
-        # ¹Ýº¹¹®ÀÌ ½ÇÇàµÈ È½¼ö¸¦ Ç¥½Ã
+        # ë°˜ë³µë¬¸ì´ ì‹¤í–‰ëœ íšŸìˆ˜ë¥¼ í‘œì‹œ
         print "seq_counter =", counter
 
-    # ¹Ýº¹¹®¿¡¼­ Ã£Àº °á°ú¸¦ ¹ÝÈ¯
+    # ë°˜ë³µë¬¸ì—ì„œ ì°¾ì€ ê²°ê³¼ë¥¼ ë°˜í™˜
     return xi
 # end of sequential()
 
@@ -60,65 +60,65 @@ def sequential(f, x0, delta_x=1e-6, epsilon=epsilon, b_verbose=False):
 def bisection(f, xl, xh, epsilon=epsilon, b_verbose=False):
     """
     bisection method
-    f(xl) °ú f(xh)ÀÇ ºÎÈ£°¡ ¹Ý´ëÀÎ xl, xh ¿¡¼­ ½ÃÀÛ
-    xl ~ xh »çÀÌÀÇ ±¸°£À» Àý¹Ý ÁöÁ¡ÀÎ xn¸¦ Ã£À½
-    f(xl) °ú f(xn) ÀÇ ºÎÈ£°¡ ¹Ý´ëÀÌ¸é xh¸¦ xn À¸·Î ¿Å±è
-        ÀÌ·¸°Ô ÇÏ¸é °è¼Ó f(xl) °ú f(xh)ÀÇ ºÎÈ£°¡ ¹Ý´ëÀÓ
-    ±×·¸Áö ¾ÊÀ¸¸é xlÀ» xnÀ¸·Î ¿Å±è
-        f(xn) °ú f(xh)ÀÇ ºÎÈ£°¡ ¹Ý´ëÀÏ °ÍÀÓ
+    f(xl) ê³¼ f(xh)ì˜ ë¶€í˜¸ê°€ ë°˜ëŒ€ì¸ xl, xh ì—ì„œ ì‹œìž‘
+    xl ~ xh ì‚¬ì´ì˜ êµ¬ê°„ì„ ì ˆë°˜ ì§€ì ì¸ xnë¥¼ ì°¾ìŒ
+    f(xl) ê³¼ f(xn) ì˜ ë¶€í˜¸ê°€ ë°˜ëŒ€ì´ë©´ xhë¥¼ xn ìœ¼ë¡œ ì˜®ê¹€
+        ì´ë ‡ê²Œ í•˜ë©´ ê³„ì† f(xl) ê³¼ f(xh)ì˜ ë¶€í˜¸ê°€ ë°˜ëŒ€ìž„
+    ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ xlì„ xnìœ¼ë¡œ ì˜®ê¹€
+        f(xn) ê³¼ f(xh)ì˜ ë¶€í˜¸ê°€ ë°˜ëŒ€ì¼ ê²ƒìž„
 
-    xl ~ xh »çÀÌÀÇ ±¸°£ÀÇ ±æÀÌ°¡ epsilon º¸´Ù ÀÛ¾ÆÁö¸é Áß´Ü
+    xl ~ xh ì‚¬ì´ì˜ êµ¬ê°„ì˜ ê¸¸ì´ê°€ epsilon ë³´ë‹¤ ìž‘ì•„ì§€ë©´ ì¤‘ë‹¨
 
-    :param f: f(x) = 0 ÀÎ x¸¦ Ã£°íÀÚ ÇÏ´Â ÇÔ¼ö
-    :param xl: xÀÇ ÃÊ±â°ª xl < xh && f(xl) f(xh) < 0
-    :param xh: xÀÇ ÃÊ±â°ª xl < xh && f(xl) f(xh) < 0
-    :param epsilon: ¿ÀÂ÷ Çã¿ë ¹üÀ§
-    :param b_verbose: Áß°£ °úÁ¤ Ç¥½Ã. Á¤ÇØ ÁÖÁö ¾ÊÀ¸¸é False
-    :return: f(x) == 0 ÀÎ x ¿Í °¡±î¿î °ª
+    :param f: f(x) = 0 ì¸ xë¥¼ ì°¾ê³ ìž í•˜ëŠ” í•¨ìˆ˜
+    :param xl: xì˜ ì´ˆê¸°ê°’ xl < xh && f(xl) f(xh) < 0
+    :param xh: xì˜ ì´ˆê¸°ê°’ xl < xh && f(xl) f(xh) < 0
+    :param epsilon: ì˜¤ì°¨ í—ˆìš© ë²”ìœ„
+    :param b_verbose: ì¤‘ê°„ ê³¼ì • í‘œì‹œ. ì •í•´ ì£¼ì§€ ì•Šìœ¼ë©´ False
+    :return: f(x) == 0 ì¸ x ì™€ ê°€ê¹Œìš´ ê°’
     """
 
-    # ¾î¶² ÇüÅÂÀÇ ÀÔ·Â°ªÀÌ µé¾î¿ÃÁö ¾Ë ¼ö ¾øÀ¸³ª
-    # xi ÀÇ ÃÊ±â°ªÀº (ºÎµ¿¼Ò¼ýÁ¡) ½Ç¼ö°¡ µÇ¾î¾ß ÇÏ¹Ç·Î
-    # float() ¸¦ ÀÌ¿ë
+    # ì–´ë–¤ í˜•íƒœì˜ ìž…ë ¥ê°’ì´ ë“¤ì–´ì˜¬ì§€ ì•Œ ìˆ˜ ì—†ìœ¼ë‚˜
+    # xi ì˜ ì´ˆê¸°ê°’ì€ (ë¶€ë™ì†Œìˆ«ì ) ì‹¤ìˆ˜ê°€ ë˜ì–´ì•¼ í•˜ë¯€ë¡œ
+    # float() ë¥¼ ì´ìš©
     xl = float(xl)
     xh = float(xh)
 
-    # xn À» ÃÊ±âÈ­ ÇÑ´Ù
+    # xn ì„ ì´ˆê¸°í™” í•œë‹¤
     xn = xl
 
-    # counter ´Â ¾Æ·¡ ¹«ÇÑ ¹Ýº¹¹®À» ½ÇÇàÇÑ È½¼ö
+    # counter ëŠ” ì•„ëž˜ ë¬´í•œ ë°˜ë³µë¬¸ì„ ì‹¤í–‰í•œ íšŸìˆ˜
     counter = 0
 
-    # ¹«ÇÑ ¹Ýº¹¹®
+    # ë¬´í•œ ë°˜ë³µë¬¸
     while True:
-        # xl ~ xh »çÀÌÀÇ °¡¿îµ¥ ÁöÁ¡À» xn À¸·Î »ï´Â´Ù
+        # xl ~ xh ì‚¬ì´ì˜ ê°€ìš´ë° ì§€ì ì„ xn ìœ¼ë¡œ ì‚¼ëŠ”ë‹¤
         xn = 0.5 * (xl + xh)
 
-        # f(xn) °ú f(xh)ÀÇ ºÎÈ£¸¦ ºñ±³
+        # f(xn) ê³¼ f(xh)ì˜ ë¶€í˜¸ë¥¼ ë¹„êµ
         if f(xn) * f(xh) < 0:
-            # ´Ù¸£¸é : ±ÙÀÌ xn ~ xh »çÀÌ¿¡ ÀÖÀ½. xl ¿¡ xn À» ÀúÀå
+            # ë‹¤ë¥´ë©´ : ê·¼ì´ xn ~ xh ì‚¬ì´ì— ìžˆìŒ. xl ì— xn ì„ ì €ìž¥
             xl = xn
         else:
-            # °°À¸¸é : ±ÙÀÌ xl ~ xn »çÀÌ¿¡ ÀÖÀ½. xh ¿¡ xn À» ÀúÀå
+            # ê°™ìœ¼ë©´ : ê·¼ì´ xl ~ xn ì‚¬ì´ì— ìžˆìŒ. xh ì— xn ì„ ì €ìž¥
             xh = xn
 
-        # ¹Ýº¹¹®ÀÌ ÇÑ¹ø ½ÇÇà µÇ¾úÀ¸¹Ç·Î counter ¸¦ 1 Áõ°¡ ½ÃÅ´
+        # ë°˜ë³µë¬¸ì´ í•œë²ˆ ì‹¤í–‰ ë˜ì—ˆìœ¼ë¯€ë¡œ counter ë¥¼ 1 ì¦ê°€ ì‹œí‚´
         counter += 1
 
         if b_verbose:
-            # Áß°£ °úÁ¤À» Ç¥½Ã
+            # ì¤‘ê°„ ê³¼ì •ì„ í‘œì‹œ
             print ("xl = %8f f(xl) = %+8f xn = %+8f f(xn) = %+8f xh = %+8f f(xh) = %8f |xh-xl| = %-8f" % (
                 xl, f(xl), xn, f(xn), xh, f(xh), abs(xh - xl)))
 
-        # xl ~ xh ±¸°£ÀÇ ±æÀÌ°¡ epsilon º¸´Ù ÂªÀ¸¸é ¹«ÇÑ ¹Ýº¹¹®À» Áß´Ü
+        # xl ~ xh êµ¬ê°„ì˜ ê¸¸ì´ê°€ epsilon ë³´ë‹¤ ì§§ìœ¼ë©´ ë¬´í•œ ë°˜ë³µë¬¸ì„ ì¤‘ë‹¨
         if abs(xh - xl) < epsilon:
             break
 
     if b_verbose:
-        # counter ¸¦ Ç¥½Ã
+        # counter ë¥¼ í‘œì‹œ
         print "bis_counter =", counter
 
-    # xn À» ¹ÝÈ¯
+    # xn ì„ ë°˜í™˜
     return xn
 # end of bisection()
 
@@ -126,52 +126,52 @@ def bisection(f, xl, xh, epsilon=epsilon, b_verbose=False):
 def newton(f, df, x0, epsilon=epsilon, b_verbose=False):
     """
     Newton Raphson method
-    ºñ¼±Çü ÇÔ¼öÀÎ f(x) ÀÇ xi ÁöÁ¡¿¡¼­ÀÇ Á¢¼±ÀÇ ¹æÁ¤½ÄÀÇ ±ÙÀ» ±¸ÇÔ
+    ë¹„ì„ í˜• í•¨ìˆ˜ì¸ f(x) ì˜ xi ì§€ì ì—ì„œì˜ ì ‘ì„ ì˜ ë°©ì •ì‹ì˜ ê·¼ì„ êµ¬í•¨
 
-    xi ÁöÁ¡¿¡¼­ÀÇ f(x)ÀÇ ±â¿ï±â°¡ di, ÇÔ¼ö°ªÀÌ fi ÀÌ¸é
-    Á¢¼±ÀÇ ¹æÁ¤½Ä di (x - xi) + fi ´Â x = xi - fi/di ÀÌ¸é 0ÀÌ µÊ
-    Áï, Á¢¼±ÀÇ ¹æÁ¤½ÄÀÇ ±ÙÀº xi - fi/di ÀÌ°í Á¢Á¡ xi ·ÎºÎÅÍ (- fi/di) À§Ä¡¿¡ ÀÖÀ½
-    ÀÌ¸¦ ÀÌ¿ëÇÏ¿© i + 1  ¹øÂ° x ¸¦ xi - fi/di·Î Á¤ÇÔ
+    xi ì§€ì ì—ì„œì˜ f(x)ì˜ ê¸°ìš¸ê¸°ê°€ di, í•¨ìˆ˜ê°’ì´ fi ì´ë©´
+    ì ‘ì„ ì˜ ë°©ì •ì‹ di (x - xi) + fi ëŠ” x = xi - fi/di ì´ë©´ 0ì´ ë¨
+    ì¦‰, ì ‘ì„ ì˜ ë°©ì •ì‹ì˜ ê·¼ì€ xi - fi/di ì´ê³  ì ‘ì  xi ë¡œë¶€í„° (- fi/di) ìœ„ì¹˜ì— ìžˆìŒ
+    ì´ë¥¼ ì´ìš©í•˜ì—¬ i + 1  ë²ˆì§¸ x ë¥¼ xi - fi/dië¡œ ì •í•¨
 
-    f(x) ÀÇ xi ¿¡¼­ÀÇ ±â¿ï±â di ÀÇ Àý´ë°ªÀÌ 0¿¡ °¡±î¿ï °æ¿ì xi ·Î ºÎÅÍ ¸Å¿ì ¸Õ À§Ä¡¿¡ xi°¡ ÀÚ¸®ÇÏ°Ô µÊ
-    »õ·Î¿î À§Ä¡¿¡¼­ |f(x)| °ªÀÌ epsilon °ª º¸´Ù ÀÛ¾ÆÁö¸é Áß´Ü
-    ±×·¸Áö ¾ÊÀ¸¸é Á¢¼±ÀÇ ¹æÁ¤½ÄÀÇ ±ÙÀ» ´Ù½Ã ±¸ÇÔ
+    f(x) ì˜ xi ì—ì„œì˜ ê¸°ìš¸ê¸° di ì˜ ì ˆëŒ€ê°’ì´ 0ì— ê°€ê¹Œìš¸ ê²½ìš° xi ë¡œ ë¶€í„° ë§¤ìš° ë¨¼ ìœ„ì¹˜ì— xiê°€ ìžë¦¬í•˜ê²Œ ë¨
+    ìƒˆë¡œìš´ ìœ„ì¹˜ì—ì„œ |f(x)| ê°’ì´ epsilon ê°’ ë³´ë‹¤ ìž‘ì•„ì§€ë©´ ì¤‘ë‹¨
+    ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ ì ‘ì„ ì˜ ë°©ì •ì‹ì˜ ê·¼ì„ ë‹¤ì‹œ êµ¬í•¨
 
-    :param f: f(x) = 0 À» ¸¸Á·ÇÏ´Â x ¸¦ Ã£°íÀÚ ÇÏ´Â ÇÔ¼ö
-    :param df: f(x) ÀÇ ¹ÌºÐ
-    :param x0: xÀÇ ÃÊ±â°ª
-    :param epsilon: ¿ÀÂ÷ Çã¿ë ÇÑµµ
-    :param b_verbose: Ãß°¡ Á¤º¸ Ç¥½Ã. Á¤ÇØ ÁÖÁö ¾ÊÀ¸¸é False
-    :return: |f(x)| < epsilon ÀÎ x
+    :param f: f(x) = 0 ì„ ë§Œì¡±í•˜ëŠ” x ë¥¼ ì°¾ê³ ìž í•˜ëŠ” í•¨ìˆ˜
+    :param df: f(x) ì˜ ë¯¸ë¶„
+    :param x0: xì˜ ì´ˆê¸°ê°’
+    :param epsilon: ì˜¤ì°¨ í—ˆìš© í•œë„
+    :param b_verbose: ì¶”ê°€ ì •ë³´ í‘œì‹œ. ì •í•´ ì£¼ì§€ ì•Šìœ¼ë©´ False
+    :return: |f(x)| < epsilon ì¸ x
     """
-    # xi ¸¦ (ºÎµ¿¼Ò¼ýÁ¡) ½Ç¼ö·Î ÃÊ±âÈ­
+    # xi ë¥¼ (ë¶€ë™ì†Œìˆ«ì ) ì‹¤ìˆ˜ë¡œ ì´ˆê¸°í™”
     xi = float(x0)
 
-    # counter ´Â ¾Æ·¡ ¹«ÇÑ ¹Ýº¹¹®À» ½ÇÇàÇÑ È½¼ö
+    # counter ëŠ” ì•„ëž˜ ë¬´í•œ ë°˜ë³µë¬¸ì„ ì‹¤í–‰í•œ íšŸìˆ˜
     counter = 0
 
-    # ¹«ÇÑ ¹Ýº¹¹®
+    # ë¬´í•œ ë°˜ë³µë¬¸
     while True:
-        # xi ¿¡¼­ÀÇ ÇÔ¼ö°ª
+        # xi ì—ì„œì˜ í•¨ìˆ˜ê°’
         fi = f(xi)
 
-        # ¹Ýº¹¹®ÀÌ ÇÑ¹ø ½ÇÇà µÇ¾úÀ¸¹Ç·Î counter ¸¦ 1 Áõ°¡ ½ÃÅ´
+        # ë°˜ë³µë¬¸ì´ í•œë²ˆ ì‹¤í–‰ ë˜ì—ˆìœ¼ë¯€ë¡œ counter ë¥¼ 1 ì¦ê°€ ì‹œí‚´
         counter += 1
 
-        # |f(x)| < epsilon ÀÌ¸é
+        # |f(x)| < epsilon ì´ë©´
         if abs(fi) < epsilon:
-            # ¹«ÇÑ ¹Ýº¹¹®À» Áß´Ü
+            # ë¬´í•œ ë°˜ë³µë¬¸ì„ ì¤‘ë‹¨
             break
-        # ±×·¸Áö ¾ÊÀ¸¸é
+        # ê·¸ë ‡ì§€ ì•Šìœ¼ë©´
         else:
-            # xi ¿¡ (-fi / df(xi) ¸¦ ´õÇÔ
+            # xi ì— (-fi / df(xi) ë¥¼ ë”í•¨
             xi += (-fi / df(xi))
 
     if b_verbose:
-        # counter ¸¦ Ç¥½Ã
+        # counter ë¥¼ í‘œì‹œ
         print("nr_counter = %d" % counter)
 
-    # xi ¸¦ ¹ÝÈ¯
+    # xi ë¥¼ ë°˜í™˜
     return xi
 # end of newton
 

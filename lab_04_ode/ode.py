@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from math import cos, atan, sqrt, exp
 
 
@@ -315,6 +316,7 @@ if "__main__" == __name__:
     # exact solution
     vXexact = tuple([exact(tk) for tk in vT])
 
+    # 그래프 그리기 관련 기능 등을 담고 있는 pylab 모듈을 불러 들임
     import pylab
 
     pylab.plot(vT, vX, 'b', label='fwd Euler(0.01)')

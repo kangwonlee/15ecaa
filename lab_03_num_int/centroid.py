@@ -1,5 +1,6 @@
+# -*- coding: utf8 -*-
 import math
-
+# 그래프 그리기 관련 기능 등을 담고 있는 pylab 모듈을 불러 들임
 import pylab
 
 # set path to root_finding.py

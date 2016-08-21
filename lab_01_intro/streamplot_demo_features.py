@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 """
 Demo of the `streamplot` function.
 
@@ -15,6 +16,7 @@ example shows a few features of the stream plot function:
 
 
 import matplotlib.pyplot as plt
+# 배열, 행렬 관련 기능을 담고 있는 numpy 모듈을 불러 들여 np 라는 이름 아래 연결함
 import numpy as np
 
 Y, X = np.mgrid[-3:3:100j, -3:3:100j]

@@ -1,4 +1,4 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf8 -*-
 from sympy import *
 
 print '''2.10.1.1'''
@@ -81,7 +81,8 @@ print "series(cos(x), x) =", series(cos(x), x)
 
 print "series(1/cos(x), x) =", series(1 / cos(x), x)
 
-# Series ������ ���Ͽ� �׷����� �׸�
+# Series 설명을 위하여 그래프를 그림
+# 그래프 그리기 관련 기능 등을 담고 있는 pylab 모듈을 불러 들임
 import pylab
 
 x_deg = pylab.arange(-90, 90 + 1)
