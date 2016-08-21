@@ -165,18 +165,14 @@ def simpson2(f, xi, xe, n=100, b_verbose=False):
     return result
 
 
-def func(x):
+# 적분 될 함수
+def f(x):
     return exp(x)
 
 
-# end of function func()
-
-
-def Func(x):
+# 적분된 함수
+def g(x):
     return exp(x)
-
-
-# end of function Func()
 
 
 if "__main__" == __name__:
@@ -190,49 +186,49 @@ if "__main__" == __name__:
         n_interval = 8
 
         # theoretical exact solution
-        exact = (Func(x_end) - Func(x_begin))
+        exact = (g(x_end) - g(x_begin))
         print "exact solution =", exact
 
         # call rect0 function
-        F_0 = rect0(func, x_begin, x_end, n_interval)
-        print "F_0 =", F_0, "err =", F_0 - exact
+        integration_0 = rect0(f, x_begin, x_end, n_interval)
+        print "integration_0 =", integration_0, "err =", integration_0 - exact
 
         # call trapezoid1 function
-        F_1 = trapezoid1(func, x_begin, x_end, n_interval)
-        print "F_1 =", F_1, "err =", F_1 - exact
+        integration_1 = trapezoid1(f, x_begin, x_end, n_interval)
+        print "integration_1 =", integration_1, "err =", integration_1 - exact
 
         # call simpson2 function
-        F_2 = simpson2(func, x_begin, x_end, n_interval)
-        print "F_2 =", F_2, "err =", F_2 - exact
+        integration_2 = simpson2(f, x_begin, x_end, n_interval)
+        print "integration_2 =", integration_2, "err =", integration_2 - exact
 
         from pylab import fill, bar, show, xlim, ylim, grid
         # exact
         n_plot = 100
-        deltaX_plot = (float(x_end) - x_begin) / n_plot
-        x = [x_begin + k * deltaX_plot for k in xrange(n_plot)]
-        y = [func(x[k]) for k in xrange(n_plot)]
+        delta_x_plot = (float(x_end) - x_begin) / n_plot
+        x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
+        y = [f(x[k]) for k in xrange(n_plot)]
         x += [x_end, x_end, x_begin]
-        y += [func(x_end), 0.0, 0.0]
+        y += [f(x_end), 0.0, 0.0]
 
         fill(x, y)
 
         # rect0()
         n_plot = n_interval
-        deltaX_plot = (float(x_end) - x_begin) / n_plot
-        x = [x_begin + k * deltaX_plot for k in xrange(n_plot)]
-        y = [func(xk + 0.5 * deltaX_plot) for xk in x]
+        delta_x_plot = (float(x_end) - x_begin) / n_plot
+        x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
+        y = [f(xk + 0.5 * delta_x_plot) for xk in x]
         x += [x_end]
         y += [0]
 
-        bar(x, y, width=deltaX_plot, color='g', alpha=0.3)
+        bar(x, y, width=delta_x_plot, color='g', alpha=0.3)
 
         # trapezoid1()
         n_plot = n_interval
-        deltaX_plot = (float(x_end) - float(x_begin)) / n_plot
-        x = [x_begin + k * deltaX_plot for k in xrange(n_plot)]
-        y = [func(xk) for xk in x]
+        delta_x_plot = (float(x_end) - float(x_begin)) / n_plot
+        x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
+        y = [f(xk) for xk in x]
         x += [x_end, x_end, x_begin]
-        y += [func(x_end), 0.0, 0.0]
+        y += [f(x_end), 0.0, 0.0]
 
         fill(x, y, color='r', alpha=0.2)
 
