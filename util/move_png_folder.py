@@ -13,8 +13,11 @@ def skip_this_path(path, png_path):
 
 
 def mkdir(path):
-    result = 'did nothing'
-    if not os.path.exists(path):
+    if os.path.exists(path):
+        result = 'path %r already exists' % path
+    elif not path:
+        result = 'unable to create %r' % path
+    elif not os.path.exists(path):
         split_path = os.path.split(path)
         if not os.path.exists(split_path[0]):
             return_value = mkdir(split_path[0])
@@ -22,6 +25,8 @@ def mkdir(path):
         else:
             os.mkdir(path)
             result = 'created dir %s' % path
+    else:
+        result = "don't know what to do with %r" % path
     return result
 
 
