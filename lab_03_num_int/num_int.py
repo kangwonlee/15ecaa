@@ -97,66 +97,72 @@ def trapezoid1(f, xi, xe, n=100):
     return result
 
 
-def simpson2(f, x0, x1, n=100):
+def simpson2(f, xi, xe, n=100, b_verbose=False):
     """
-    Numerical integration
+    2차 수치 적분
+    xi ~ xe 사이를 n 개의 구간으로 나눔
+    인접한 두 구간 안에서는 f(x) 가 2차 함수일 것이라고 가정함
 
-    Assume f(x) is a 2nd order polynomial between x[k] and x[k+2]
-
-    Parameters
-    ----------
-    f:function to be integrated
-    x0:lower bound of integration
-    x1:upper bound of integration
-    n:number of intervals
-
-    Return:
-    ------
-    Numerical integration of function f(x) in interval [x0, x1]
+    :param f: 적분될 함수
+    :param xi: 정적분 시작 지점
+    :param xe: 정적분 끝 지점
+    :param n: 구간을 나누는 갯수
+    :param n: 구간을 나누는 갯수
+    :param b_verbose: 함수 실행 중 상세 내용 표시 여부
+    :return: f(x) 를 xi ~ xe 구간에서 정적분한 근사값
     """
-    # initialization
-    # calculate x interval
+    # 초기화 시작
 
-    print "n =", n
-    print "n%2 =", n % 2
+    if b_verbose:
+        print "n =", n
+        print "n%2 =", n % 2
 
-    # if n is an odd number make it an even number
-    if (n % 2): n += 1
-    delta_x = (float(x1) - float(x0)) / n
+    # n이 홀수라면 1 증가 시켜서 짝수로 만듦
+    if (n % 2):
+        n += 1
 
-    xk = x0
+    # n개로 나눈 각 구간의 길이를 정함
+    delta_x = (float(xe) - float(xi)) / n
+
+    # 적분 구간 시작 지점 k번째 x 초기화
+    xk = xi
+    # 적분 구간 시작 지점 함수값 k번째 f(x) 초기화
     fxk = f(xk)
 
-    # integration result
+    # 적분 결과를 저장할 변수를 초기화
     result = 0.0
 
-    # for each two-interval
+    # 초기화 끝
+
+    # 주 반복문 main loop
+    # 두 구간씩 묶어 연산을 반복 실시
     # k = 0, 2, 4, ..., (n-1)
     for k in xrange(0, n, 2):
-        # k+1-th x
+        # 적분 구간 중간 지점 k+1 번째 x 계산
         xk1 = xk + delta_x
-        # k+1-th f(x)
+        # 적분 구간 중간 지점 k+1 번째 f(x) 계산
         fxk1 = f(xk1)
 
-        # k+2-th x
+        # 적분 구간 끝 지점 k+2 번째 x 계산
         xk2 = xk1 + delta_x
-        # k+2-th f(x)
+        # 적분 구간 끝 지점 k+2 번째 f(x) 계산
         fxk2 = f(xk2)
 
-        # k-th area
-        F_k = (fxk + 4 * fxk1 + fxk2) * (delta_x / 3.0)
+        # k 번째, k+1 번째 두 구간의 면적의 합을 simpson 공식으로 계산
+        area_k = (fxk + 4 * fxk1 + fxk2) * (delta_x / 3.0)
 
-        # accumulate to integration result
-        result += F_k
+        # 적분 결과에 누적시킴
+        result += area_k
+
+        # 현재 구간의 끝점이 다음 구간의 시작점이 됨
+        # k+2 번째 x 값을 다음 구간 시작점의 x 값으로 지정
         xk = xk2
+        # k+2 번째 f(x) 값을 다음 구간 시작점의 f(x) 값으로 지정
         fxk = fxk2
-    # end k loop
+    # 주 반복문 끝
 
-    # return integration result
+    # 적분 결과를 반환함
     return result
-
-
-# end of function simpson2()
 
 
 def func(x):
