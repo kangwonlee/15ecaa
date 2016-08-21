@@ -1,3 +1,6 @@
+# -*- coding: utf8 -*-
+# 위 주석은 이 .py 파일 안에 한글이 사용되었다는 점을 표시하는 것임
+
 # from math module, import exp() function
 from math import exp
 
