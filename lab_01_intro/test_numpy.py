@@ -8,5 +8,3 @@ print "r2 =", r2
 
 r3 = r1 + r2
 print "r3 =", r3
-
-# ÇÑ±Û
