@@ -9,10 +9,10 @@
 # epsilon 은 허용 되는 오차 범위를 의미함
 # |x| < epsilon == (x = 0)
 # |x - y| < epsilon == (x == y)
-epsilon = 1e-4
+epsilon_global = 1e-4
 
 
-def sequential(f, x0, delta_x=1e-6, epsilon=epsilon, b_verbose=False):
+def sequential(f, x0, delta_x=1e-6, epsilon=epsilon_global, b_verbose=False):
     """
     sequential method
     x0 로 부터 시작해서  delta_x 만큼씩 증가시키면서 |f(x)| 값이 epsilon 값 보다 작아지는지 관찰함
@@ -57,7 +57,7 @@ def sequential(f, x0, delta_x=1e-6, epsilon=epsilon, b_verbose=False):
 # end of sequential()
 
 
-def bisection(f, xl, xh, epsilon=epsilon, b_verbose=False):
+def bisection(f, xl, xh, epsilon=epsilon_global, b_verbose=False):
     """
     bisection method
     f(xl) 과 f(xh)의 부호가 반대인 xl, xh 에서 시작
@@ -123,7 +123,7 @@ def bisection(f, xl, xh, epsilon=epsilon, b_verbose=False):
 # end of bisection()
 
 
-def newton(f, df, x0, epsilon=epsilon, b_verbose=False):
+def newton(f, df, x0, epsilon=epsilon_global, b_verbose=False):
     """
     Newton Raphson method
     비선형 함수인 f(x) 의 xi 지점에서의 접선의 방정식의 근을 구함
