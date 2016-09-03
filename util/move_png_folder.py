@@ -39,6 +39,27 @@ def main():
                 move_png(dir_path, file_name, png_path)
 
 
+def encoding_indicated(txt):
+    def in_txt(encoding):
+        return encoding in txt
+
+    return any(map(in_txt, ('utf8', 'cp949')))
+
+
+def add_utf8(dir_path, file_name):
+    if '.py' == os.path.splitext(file_name)[-1]:
+        full_path = os.path.join(dir_path, file_name)
+        with open(full_path, 'rt') as f:
+            txt = f.read()
+        first_line = txt.splitlines()[0]
+        if not encoding_indicated(first_line):
+            encoding_string = '# -*- coding: utf8 -*-\n'
+            encoding_indicated_string = encoding_string + txt
+
+            with open(full_path, 'wt') as f:
+                f.write(encoding_indicated_string)
+
+
 def move_png(dir_path, file_name, png_path):
     if '.png' == os.path.splitext(file_name)[-1]:
         png_full_path = os.path.join(dir_path, png_path)
