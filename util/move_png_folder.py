@@ -43,7 +43,7 @@ def encoding_indicated(txt):
     def in_txt(encoding):
         return encoding in txt
 
-    return any(map(in_txt, ('utf8', 'cp949')))
+    return any(map(in_txt, ('utf8', 'utf-8', 'cp949')))
 
 
 def add_utf8(dir_path, file_name):
