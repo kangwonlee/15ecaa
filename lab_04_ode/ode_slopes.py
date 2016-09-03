@@ -1,4 +1,7 @@
+# -*- coding: utf8 -*-
+# 배열, 행렬 관련 기능을 담고 있는 numpy 모듈을 불러 들여 np 라는 이름 아래 연결함
 import numpy as np
+# 그래프 그리기 관련 기능 등을 담고 있는 pylab 모듈을 불러 들임
 import pylab
 
 

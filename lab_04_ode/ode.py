@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+# 위 주석은 이 .py 파일 안에 한글이 사용되었다는 점을 표시하는 것임
 from math import cos, atan, sqrt, exp
 
 
@@ -315,6 +317,7 @@ if "__main__" == __name__:
     # exact solution
     vXexact = tuple([exact(tk) for tk in vT])
 
+    # 그래프 그리기 관련 기능 등을 담고 있는 pylab 모듈을 불러 들임
     import pylab
 
     pylab.plot(vT, vX, 'b', label='fwd Euler(0.01)')

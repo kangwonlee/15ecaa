@@ -1,15 +1,15 @@
-# -*- coding: cp949 -*-
+# -*- coding: utf8 -*-
 from pprint import pprint
 
 import linear_algebra as la
 
 
 def gauss_jordan(A):
-    # Çà·ÄÀÇ Å©±â
+    # í–‰ë ¬ì˜ í¬ê¸°
     n_row = len(A)
     n_column = len(A[0])
 
-    # ´ÜÀ§ Çà·Ä°úÀÇ Augmented Matrix ¸¦ ¸¸µê
+    # ë‹¨ìœ„ í–‰ë ¬ê³¼ì˜ Augmented Matrix ë¥¼ ë§Œë“¦
     AI = []
     for i_row in xrange(n_row):
         AI_row = [0.0] * (n_column * 2)
@@ -24,27 +24,27 @@ def gauss_jordan(A):
     print '1234567890' * 7
     pprint(AI, width=30)
 
-    # pivot ¹İº¹¹®
+    # pivot ë°˜ë³µë¬¸
     for i_pivot in xrange(n_row):
-        # pivot ÇàÀ» pivot ¿ä¼Ò·Î ³ª´®.
-        # pivot ¿ä¼Ò´Â 1ÀÌ µÊ
+        # pivot í–‰ì„ pivot ìš”ì†Œë¡œ ë‚˜ëˆ”.
+        # pivot ìš”ì†ŒëŠ” 1ì´ ë¨
         ratio = 1.0 / float(AI[i_pivot][i_pivot])
         for k_column in xrange(n_column * 2):
             AI[i_pivot][k_column] *= ratio
 
-        # Çà ¹İº¹¹®
+        # í–‰ ë°˜ë³µë¬¸
         for j_row in xrange(0, n_row):
             if j_row != i_pivot:
                 ratio = -AI[j_row][i_pivot]
-                # ¿­ ¹İº¹¹®
+                # ì—´ ë°˜ë³µë¬¸
                 for k_column in xrange(n_column * 2):
                     AI[j_row][k_column] += ratio * AI[i_pivot][k_column]
-    # ÀÌ ¹İº¹¹®ÀÌ ³¡³ª°í ³ª¸é ÁÖ ´ë°¢¼± ÀÌ¿ÜÀÇ ¿ä¼Ò´Â ¸ğµÎ 0
+    # ì´ ë°˜ë³µë¬¸ì´ ëë‚˜ê³  ë‚˜ë©´ ì£¼ ëŒ€ê°ì„  ì´ì™¸ì˜ ìš”ì†ŒëŠ” ëª¨ë‘ 0
 
     print "After Gauss Jordan"
     pprint(AI)
 
-    # ¿À¸¥ÂÊÀÇ Çà·ÄÀ» ¶¼¾î³¿
+    # ì˜¤ë¥¸ìª½ì˜ í–‰ë ¬ì„ ë–¼ì–´ëƒ„
     result = []
     for i_row in xrange(n_row):
         result.append(AI[i_row][n_column:])

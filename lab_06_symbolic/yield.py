@@ -4,7 +4,7 @@ import math
 import os
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.pardir, 'wk02')))
+sys.path.append(os.path.abspath(os.path.join(os.pardir, 'lab_02_root_finding')))
 import root_finding
 
 

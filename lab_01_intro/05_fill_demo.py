@@ -2,6 +2,10 @@
 """
 Simple demo of the fill function.
 """
+
+# "lines_bars_and_markers example code: fill_demo.py," Matplotlib 1.5.0 documentation. [Online]. Available:
+#   http://matplotlib.org/1.5.0/examples/lines_bars_and_markers/fill_demo.html. [Accessed: 21-Aug-2016].
+
 # 각 문자열을 화면에 표시
 # 배열, 행렬 관련 기능을 담고 있는 numpy 모듈을 불러 들임
 # 관련 기능은 np. 으로 시작함
