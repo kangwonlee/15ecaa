@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from Tkinter import *  # Importing the Tkinter (tool box) library
 
 root = Tk()  # Create a background window

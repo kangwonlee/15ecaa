@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import math
 
 print("1234567890" * 4)
