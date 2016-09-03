@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import unittest
 
 import eigenanalysis as ea

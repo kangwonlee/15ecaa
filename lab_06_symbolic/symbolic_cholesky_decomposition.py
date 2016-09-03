@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 from pprint import pprint
 
 import sympy as sp
