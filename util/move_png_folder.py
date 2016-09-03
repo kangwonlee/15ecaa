@@ -36,7 +36,7 @@ def main():
     for dir_path, dir_names, file_names in os.walk(os.pardir):
         if not skip_this_path(dir_path, png_path):
             for file_name in file_names:
-                move_png(dir_path, file_name, png_path)
+                add_utf8(dir_path, file_name)
 
 
 def encoding_indicated(txt):
