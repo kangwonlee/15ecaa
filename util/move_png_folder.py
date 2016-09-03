@@ -36,12 +36,16 @@ def main():
     for dir_path, dir_names, file_names in os.walk(os.pardir):
         if not skip_this_path(dir_path, png_path):
             for file_name in file_names:
-                if '.png' == os.path.splitext(file_name)[-1]:
-                    png_full_path = os.path.join(dir_path, png_path)
-                    print(mkdir(png_full_path))
-                    source = os.path.join(dir_path, file_name)
-                    destination = os.path.join(dir_path, png_path, file_name)
-                    os.rename(source, destination)
+                move_png(dir_path, file_name, png_path)
+
+
+def move_png(dir_path, file_name, png_path):
+    if '.png' == os.path.splitext(file_name)[-1]:
+        png_full_path = os.path.join(dir_path, png_path)
+        print(mkdir(png_full_path))
+        source = os.path.join(dir_path, file_name)
+        destination = os.path.join(dir_path, png_path, file_name)
+        os.rename(source, destination)
 
 
 if __name__ == '__main__':
