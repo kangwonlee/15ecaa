@@ -51,8 +51,7 @@ def add_utf8(dir_path, file_name):
         full_path = os.path.join(dir_path, file_name)
         with open(full_path, 'rt') as f:
             txt = f.read()
-        first_line = txt.splitlines()[0]
-        if not encoding_indicated(first_line):
+        if not encoding_indicated(txt):
             encoding_string = '# -*- coding: utf8 -*-\n'
             encoding_indicated_string = encoding_string + txt
 
