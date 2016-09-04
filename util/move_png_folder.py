@@ -46,6 +46,13 @@ def encoding_indicated(txt):
     return any(map(in_txt, ('utf8', 'utf-8', 'cp949')))
 
 
+def add_id_name(dir_path, file_name):
+    if '.py' == os.path.splitext(file_name)[-1]:
+        full_path = os.path.join(dir_path, file_name)
+        with open(full_path, 'rt') as f:
+            txt = f.read()
+
+
 def add_utf8(dir_path, file_name):
     if '.py' == os.path.splitext(file_name)[-1]:
         full_path = os.path.join(dir_path, file_name)
