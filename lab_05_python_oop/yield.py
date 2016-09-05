@@ -25,7 +25,7 @@ def main():
 
     experiment.force_N = float(raw_input("Enter force (N):"))
 
-    x_l_init = root_finding.epsilon * 2
+    x_l_init = root_finding.epsilon_global * 2
     x_h_init = 1.0
     result = root_finding.bisection(experiment.problem_to_solve, x_l_init, x_h_init, 1e-9)
     print "result =", result
