@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import traffic_card_class as tcc
 
 

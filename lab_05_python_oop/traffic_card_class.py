@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # make TrafficCardClass based on another class named "object"
 class TrafficCardClass(object):
     def __init__(self):

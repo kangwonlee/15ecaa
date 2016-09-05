@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 import traffic_card as my_card
 
 print "my_card.check() =", my_card.check()
