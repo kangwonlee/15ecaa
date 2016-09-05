@@ -50,3 +50,10 @@
 * Learn Python the Hard Way http://www.learnpythonthehardway.org/book
 * 어서와 파이썬은 처음이지? 천인국 인피니티북스 2016 ISBN 979-1185578231
 * 점프 투 파이썬 박응용 이지스퍼블리싱 2016 https://wikidocs.net/book/1
+
+### 추천 개발 환경 Development Environment Suggestion
+* Python 2.7.x
+* [Anaconda 4.x Python 2.7 version](https://www.continuum.io/downloads)
+* [PyCharm Community](https://www.jetbrains.com/pycharm/download/)
+* [Git for Windows](https://git-scm.com/download/win)
+* [SourceTree](https://www.sourcetreeapp.com/download/) 또는 or [Github Desktop](https://desktop.github.com/)
