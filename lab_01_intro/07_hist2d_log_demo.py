@@ -26,3 +26,5 @@ colorbar()
 
 # 그래프 표시
 show()
+
+# http://matplotlib.org/examples/pylab_examples/hist2d_log_demo.html

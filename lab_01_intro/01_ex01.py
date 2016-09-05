@@ -4,7 +4,8 @@
 print "Hello World!"
 print "Hello Again"
 print "I like typing this."
-print "This is fun."
-print 'Yay! Printing.'
-print "I'd much rather you 'not'."
-print 'I "said" do not touch this.'
+# Python 3.x 인 경우 문자열을 () 로 감싸주면 됨. 이것은 Python 2.x 에서도 작동함.
+print("This is fun.")
+print('Yay! Printing.')
+print("I'd much rather you 'not'.")
+print('I "said" do not touch this.')
