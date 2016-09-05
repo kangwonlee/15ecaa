@@ -7,5 +7,8 @@ x, y = sp.symbols('x y')
 
 # 기호 x y 를 이용해 기호 z 를 정함
 z = x + 2 * y
+
 # 기호  z 를 화면에 표시함
 print('z = %s' % z)
+
+# SymPy Tutorial, http://docs.sympy.org/latest/tutorial/index.html

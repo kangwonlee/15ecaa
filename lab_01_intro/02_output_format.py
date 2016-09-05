@@ -10,3 +10,5 @@ print("%+8f" % (math.pi))
 
 print("%16.8f" % (math.pi))
 print("1234567890" * 4)
+
+# https://docs.python.org/2.7/library/stdtypes.html#string-formatting
