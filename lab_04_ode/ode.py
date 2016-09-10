@@ -17,48 +17,48 @@ def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
     :return: 시간, x 의 list
     """
     # number of time steps
-    mTimeStep = int((te_sec - ti_sec) * 1.0 / delta_t_sec)
+    m_time_step = int((te_sec - ti_sec) * 1.0 / delta_t_sec)
 
     # number of states == length of initial state vector
-    nStates = len(x0)
+    n_states = len(x0)
 
     # tuple of time step index
-    #   0, 1, ...., mTimeStep-1
-    listK = tuple(range(mTimeStep))
+    #   0, 1, ...., m_time_step-1
+    list_k = tuple(range(m_time_step))
     # tuple of time step
     #   because time step will be constant,
     #   define as a tuple instead of a list
-    listT = tuple(([ti_sec + delta_t_sec * i for i in listK]))
+    list_t = tuple(([ti_sec + delta_t_sec * i for i in list_k]))
     # if ti_sec, te_sec, delta_t_sec are given as 0.0, 1.0, 0.1
-    #   then mTimeStep wil be 10
-    #   and listT will be [0:0.1:0.9];
-    #       len(listT) == 10
+    #   then m_time_step wil be 10
+    #   and list_t will be [0:0.1:0.9];
+    #       len(list_t) == 10
 
     # pre-allocate memory space
     #   to store state vector of each time step
-    listX = [tuple(x0)]  # init x buffer
+    list_x = [tuple(x0)]  # init x buffer
 
     # allocation loop
     #   at k = 0, x is x0
     #   at k = [1, 2, ..., n-1] x is not known
-    #       so use [0.0] * nStates
-    for k in listT[1:]:
-        listX.append([0.0] * nStates)
+    #       so use [0.0] * n_states
+    for k in list_t[1:]:
+        list_x.append([0.0] * n_states)
     # end allocation loop
-    # now 2d array of mTimeStep x nStates prepared
+    # now 2d array of m_time_step x n_states prepared
 
     xk = x0
 
     # time step loop
-    for k in listK[:-1]:
+    for k in list_k[:-1]:
         # derivatives are currently time step
-        sk = f(xk, listT[k])
+        sk = f(xk, list_t[k])
 
         # next step x
-        xk1 = listX[k + 1]
+        xk1 = list_x[k + 1]
 
         # state loop
-        for i in xrange(nStates):
+        for i in xrange(n_states):
             # apply forward Euler method
             xk1[i] = xk[i] + sk[i] * delta_t_sec
         # end state loop at time step k
@@ -67,7 +67,7 @@ def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
         xk = xk1
     # end time step loop
 
-    return listT, listX
+    return list_t, list_x
 
 
 # end function fwd_euler()
@@ -227,23 +227,23 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
 
 
 tau = 0.5
-m = 10.0
-c = 100.0
-k = 1000.0
+m_kg = 10.0
+c_newton_per_meter_per_sec = 100.0
+k_newton_per_meter = 1000.0
 
 
 def func(xk, tk):
     """
     Differential equation
 
-    m x2dot(t) + c xdot(t) + k x(t) = u(t)
+    m_kg x2dot(t) + c_newton_per_meter_per_sec xdot(t) + k_newton_per_meter x(t) = u(t)
     u(t) = 1
 
-    Use m, c, k defined outside of this function
+    Use m_kg, c_newton_per_meter_per_sec, k_newton_per_meter defined outside of this function
 
     Parameters
     ----------
-    xk: state vector at time step k
+    xk: state vector at time step k_newton_per_meter
         xk[0] = x
         xk[1] = xdot
 
@@ -257,7 +257,7 @@ def func(xk, tk):
     y1, y2 = xk[0], xk[1]
 
     y1dot = y2
-    y2dot = (u - (k * y1 + c * y2)) / m
+    y2dot = (u - (k_newton_per_meter * y1 + c_newton_per_meter_per_sec * y2)) / m_kg
 
     return (y1dot, y2dot)
 
@@ -274,9 +274,9 @@ def exact(t):
     # step input
     u = 1
     # natural frequency (rad/sec)
-    wn = sqrt(k / m)
+    wn = sqrt(k_newton_per_meter / m_kg)
     # damping ratio
-    zeta = c / (2.0 * m * wn)
+    zeta = c_newton_per_meter_per_sec / (2.0 * m_kg * wn)
 
     s = sqrt(1.0 - zeta * zeta)
     s1 = 1.0 / s
@@ -286,7 +286,7 @@ def exact(t):
     # phase (rad)
     phi = atan(zeta * s)
 
-    y1 = (u / k) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
+    y1 = (u / k_newton_per_meter) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
 
     return (y1)
 
