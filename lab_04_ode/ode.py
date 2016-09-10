@@ -9,6 +9,10 @@ def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
 
     t[k] 와 t[k+1] 사이에는 dx/dt 가 상수일 것으로 가정함
 
+    dx/dt 로 t[k] 에서의 값을 사용
+
+    delta_t_sec 가 작은 값이 되지 않으면 오차가 커지는 경향이 있음
+
     :param f: dx/dt = f(x,t)
     :param x0: x 의 초기값
     :param ti_sec: 초기 시간
@@ -16,61 +20,71 @@ def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
     :param delta_t_sec: 시간 간격
     :return: 시간, x 의 list
     """
-    # number of time steps
+    # ti_sec ~ te_sec 사이를 delta_t_sec 간격으로 나눈 갯수. 소숫점 아래는 버림? 반올림?
     m_time_step = int((te_sec - ti_sec) * 1.0 / delta_t_sec)
 
-    # number of states == length of initial state vector
+    # 상태의 갯수 == 초기 상태 벡터의 길이
     n_states = len(x0)
 
-    # tuple of time step index
+    # time step 인덱스 k를 순서 대로 나열하여 tuple 로 저장 (list 와 달리 이후 변경 불가)
     #   0, 1, ...., m_time_step-1
     list_k = tuple(range(m_time_step))
-    # tuple of time step
-    #   because time step will be constant,
-    #   define as a tuple instead of a list
+
+    # time step tk 를 순서대로 나열하여 tuple 로 저장 (list 와 달리 이후 변경 불가)
     list_t = tuple(([ti_sec + delta_t_sec * i for i in list_k]))
-    # if ti_sec, te_sec, delta_t_sec are given as 0.0, 1.0, 0.1
-    #   then m_time_step wil be 10
-    #   and list_t will be [0:0.1:0.9];
+
+    # 예를 들어 ti_sec, te_sec, delta_t_sec 이 0.0, 1.0, 0.1 로 주어졌다면
+    #   m_time_step 은 10
+    #       list_t 에는 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 가 저장될 것이며
     #       len(list_t) == 10
 
-    # pre-allocate memory space
-    #   to store state vector of each time step
-    list_x = [tuple(x0)]  # init x buffer
+    # 각 time step 에서의 상태 변수 값을 저장할 list 를 미리 할당(allocate) 시작
+    # list_x 를 초기화 함
+    # list_x[0] == k = 0 일때의 x 값 == 초기값 x0
+    list_x = [tuple(x0)]
 
-    # allocation loop
-    #   at k = 0, x is x0
-    #   at k = [1, 2, ..., n-1] x is not known
-    #       so use [0.0] * n_states
+    # 행 할당 반복문 시작
+    #   list_x[0] 는 위에서 이미 초기값 x0 로 정함
+    #   k = [1, 2, ..., n-1] 인 경우 x 즉
+    #       list_x[1], list_x[2], ..., list_x[n-1] 의 값은 아직 알 수 없음
+    #       따라서 0.0 을 n_states 개 담은 list 를 만듦
     for k in list_t[1:]:
         list_x.append([0.0] * n_states)
-    # end allocation loop
-    # now 2d array of m_time_step x n_states prepared
+    # 행 할당 반복문 종료
 
+    # 이렇게 하면 m_time_step x n_states 의 크기를 갖는 2차원 배열 공간이 준비됨
+
+    # python 의 경우, 위와 같이 미리 할당하지 않고 각 time step 마다 state x 를 append 할 수도 있음
+    # 다른 프로그래밍 언어의 경우 자료를 저장하기 전에 저장할 장소를 할당할 필요가 있을 경우가 많음
+
+    # 상태 변수 저장할 공간 할당 끝
+
+    # xk 변수를 x0로 초기화
     xk = x0
 
-    # time step loop
+    # time step 반복문 시작
     for k in list_k[:-1]:
-        # derivatives are currently time step
+        # 이번 time step 에서의 기울기 dx/dt = f(x) 를 계산하여 sk 라는 변수에 저장
         sk = f(xk, list_t[k])
 
-        # next step x
+        # 다음 time step 에서의 상태 x[k + 1] 을 저장할 공간을 xk1이라는 이름으로 지정
         xk1 = list_x[k + 1]
 
-        # state loop
+        # 각 상태 반복문
         for i in xrange(n_states):
-            # apply forward Euler method
+            # 전진 오일러법을 적용
             xk1[i] = xk[i] + sk[i] * delta_t_sec
-        # end state loop at time step k
+        # 각 상태 반복문 끝
 
-        # update xk to next step
+        # xk 값을 다음 상태 값으로 갱신
         xk = xk1
-    # end time step loop
+    # time step 반복문 끝
 
+    # 각 time step 별 시간, 상태 값을 반환
     return list_t, list_x
 
 
-# end function fwd_euler()
+# fwd_euler() 함수 끝
 
 
 def mod_euler(f, x_init, t_start, t_end, delta_t):
