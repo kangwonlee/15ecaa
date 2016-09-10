@@ -5,22 +5,16 @@ from math import cos, atan, sqrt, exp
 
 def fwd_euler(f, x0, ti, te, deltaT):
     """
-    Forward Euler Method for Ordinary Differential Equations
+    상미분 방정식의 초기값 문제를 위한 전진 오일러법
 
-    Assume slope is constant between t[k] and t[k+1]
+    t[k] 와 t[k+1] 사이에는 dx/dt 가 상수일 것으로 가정함
 
-    Parameters
-    ----------
-    f: dx/dt = f(x, t)
-    x0: initial state
-    ti: initial time
-    te: final time
-    deltaT: time step
-
-    Returns
-    -------
-    listT: 1-dimensional list of time at each time step
-    listX: 2-dimensional list of state x at each time step
+    :param f: dx/dt = f(x,t)
+    :param x0: x 의 초기값
+    :param ti: 초기 시간
+    :param te: 끝 시간
+    :param deltaT: 시간 간격
+    :return: 시간, x 의 list
     """
     # number of time steps
     mTimeStep = int((te - ti) * 1.0 / deltaT)
