@@ -3,7 +3,7 @@
 from math import cos, atan, sqrt, exp
 
 
-def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
+def fwd_euler(f, x_init, t_start, t_end, delta_t):
     """
     상미분 방정식의 초기값 문제를 위한 전진 오일러법
 
@@ -14,37 +14,37 @@ def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
     delta_t_sec 가 작은 값이 되지 않으면 오차가 커지는 경향이 있음
 
     :param f: dx/dt = f(x,t)
-    :param x0: x 의 초기값
-    :param ti_sec: 초기 시간
-    :param te_sec: 끝 시간
-    :param delta_t_sec: 시간 간격
+    :param x_init: x 의 초기값
+    :param t_start: 초기 시간
+    :param t_end: 끝 시간
+    :param delta_t: 시간 간격
     :return: 시간, x 의 list
     """
-    # ti_sec ~ te_sec 사이를 delta_t_sec 간격으로 나눈 갯수. 소숫점 아래는 버림? 반올림?
-    m_time_step = int((te_sec - ti_sec) * 1.0 / delta_t_sec)
+    # t_start ~ t_end 사이를 delta_t 간격으로 나눈 갯수. 소숫점 아래는 버림? 반올림?
+    m_time_step = int((t_end - t_start) * 1.0 / delta_t)
 
     # 상태의 갯수 == 초기 상태 벡터의 길이
-    n_states = len(x0)
+    n_states = len(x_init)
 
     # time step 인덱스 k를 순서 대로 나열하여 tuple 로 저장 (list 와 달리 이후 변경 불가)
     #   0, 1, ...., m_time_step-1
     list_k = tuple(range(m_time_step))
 
     # time step tk 를 순서대로 나열하여 tuple 로 저장 (list 와 달리 이후 변경 불가)
-    list_t = tuple(([ti_sec + delta_t_sec * i for i in list_k]))
+    list_t = tuple(([t_start + delta_t * i for i in list_k]))
 
-    # 예를 들어 ti_sec, te_sec, delta_t_sec 이 0.0, 1.0, 0.1 로 주어졌다면
+    # 예를 들어 t_start, t_end, delta_t 이 0.0, 1.0, 0.1 로 주어졌다면
     #   m_time_step 은 10
     #       list_t 에는 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 가 저장될 것이며
     #       len(list_t) == 10
 
     # 각 time step 에서의 상태 변수 값을 저장할 list 를 미리 할당(allocate) 시작
     # list_x 를 초기화 함
-    # list_x[0] == k = 0 일때의 x 값 == 초기값 x0
-    list_x = [tuple(x0)]
+    # list_x[0] == k = 0 일때의 x 값 == 초기값 x_init
+    list_x = [tuple(x_init)]
 
     # 행 할당 반복문 시작
-    #   list_x[0] 는 위에서 이미 초기값 x0 로 정함
+    #   list_x[0] 는 위에서 이미 초기값 x_init 로 정함
     #   k = [1, 2, ..., n-1] 인 경우 x 즉
     #       list_x[1], list_x[2], ..., list_x[n-1] 의 값은 아직 알 수 없음
     #       따라서 0.0 을 n_states 개 담은 list 를 만듦
@@ -60,7 +60,7 @@ def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
     # 상태 변수 저장할 공간 할당 끝
 
     # xk 변수를 x0로 초기화
-    xk = x0
+    xk = x_init
 
     # time step 반복문 시작
     for k in list_k[:-1]:
@@ -73,7 +73,7 @@ def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
         # 각 상태 반복문
         for i in xrange(n_states):
             # 전진 오일러법을 적용
-            xk1[i] = xk[i] + sk[i] * delta_t_sec
+            xk1[i] = xk[i] + sk[i] * delta_t
         # 각 상태 반복문 끝
 
         # xk 값을 다음 상태 값으로 갱신
