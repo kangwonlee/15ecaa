@@ -23,5 +23,6 @@ def dgdx(x):
 
 if "__main__" == __name__:
     # 주어진 초기값에서 시작하여 g(x) = 0 인 x 를 찾고자 함
+    # 생각 보다 시간이 많이 걸릴 수 있음
     x_nr = rf.newton(g, dgdx, 0)
     print('x = %g, f(%g) = %g' % (x_nr, x_nr, g(x_nr)))
