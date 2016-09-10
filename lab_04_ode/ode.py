@@ -300,7 +300,7 @@ def exact(t):
 # end of function exact()
 
 
-if "__main__" == __name__:
+def main():
     help(fwd_euler)
 
     ti = 0.0
@@ -345,3 +345,7 @@ if "__main__" == __name__:
     pylab.ylabel('xdot')
     pylab.xlabel('x')
     pylab.show()
+
+
+if "__main__" == __name__:
+    main()
