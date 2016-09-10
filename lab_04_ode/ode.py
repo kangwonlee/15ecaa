@@ -3,7 +3,7 @@
 from math import cos, atan, sqrt, exp
 
 
-def fwd_euler(f, x0, ti, te, deltaT):
+def fwd_euler(f, x0, ti_sec, te_sec, delta_t_sec):
     """
     상미분 방정식의 초기값 문제를 위한 전진 오일러법
 
@@ -11,13 +11,13 @@ def fwd_euler(f, x0, ti, te, deltaT):
 
     :param f: dx/dt = f(x,t)
     :param x0: x 의 초기값
-    :param ti: 초기 시간
-    :param te: 끝 시간
-    :param deltaT: 시간 간격
+    :param ti_sec: 초기 시간
+    :param te_sec: 끝 시간
+    :param delta_t_sec: 시간 간격
     :return: 시간, x 의 list
     """
     # number of time steps
-    mTimeStep = int((te - ti) * 1.0 / deltaT)
+    mTimeStep = int((te_sec - ti_sec) * 1.0 / delta_t_sec)
 
     # number of states == length of initial state vector
     nStates = len(x0)
@@ -28,8 +28,8 @@ def fwd_euler(f, x0, ti, te, deltaT):
     # tuple of time step
     #   because time step will be constant,
     #   define as a tuple instead of a list
-    listT = tuple(([ti + deltaT * i for i in listK]))
-    # if ti, te, deltaT are given as 0.0, 1.0, 0.1
+    listT = tuple(([ti_sec + delta_t_sec * i for i in listK]))
+    # if ti_sec, te_sec, delta_t_sec are given as 0.0, 1.0, 0.1
     #   then mTimeStep wil be 10
     #   and listT will be [0:0.1:0.9];
     #       len(listT) == 10
@@ -60,7 +60,7 @@ def fwd_euler(f, x0, ti, te, deltaT):
         # state loop
         for i in xrange(nStates):
             # apply forward Euler method
-            xk1[i] = xk[i] + sk[i] * deltaT
+            xk1[i] = xk[i] + sk[i] * delta_t_sec
         # end state loop at time step k
 
         # update xk to next step
