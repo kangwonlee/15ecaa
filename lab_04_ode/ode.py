@@ -89,39 +89,28 @@ def fwd_euler(f, x_init, t_start, t_end, delta_t):
 
 def mod_euler(f, x_init, t_start, t_end, delta_t):
     """
-    Modified Euler Method Solver
-    Usage: listT, listX = mod_euler(f, x_init, t_start, t_end, delta_t)
+    상미분 방정식의 초기값 문제를 위한 수정 오일러법
 
-    Assume slope changes linearly between t[k] and t[k+1]
+    t[k] 와 t[k+1] 사이에는 dx/dt 가 선형으로 변화할 것으로 가정함
 
-    Parameters
-    ----------
-    f : callable(x, t)
-        Computes the derivatives of x at (x, t)
-        dx/dt = f(x, t)
-        Returns a list of [x0, x1, ... ]
-    x_init : list or tuple
-         initial state of x
-    t_start : float
-        Initial time
-    t_end : float
-        Ending time
-    deltaT : float
-        Sampling time
-    delta_t: time step
-    Returns
-    -------
-    t_list : list, shape(int(te-ti)/deltaT + 1,1)
-    x_list : list, shape(int(te-ti)/deltaT + 1,len(x_init))
+    dx/dt 로 t[k] 에서의 값을 사용
+
+    :param f: dx/dt = f(x,t)
+    :param x_init: x 의 초기값
+    :param t_start: 초기 시간
+    :param t_end: 끝 시간
+    :param delta_t: 시간 간격
+    :return: 시간, x 의 list
 
     Examples
     --------
-    >>> lT, lX = mod_euler(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
-    >>> print lT
+    >>> list_t, list_x = mod_euler(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
+    >>> print list_t
     [0.0, 0.10000000000000001, 0.20000000000000001, 0.30000000000000004, 0.40000000000000002, 0.5]
-    >>> print lX
+    >>> print list_x
     [[0], [0.0077254248593736849], [0.029382595321196046], [0.062135518400607666], [0.10209697840236187], [0.14470734296725662]]
     """
+
     x_list = [tuple(x_init)]  # init x buffer
     t_list = [t_start]
 
@@ -189,10 +178,10 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
 
     Examples
     --------
-    >>> lT, lX = runge_while(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
-    >>> print lT
+    >>> list_t, list_x = runge_while(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
+    >>> print list_t
     [0.0, 0.10000000000000001, 0.20000000000000001, 0.30000000000000004, 0.40000000000000002, 0.5]
-    >>> print lX
+    >>> print list_x
     [[0], [0.0076608912592762328], [0.029394418941171337], [0.062350250267466614], [0.10261479161461737], [0.14559255884915154]]
     """
 
