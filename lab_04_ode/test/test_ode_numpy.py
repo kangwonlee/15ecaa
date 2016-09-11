@@ -16,6 +16,12 @@ class TestOdeNumpy(unittest.TestCase):
 
         self.ode_test(function_reference, function_under_test)
 
+    def test_modified_euler(self):
+        function_under_test = ode_numpy.mod_euler
+        function_reference = ode.mod_euler
+
+        self.ode_test(function_reference, function_under_test)
+
     def ode_test(self, function_reference, function_under_test):
         ti = 0.0
         te = 2.0

@@ -29,6 +29,41 @@ def mac_operation(xk, sk, delta_t):
     return xk1
 
 
+def mod_euler(f, x_init, t_start, t_end, delta_t):
+    return ode_solver(f, x_init, t_start, t_end + 0.5 * delta_t, delta_t, mod_euler_step)
+
+
+def mod_euler_step(f, xk, tk, delta_t):
+    """
+    수정 오일러법 t[k] -> t[k+1] 한 step
+
+    t[k] 에서의 기울기 f(t[k], x[k]) 로 t[k+1] 에서의 x[k+1]p 을 구함
+
+    t[k+1] 과 x[k+1]p 로 t[k+1] 에서의 기울기 f(t[k+1], x[k+1]p) 를 구함
+
+    t[k] -> t[k+1] 사이의 기울기는 f(t[k], x[k]) 와 f(t[k+1], x[k+1]) 의 평균일 것으로 가정
+
+    :param f: dx/dt = f(x,t)
+    :param xk: x[k]
+    :param tk: t[k]
+    :param delta_t: 시간 간격
+    :return: x[k + 1]
+    """
+    # t[k] 에서의 기울기 f(t[k], x[k]) 로 t[k+1] 에서의 x[k+1]p 을 구함
+    xk1_p, sk = fwd_euler_step(f, xk, tk, delta_t)
+
+    # t[k+1] 과 x[k+1]p 로 t[k+1] 에서의 기울기 f(t[k+1], x[k+1]p) 를 구함
+    sk1_p = numpy.array(f(xk1_p, tk + delta_t))
+
+    # t[k] -> t[k+1] 사이의 기울기는 f(t[k], x[k]) 와 f(t[k+1], x[k+1]) 의 평균일 것으로 가정
+    sk1_c = (sk + sk1_p) * 0.5
+
+    # 수정 오일러법을 적용
+    xk1 = mac_operation(xk, sk1_c, delta_t)
+
+    return xk1, sk1_c
+
+
 def ode_solver(f, x_init, t_start, t_end, delta_t, solver_step):
     """
     상미분 방정식의 초기값 문제 solver
