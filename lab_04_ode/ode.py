@@ -3,117 +3,114 @@
 from math import cos, atan, sqrt, exp
 
 
-def fwd_euler(f, x0, ti, te, deltaT):
+def fwd_euler(f, x_init, t_start, t_end, delta_t):
     """
-    Forward Euler Method for Ordinary Differential Equations
+    상미분 방정식의 초기값 문제를 위한 전진 오일러법
 
-    Assume slope is constant between t[k] and t[k+1]
+    t[k] 와 t[k+1] 사이에는 dx/dt 가 상수일 것으로 가정함
 
-    Parameters
-    ----------
-    f: dx/dt = f(x, t)
-    x0: initial state
-    ti: initial time
-    te: final time
-    deltaT: time step
+    dx/dt 로 t[k] 에서의 값을 사용
 
-    Returns
-    -------
-    listT: 1-dimensional list of time at each time step
-    listX: 2-dimensional list of state x at each time step
+    delta_t_sec 가 작은 값이 되지 않으면 오차가 커지는 경향이 있음
+
+    :param f: dx/dt = f(x,t)
+    :param x_init: x 의 초기값
+    :param t_start: 초기 시간
+    :param t_end: 끝 시간
+    :param delta_t: 시간 간격
+    :return: 시간, x 의 list
     """
-    # number of time steps
-    mTimeStep = int((te - ti) * 1.0 / deltaT)
+    # t_start ~ t_end 사이를 delta_t 간격으로 나눈 갯수. 소숫점 아래는 버림? 반올림?
+    m_time_step = int((t_end - t_start) * 1.0 / delta_t)
 
-    # number of states == length of initial state vector
-    nStates = len(x0)
+    # 상태의 갯수 == 초기 상태 벡터의 길이
+    n_states = len(x_init)
 
-    # tuple of time step index
-    #   0, 1, ...., mTimeStep-1
-    listK = tuple(range(mTimeStep))
-    # tuple of time step
-    #   because time step will be constant,
-    #   define as a tuple instead of a list
-    listT = tuple(([ti + deltaT * i for i in listK]))
-    # if ti, te, deltaT are given as 0.0, 1.0, 0.1
-    #   then mTimeStep wil be 10
-    #   and listT will be [0:0.1:0.9];
-    #       len(listT) == 10
+    # time step 인덱스 k를 순서 대로 나열하여 tuple 로 저장 (list 와 달리 이후 변경 불가)
+    #   0, 1, ...., m_time_step-1
+    list_k = tuple(range(m_time_step))
 
-    # pre-allocate memory space
-    #   to store state vector of each time step
-    listX = [tuple(x0)]  # init x buffer
+    # time step tk 를 순서대로 나열하여 tuple 로 저장 (list 와 달리 이후 변경 불가)
+    list_t = tuple(([t_start + delta_t * i for i in list_k]))
 
-    # allocation loop
-    #   at k = 0, x is x0
-    #   at k = [1, 2, ..., n-1] x is not known
-    #       so use [0.0] * nStates
-    for k in listT[1:]:
-        listX.append([0.0] * nStates)
-    # end allocation loop
-    # now 2d array of mTimeStep x nStates prepared
+    # 예를 들어 t_start, t_end, delta_t 이 0.0, 1.0, 0.1 로 주어졌다면
+    #   m_time_step 은 10
+    #       list_t 에는 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 가 저장될 것이며
+    #       len(list_t) == 10
 
-    xk = x0
+    # 각 time step 에서의 상태 변수 값을 저장할 list 를 미리 할당(allocate) 시작
+    # list_x 를 초기화 함
+    # list_x[0] == k = 0 일때의 x 값 == 초기값 x_init
+    list_x = [tuple(x_init)]
 
-    # time step loop
-    for k in listK[:-1]:
-        # derivatives are currently time step
-        sk = f(xk, listT[k])
+    # 행 할당 반복문 시작
+    #   list_x[0] 는 위에서 이미 초기값 x_init 로 정함
+    #   k = [1, 2, ..., n-1] 인 경우 x 즉
+    #       list_x[1], list_x[2], ..., list_x[n-1] 의 값은 아직 알 수 없음
+    #       따라서 0.0 을 n_states 개 담은 list 를 만듦
+    for k in list_t[1:]:
+        list_x.append([0.0] * n_states)
+    # 행 할당 반복문 종료
 
-        # next step x
-        xk1 = listX[k + 1]
+    # 이렇게 하면 m_time_step x n_states 의 크기를 갖는 2차원 배열 공간이 준비됨
 
-        # state loop
-        for i in xrange(nStates):
-            # apply forward Euler method
-            xk1[i] = xk[i] + sk[i] * deltaT
-        # end state loop at time step k
+    # python 의 경우, 위와 같이 미리 할당하지 않고 각 time step 마다 state x 를 append 할 수도 있음
+    # 다른 프로그래밍 언어의 경우 자료를 저장하기 전에 저장할 장소를 할당할 필요가 있을 경우가 많음
 
-        # update xk to next step
+    # 상태 변수 저장할 공간 할당 끝
+
+    # xk 변수를 x0로 초기화
+    xk = x_init
+
+    # time step 반복문 시작
+    for k in list_k[:-1]:
+        # 이번 time step 에서의 기울기 dx/dt = f(x) 를 계산하여 sk 라는 변수에 저장
+        sk = f(xk, list_t[k])
+
+        # 다음 time step 에서의 상태 x[k + 1] 을 저장할 공간을 xk1이라는 이름으로 지정
+        xk1 = list_x[k + 1]
+
+        # 각 상태 반복문
+        for i in xrange(n_states):
+            # 전진 오일러법을 적용
+            xk1[i] = xk[i] + sk[i] * delta_t
+        # 각 상태 반복문 끝
+
+        # xk 값을 다음 상태 값으로 갱신
         xk = xk1
-    # end time step loop
+    # time step 반복문 끝
 
-    return listT, listX
+    # 각 time step 별 시간, 상태 값을 반환
+    return list_t, list_x
 
 
-# end function fwd_euler()
+# fwd_euler() 함수 끝
 
 
 def mod_euler(f, x_init, t_start, t_end, delta_t):
     """
-    Modified Euler Method Solver
-    Usage: listT, listX = mod_euler(f, x_init, t_start, t_end, delta_t)
+    상미분 방정식의 초기값 문제를 위한 수정 오일러법
 
-    Assume slope changes linearly between t[k] and t[k+1]
+    t[k] 와 t[k+1] 사이에는 dx/dt 가 선형으로 변화할 것으로 가정함
 
-    Parameters
-    ----------
-    f : callable(x, t)
-        Computes the derivatives of x at (x, t)
-        dx/dt = f(x, t)
-        Returns a list of [x0, x1, ... ]
-    x_init : list or tuple
-         initial state of x
-    t_start : float
-        Initial time
-    t_end : float
-        Ending time
-    deltaT : float
-        Sampling time
-    delta_t: time step
-    Returns
-    -------
-    t_list : list, shape(int(te-ti)/deltaT + 1,1)
-    x_list : list, shape(int(te-ti)/deltaT + 1,len(x_init))
+    dx/dt 로 t[k] 에서의 값을 사용
+
+    :param f: dx/dt = f(x,t)
+    :param x_init: x 의 초기값
+    :param t_start: 초기 시간
+    :param t_end: 끝 시간
+    :param delta_t: 시간 간격
+    :return: 시간, x 의 list
 
     Examples
     --------
-    >>> lT, lX = mod_euler(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
-    >>> print lT
+    >>> list_t, list_x = mod_euler(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
+    >>> print list_t
     [0.0, 0.10000000000000001, 0.20000000000000001, 0.30000000000000004, 0.40000000000000002, 0.5]
-    >>> print lX
+    >>> print list_x
     [[0], [0.0077254248593736849], [0.029382595321196046], [0.062135518400607666], [0.10209697840236187], [0.14470734296725662]]
     """
+
     x_list = [tuple(x_init)]  # init x buffer
     t_list = [t_start]
 
@@ -181,10 +178,10 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
 
     Examples
     --------
-    >>> lT, lX = runge_while(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
-    >>> print lT
+    >>> list_t, list_x = runge_while(lambda x, t:[(math.sin(math.pi*t) - x[0])*0.5],[0],0.0, 0.5, 0.1)
+    >>> print list_t
     [0.0, 0.10000000000000001, 0.20000000000000001, 0.30000000000000004, 0.40000000000000002, 0.5]
-    >>> print lX
+    >>> print list_x
     [[0], [0.0076608912592762328], [0.029394418941171337], [0.062350250267466614], [0.10261479161461737], [0.14559255884915154]]
     """
 
@@ -233,23 +230,23 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
 
 
 tau = 0.5
-m = 10.0
-c = 100.0
-k = 1000.0
+m_kg = 10.0
+c_newton_per_meter_per_sec = 100.0
+k_newton_per_meter = 1000.0
 
 
 def func(xk, tk):
     """
     Differential equation
 
-    m x2dot(t) + c xdot(t) + k x(t) = u(t)
+    m_kg x2dot(t) + c_newton_per_meter_per_sec xdot(t) + k_newton_per_meter x(t) = u(t)
     u(t) = 1
 
-    Use m, c, k defined outside of this function
+    Use m_kg, c_newton_per_meter_per_sec, k_newton_per_meter defined outside of this function
 
     Parameters
     ----------
-    xk: state vector at time step k
+    xk: state vector at time step k_newton_per_meter
         xk[0] = x
         xk[1] = xdot
 
@@ -263,7 +260,7 @@ def func(xk, tk):
     y1, y2 = xk[0], xk[1]
 
     y1dot = y2
-    y2dot = (u - (k * y1 + c * y2)) / m
+    y2dot = (u - (k_newton_per_meter * y1 + c_newton_per_meter_per_sec * y2)) / m_kg
 
     return (y1dot, y2dot)
 
@@ -280,9 +277,9 @@ def exact(t):
     # step input
     u = 1
     # natural frequency (rad/sec)
-    wn = sqrt(k / m)
+    wn = sqrt(k_newton_per_meter / m_kg)
     # damping ratio
-    zeta = c / (2.0 * m * wn)
+    zeta = c_newton_per_meter_per_sec / (2.0 * m_kg * wn)
 
     s = sqrt(1.0 - zeta * zeta)
     s1 = 1.0 / s
@@ -292,7 +289,7 @@ def exact(t):
     # phase (rad)
     phi = atan(zeta * s)
 
-    y1 = (u / k) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
+    y1 = (u / k_newton_per_meter) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
 
     return (y1)
 
@@ -300,7 +297,7 @@ def exact(t):
 # end of function exact()
 
 
-if "__main__" == __name__:
+def main():
     help(fwd_euler)
 
     ti = 0.0
@@ -345,3 +342,7 @@ if "__main__" == __name__:
     pylab.ylabel('xdot')
     pylab.xlabel('x')
     pylab.show()
+
+
+if "__main__" == __name__:
+    main()

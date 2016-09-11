@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+# [학번] [이름]
 """
 1변수 방정식의 근을 찾는 방법 중 Newton-Raphson method 를 사용하여
 어떤 함수 g(x)의 근을 찾고자 함
@@ -23,5 +24,6 @@ def dgdx(x):
 
 if "__main__" == __name__:
     # 주어진 초기값에서 시작하여 g(x) = 0 인 x 를 찾고자 함
+    # 생각 보다 시간이 많이 걸릴 수 있음
     x_nr = rf.newton(g, dgdx, 0)
     print('x = %g, f(%g) = %g' % (x_nr, x_nr, g(x_nr)))
