@@ -82,8 +82,6 @@ def fwd_euler(f, x_init, t_start, t_end, delta_t):
 
     # 각 time step 별 시간, 상태 값을 반환
     return list_t, list_x
-
-
 # fwd_euler() 함수 끝
 
 
@@ -147,6 +145,9 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
         t_list.append(tk)
 
     return t_list, x_list
+
+
+# mod_euler() 함수 끝
 
 
 def runge_while(f, x_init, t_init, t_end, delta_t):
@@ -224,6 +225,9 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
         listT.append(tk)
 
     return listT, listX
+
+
+# runge_while() 함수 끝
 
 
 tau = 0.5
