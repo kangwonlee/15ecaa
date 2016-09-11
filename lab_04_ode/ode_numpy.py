@@ -4,20 +4,36 @@ import numpy
 
 
 def fwd_euler(f, x_init, t_start, t_end, delta_t):
+    return ode_solver(f, x_init, t_start, t_end, delta_t, fwd_euler_step)
+
+
+def fwd_euler_step(f, xk, tk, delta_t):
     """
-    상미분 방정식의 초기값 문제를 위한 전진 오일러법
+    전진 오일러법 t[k] -> t[k+1] 한 step
 
-    t[k] 와 t[k+1] 사이에는 dx/dt 가 상수일 것으로 가정함
+    :param f: dx/dt = f(x,t)
+    :param xk: x[k]
+    :param tk: t[k]
+    :param delta_t: 시간 간격
+    :return: x[k + 1]
+    """
+    # 이번 time step 에서의 기울기 dx/dt = f(x) 를 계산하여 sk 라는 변수에 저장
+    sk = numpy.array(f(xk, tk))
+    # 전진 오일러법을 적용
+    xk1 = xk + sk * delta_t
+    return xk1
 
-    dx/dt 로 t[k] 에서의 값을 사용
 
-    delta_t_sec 가 작은 값이 되지 않으면 오차가 커지는 경향이 있음
+def ode_solver(f, x_init, t_start, t_end, delta_t, solver_step):
+    """
+    상미분 방정식의 초기값 문제 solver
 
     :param f: dx/dt = f(x,t)
     :param x_init: x 의 초기값
     :param t_start: 초기 시간
     :param t_end: 끝 시간
     :param delta_t: 시간 간격
+    :param solver_step: t[k] -> t[k+1] 한 step 계산 함수
     :return: 시간, x 의 list
     """
     # time step tk 를 순서대로 나열
@@ -53,15 +69,10 @@ def fwd_euler(f, x_init, t_start, t_end, delta_t):
 
     # time step 반복문 시작
     for k in array_k[:-1]:
-        # 이번 time step 에서의 기울기 dx/dt = f(x) 를 계산하여 sk 라는 변수에 저장
-        sk = numpy.array(f(array_x[k], array_t[k]))
-
-        # 전진 오일러법을 적용
-        array_x[k + 1] = array_x[k] + sk * delta_t
+        array_x[k + 1] = solver_step(f, array_x[k], array_t[k], delta_t)
 
     # time step 반복문 끝
 
     # 각 time step 별 시간, 상태 값을 반환
     return array_t, array_x
-
 # fwd_euler() 함수 끝
