@@ -187,7 +187,7 @@ def func(x):
 
 
 # end of func()
-# inspired by Scratch example
+# BATzerk, "Square Root Calculator", Scratch, [Online] Available : https://scratch.mit.edu/projects/35488/
 
 
 def dfunc(x):
