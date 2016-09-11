@@ -173,84 +173,84 @@ def g(x):
     return exp(x)
 
 
+# main() 함수를 정함
+def main():
+    """
+    위 0, 1, 2차 함수의 적분
+    :return:
+    """
+    # rect0 함수의 도움말을 표시
+    # 도움말은 def rect0() 바로 아래의 문자열
+    help(rect0)
+    # 적분 구간 시작점
+    x_begin = 0.0
+    # 적분 구간 끝 점
+    x_end = 1.0
+    # 적분 구간을 몇개의 구획으로 나눌 것인가
+    n_interval = 8
+
+    # 이론적 엄밀해
+    exact = (g(x_end) - g(x_begin))
+    print "exact solution =", exact
+
+    # 함수 rect0 를 호출하여 수치 적분을 계산
+    integration_0 = rect0(f, x_begin, x_end, n_interval)
+    print "integration_0 =", integration_0, "err =", integration_0 - exact
+
+    # 함수 trapezoid1 를 호출하여 수치 적분을 계산
+    integration_1 = trapezoid1(f, x_begin, x_end, n_interval)
+    print "integration_1 =", integration_1, "err =", integration_1 - exact
+
+    # 함수 simpson2 를 호출하여 수치 적분을 계산
+    integration_2 = simpson2(f, x_begin, x_end, n_interval)
+    print "integration_2 =", integration_2, "err =", integration_2 - exact
+
+    # 적분 결과를 그림으로 표시하기 위하여 pylab 모듈로 부터 특정 기능을 불러 들임
+    from pylab import fill, bar, show, xlim, ylim, grid
+    # 엄밀해 그림 시작
+    n_plot = 100
+    delta_x_plot = (float(x_end) - x_begin) / n_plot
+    x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
+    y = [f(x[k]) for k in xrange(n_plot)]
+    x += [x_end, x_end, x_begin]
+    y += [f(x_end), 0.0, 0.0]
+
+    fill(x, y)
+    # 엄밀해 그림 끝
+
+    # rect0()
+    # 0차 적분 그림 시작
+    n_plot = n_interval
+    delta_x_plot = (float(x_end) - x_begin) / n_plot
+    x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
+    y = [f(xk + 0.5 * delta_x_plot) for xk in x]
+    x += [x_end]
+    y += [0]
+
+    bar(x, y, width=delta_x_plot, color='g', alpha=0.3)
+    # 0차 적분 그림 끝
+
+    # trapezoid1()
+    # 1차 적분 그림 시작
+    n_plot = n_interval
+    delta_x_plot = (float(x_end) - float(x_begin)) / n_plot
+    x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
+    y = [f(xk) for xk in x]
+    x += [x_end, x_end, x_begin]
+    y += [f(x_end), 0.0, 0.0]
+
+    fill(x, y, color='r', alpha=0.2)
+    # 1차 적분 그림 끝
+
+    xlim((x_begin, x_end))
+    ylim((0.0, ylim()[1]))
+
+    grid()
+    show()
+
+
 if "__main__" == __name__:
-    # 이 .py 파일이 import 될 떄는 실행되지 않음
-
-    # main() 함수를 정함
-    def main():
-        """
-        위 0, 1, 2차 함수의 적분
-        :return:
-        """
-        # rect0 함수의 도움말을 표시
-        # 도움말은 def rect0() 바로 아래의 문자열
-        help(rect0)
-        # 적분 구간 시작점
-        x_begin = 0.0
-        # 적분 구간 끝 점
-        x_end = 1.0
-        # 적분 구간을 몇개의 구획으로 나눌 것인가
-        n_interval = 8
-
-        # 이론적 엄밀해
-        exact = (g(x_end) - g(x_begin))
-        print "exact solution =", exact
-
-        # 함수 rect0 를 호출하여 수치 적분을 계산
-        integration_0 = rect0(f, x_begin, x_end, n_interval)
-        print "integration_0 =", integration_0, "err =", integration_0 - exact
-
-        # 함수 trapezoid1 를 호출하여 수치 적분을 계산
-        integration_1 = trapezoid1(f, x_begin, x_end, n_interval)
-        print "integration_1 =", integration_1, "err =", integration_1 - exact
-
-        # 함수 simpson2 를 호출하여 수치 적분을 계산
-        integration_2 = simpson2(f, x_begin, x_end, n_interval)
-        print "integration_2 =", integration_2, "err =", integration_2 - exact
-
-        # 적분 결과를 그림으로 표시하기 위하여 pylab 모듈로 부터 특정 기능을 불러 들임
-        from pylab import fill, bar, show, xlim, ylim, grid
-        # 엄밀해 그림 시작
-        n_plot = 100
-        delta_x_plot = (float(x_end) - x_begin) / n_plot
-        x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
-        y = [f(x[k]) for k in xrange(n_plot)]
-        x += [x_end, x_end, x_begin]
-        y += [f(x_end), 0.0, 0.0]
-
-        fill(x, y)
-        # 엄밀해 그림 끝
-
-        # rect0()
-        # 0차 적분 그림 시작
-        n_plot = n_interval
-        delta_x_plot = (float(x_end) - x_begin) / n_plot
-        x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
-        y = [f(xk + 0.5 * delta_x_plot) for xk in x]
-        x += [x_end]
-        y += [0]
-
-        bar(x, y, width=delta_x_plot, color='g', alpha=0.3)
-        # 0차 적분 그림 끝
-
-        # trapezoid1()
-        # 1차 적분 그림 시작
-        n_plot = n_interval
-        delta_x_plot = (float(x_end) - float(x_begin)) / n_plot
-        x = [x_begin + k * delta_x_plot for k in xrange(n_plot)]
-        y = [f(xk) for xk in x]
-        x += [x_end, x_end, x_begin]
-        y += [f(x_end), 0.0, 0.0]
-
-        fill(x, y, color='r', alpha=0.2)
-        # 1차 적분 그림 끝
-
-        xlim((x_begin, x_end))
-        ylim((0.0, ylim()[1]))
-
-        grid()
-        show()
-
+    # 이 .py 파일이 import 될 떄는 아래의 내용이 실행되지 않음
 
     # 앞에서 정한 main() 함수를 실행시킴
     main()

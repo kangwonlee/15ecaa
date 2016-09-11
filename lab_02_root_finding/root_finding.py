@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 # 위 주석은 이 .py 파일 안에 한글이 사용되었다는 점을 표시하는 것임
+# [학번] [이름]
 """
 1변수 방정식의 해
 어떤 (비선형) 함수 f(x) 값이 0 이 되도록 만드는 x 를 찾음
@@ -177,35 +178,55 @@ def newton(f, df, x0, epsilon=epsilon_global, b_verbose=False):
 
 
 def func(x):
+    """
+    f(x) = 0 을 만족하는 x 를 찾고자 하는 f()
+    이 경우는 x * x - 2.0 = 0 을 만족하는 x 를 찾게 되며 이러한 x 는 2 ** 0.5 즉 2 의 제곱근임
+    :param x:
+    :return:
+    """
     return 1.0 * x * x - 2.0
 
 
 # end of func()
-# inspired by Scratch example
+# BATzerk, "Square Root Calculator", Scratch, [Online] Available : https://scratch.mit.edu/projects/35488/
 
 
 def dfunc(x):
+    """
+    위 함수 func(x) 를 x 로 미분한 함수
+    :param x:
+    :return:
+    """
     return 2.0 * x
 
 
 # end of dfunc()
 # for later use
 
-if "__main__" == __name__:
-    # initial value
-    x0 = "0.01"
+def main():
+    # 순차 대입법 sequential method 로 func() 의 해를 구하기 위해 시도
 
+    x0 = "0.01"  # x의 초기값. 정수인가? 실수인가? 문자열인가?
     x_seq = sequential(func, x0, b_verbose=True)
     print "x_seq =", x_seq
     print "f(x_seq) =", func(x_seq)
 
+    # 이분법 bisection method 로 func() 의 해를 구하기 위해 시도
     x_bis = bisection(func, 0.01, 2.0, b_verbose=True)
     print "x_bis =", x_bis
     print "f(x_bis) =", func(x_bis)
 
+    # 뉴튼-랩슨법 Newton Raphson method 로 func() 의 해를 구하기 위해 시도
+    # 초기값은 얼마인가?
+    # 위의 두 방법에서는 필요하지 않았던 매개변수는 어떤 것인가?
     x_nr = newton(func, dfunc, 2.0, b_verbose=True)
     print "x_nr =", x_nr
     print "f(x_nr) =", func(x_nr)
 
+    # 세 방법으로 구한 x 의 정확도
     print "error   seq         bis        nr"
     print "        %7g %7g %7g" % (abs(2.0 ** 0.5 - x_seq), abs(2.0 ** 0.5 - x_bis), abs(2.0 ** 0.5 - x_nr))
+
+
+if "__main__" == __name__:
+    main()
