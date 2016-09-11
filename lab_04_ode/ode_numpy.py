@@ -20,6 +20,11 @@ def fwd_euler_step(f, xk, tk, delta_t):
     # 이번 time step 에서의 기울기 dx/dt = f(x) 를 계산하여 sk 라는 변수에 저장
     sk = numpy.array(f(xk, tk))
     # 전진 오일러법을 적용
+    xk1 = mac_operation(xk, sk, delta_t)
+    return xk1, sk
+
+
+def mac_operation(xk, sk, delta_t):
     xk1 = xk + sk * delta_t
     return xk1
 
@@ -69,7 +74,7 @@ def ode_solver(f, x_init, t_start, t_end, delta_t, solver_step):
 
     # time step 반복문 시작
     for k in array_k[:-1]:
-        array_x[k + 1] = solver_step(f, array_x[k], array_t[k], delta_t)
+        array_x[k + 1], sk = solver_step(f, array_x[k], array_t[k], delta_t)
 
     # time step 반복문 끝
 
