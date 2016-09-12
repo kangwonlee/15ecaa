@@ -20,11 +20,18 @@ def fwd_euler_step(f, xk, tk, delta_t):
     # 이번 time step 에서의 기울기 dx/dt = f(x) 를 계산하여 sk 라는 변수에 저장
     sk = numpy.array(f(xk, tk))
     # 전진 오일러법을 적용
-    xk1 = mac_operation(xk, sk, delta_t)
+    xk1 = multiply_add_operation(xk, sk, delta_t)
     return xk1, sk
 
 
-def mac_operation(xk, sk, delta_t):
+def multiply_add_operation(xk, sk, delta_t):
+    """
+    Multiply-addition operation
+    :param xk:
+    :param sk:
+    :param delta_t:
+    :return:
+    """
     xk1 = xk + sk * delta_t
     return xk1
 
@@ -59,7 +66,7 @@ def mod_euler_step(f, xk, tk, delta_t):
     sk1_c = (sk + sk1_p) * 0.5
 
     # 수정 오일러법을 적용
-    xk1 = mac_operation(xk, sk1_c, delta_t)
+    xk1 = multiply_add_operation(xk, sk1_c, delta_t)
 
     return xk1, sk1_c
 
