@@ -73,7 +73,7 @@ def ode_solver(f, x_init, t_start, t_end, delta_t, solver_step):
     :param t_start: 초기 시간
     :param t_end: 끝 시간
     :param delta_t: 시간 간격
-    :param solver_step: t[k] -> t[k+1] 한 step 계산 함수
+    :param solver_step: t[k] -> t[k+1] 한 step 계산 함수. x[k+1] 과 대표 기울기를 반환.
     :return: 시간, x 의 list
     """
     # time step tk 를 순서대로 나열
