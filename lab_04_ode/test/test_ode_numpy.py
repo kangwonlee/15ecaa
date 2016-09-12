@@ -22,6 +22,12 @@ class TestOdeNumpy(unittest.TestCase):
 
         self.ode_test(function_reference, function_under_test)
 
+    def test_runge_kutta_4(self):
+        function_under_test = ode_numpy.runge
+        function_reference = ode.runge_while
+
+        self.ode_test(function_reference, function_under_test)
+
     def test_modified_euler_step(self):
         def f_mod_euler_step_test(x, tk):
             return x

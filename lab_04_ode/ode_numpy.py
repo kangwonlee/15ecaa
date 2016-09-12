@@ -71,6 +71,57 @@ def mod_euler_step(f, xk, tk, delta_t):
     return xk1, sk1_c
 
 
+def runge(f, x_init, t_start, t_end, delta_t):
+    return ode_solver(f, x_init, t_start, t_end + 0.5 * delta_t, delta_t, rk4_step)
+
+
+def rk4_step(f, xk, tk, delta_t):
+    """
+    4차 Runge Kutta 법 t[k] -> t[k+1] 한 step
+
+    t[k] 에서의 기울기 f(x[k], t[k])를 k1 으로 정함
+
+    k1 을 따라 t[k] -> t[k+1/2] 전진하여 f(xp[k+1/2], t[k+1/2])를 k2로 구함
+
+    k2 를 따라 t[k] -> t[k+1/2] 전진하여 f(xc[k+1/2], t[k+1/2])를 k3로 구함
+
+    k3 를 따라 t[k] -> t[k+1] 전진하여 f(xp2[k+1], t[k+1])를 k4로 구함
+
+    t[k] -> t[k+1] 사이의 기울기는 가중 평균 (k1 + 2*k2 + 2*k3 + k4) / 6 으로 가정
+
+    :param f: dx/dt = f(x,t)
+    :param xk: x[k]
+    :param tk: t[k]
+    :param delta_t: 시간 간격
+    :return: x[k + 1]
+    """
+    # t[k] 에서의 기울기 f(t[k], x[k])를 k1 으로 정함
+    xk1_p, k1 = fwd_euler_step(f, xk, tk, delta_t*0.5)
+
+    # k1 을 따라 t[k] -> t[k+1/2] 전진하여 f(t[k+1/2], xp[k+1/2])를 k2로 구함
+    k2 = numpy.array(f(xk1_p, tk + delta_t*0.5))
+
+    # k2 를 따라 t[k] -> t[k+1/2] 전진
+    xk2_p = multiply_add_operation(xk, k2, delta_t*0.5)
+
+    # f(t[k+1/2], xc[k+1/2])를 k3로 구함
+    k3 = numpy.array(f(xk2_p, tk + delta_t*0.5))
+
+    # k3 를 따라 t[k] -> t[k+1] 전진
+    xk3_p = multiply_add_operation(xk, k3, delta_t)
+
+    # f(xp2[k+1], t[k+1])를 k4로 구함
+    k4 = numpy.array(f(xk3_p, tk + delta_t))
+
+    # 가중 평균 (k1 + 2*k2 + 2*k3 + k4) / 6
+    sk_c = (k1 + 2 * (k2 + k3) + k4) / 6.0
+
+    # 수정 오일러법을 적용
+    xk1 = multiply_add_operation(xk, sk_c, delta_t)
+
+    return xk1, sk_c
+
+
 def ode_solver(f, x_init, t_start, t_end, delta_t, solver_step):
     """
     상미분 방정식의 초기값 문제 solver
