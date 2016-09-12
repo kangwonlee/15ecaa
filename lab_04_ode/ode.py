@@ -192,7 +192,7 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
     deltaTsixth = delta_t / 6.0
 
     tk = t_init
-    tk_half = tk + 0.5 * delta_t
+    tk_half = tk + deltaThalf
     tk1 = tk + delta_t
 
     # to make t_end the last element of t_list
