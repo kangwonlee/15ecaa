@@ -22,6 +22,25 @@ class TestOdeNumpy(unittest.TestCase):
 
         self.ode_test(function_reference, function_under_test)
 
+    def test_modified_euler_step(self):
+        def f_mod_euler_step_test(x, tk):
+            return x
+
+        xk_list = [0.5]
+        tk = 1.0
+        delta_t = 1.0
+        result_x, result_s = ode_numpy.mod_euler_step(f_mod_euler_step_test, xk_list, tk, delta_t)
+
+        expected_slope_k0 = f_mod_euler_step_test(xk_list, tk)
+        expected_xk1_list = [xk_list[0] + expected_slope_k0[0] * delta_t]
+        expected_slope_k1 = f_mod_euler_step_test(expected_xk1_list, tk + delta_t)
+        averaged_slope = [(expected_slope_k0[0] + expected_slope_k1[0]) * 0.5]
+
+        expected_xk1_final_list = [xk_list[0] + averaged_slope[0] * delta_t]
+
+        self.assertAlmostEqual(result_s[0], averaged_slope[0])
+        self.assertAlmostEqual(result_x[0], expected_xk1_final_list[0])
+
     def ode_test(self, function_reference, function_under_test):
         ti = 0.0
         te = 2.0
