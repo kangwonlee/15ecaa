@@ -195,9 +195,6 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
     tk_half = tk + deltaThalf
     tk1 = tk + delta_t
 
-    # to make t_end the last element of t_list
-    t_end += (deltaThalf)
-
     # time step loop
     while tk < t_end:
         xk = listX[-1]
