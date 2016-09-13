@@ -43,13 +43,19 @@
 ## 참고문헌 References
 
 ### 수치해석 Numerical Methods
-* 길잡이 수치해석 3판 김찬중 범한서적 2007 ISBN 978-8971291894
-* [Numerical Recipes ISBN 978-0521880688](http://www.nr.com)
+* 김찬중, 길잡이 수치해석 3판, 범한서적 2007 ISBN 978-8971291894
+* 김필호, 기초 수치해석, 숭실대학교 출판부 2007
+* [Numerical Recipes](http://www.nr.com), ISBN 978-0521880688
 
 ### 파이썬 프로그래밍 언어 Python Programming Language
-* Learn Python the Hard Way http://www.learnpythonthehardway.org/book
-* 어서와 파이썬은 처음이지? 천인국 인피니티북스 2016 ISBN 979-1185578231
-* 점프 투 파이썬 박응용 이지스퍼블리싱 2016 https://wikidocs.net/book/1
+* Shaw, [Learn Python the Hard Way](http://www.learnpythonthehardway.org/book), Addison-Wesley Professional, 2013 [Online] Available http://www.learnpythonthehardway.org/book
+* 천인국, 어서와 파이썬은 처음이지?, 인피니티북스 2016 ISBN 979-1185578231
+* 박응용, [점프 투 파이썬](https://wikidocs.net/book/1), 이지스퍼블리싱 2016 [Online] Available https://wikidocs.net/book/1
+* Beazley, Python Essential Reference 2nd Ed, 2001, Sams
+
+### Git 버전 관리 SW Git Version Control SW
+* Chacon, [Pro Git](https://git-scm.com/book/ko/v2), 2015, Apress, [Online] Available https://git-scm.com/book/ko/v2 (2016 09 12)
+* http://learngitbranching.js.org/
 
 ### 추천 개발 환경 Development Environment Suggestion
 * Python 2.7.x
