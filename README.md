@@ -61,5 +61,6 @@
 * Python 2.7.x
 * [Anaconda 4.x Python 2.7 version](https://www.continuum.io/downloads)
 * [PyCharm Community](https://www.jetbrains.com/pycharm/download/)
+* PyCharm 을 실행시키기 위해 [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 를 설치해야 할 수 있음 (2016 09)
 * [Git for Windows](https://git-scm.com/download/win)
 * [SourceTree](https://www.sourcetreeapp.com/download/) 또는 or [Github Desktop](https://desktop.github.com/)
