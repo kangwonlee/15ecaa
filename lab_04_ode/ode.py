@@ -243,6 +243,7 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
     return t_list, x_list
 
 
+# 미분방정식을 위한 계수
 tau = 0.5
 m_kg = 10.0
 c_newton_per_meter_per_sec = 100.0
@@ -251,35 +252,24 @@ k_newton_per_meter = 1000.0
 
 def func(xk, tk):
     """
-    Differential equation
+    dx/dt = f(x, t) 를 만족시키는 x(t) 를 구하고자 하는 f(x, t)
 
-    m_kg x2dot(t) + c_newton_per_meter_per_sec xdot(t) + k_newton_per_meter x(t) = u(t)
-    u(t) = 1
+    m d2x/dt2 + c dx/dt + k = u
 
-    Use m_kg, c_newton_per_meter_per_sec, k_newton_per_meter defined outside of this function
-
-    Parameters
-    ----------
-    xk: state vector at time step k_newton_per_meter
-        xk[0] = x
-        xk[1] = xdot
-
-    Returns
-    -------
-    ydot : list of derivatives
+    :param xk: x(tk) 에서의 상태변수
+    :param tk: 시간 tk
+    :return: 시간 tk 에서의 dx/dt
     """
-    # step input
+    # 계단 입력 u(t) = 1 if 0 <= t
     u = 1
 
     y1, y2 = xk[0], xk[1]
 
+    # 기울기 계산
     y1dot = y2
     y2dot = (u - (k_newton_per_meter * y1 + c_newton_per_meter_per_sec * y2)) / m_kg
 
     return (y1dot, y2dot)
-
-
-# end of function func()
 
 
 def exact(t):
