@@ -111,70 +111,69 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
     [[0], [0.0077254248593736849], [0.029382595321196046], [0.062135518400607666], [0.10209697840236187], [0.14470734296725662]]
     """
 
+    # 각 time step 에서의 상태 변수 값 x 와 시간 값 t 를 저장할 list 를 시작
+    # 내용이 될 변수를 [ ] 로 감싸면 list 로 인식됨
+    # 한 time step 마다 하나씩 덧붙임
+    # 이런 방식은 Python의 list 형의 특성을 이용
+
+    # x_list[0] 은 상태 변수의 초기값으로 바뀌지 않을 것이므로 tuple 형으로 저장
     x_list = [tuple(x_init)]  # init x buffer
     t_list = [t_start]
 
+    # k 번째 time step 의 시간 tk 초기화
     tk = t_start
+    # k + 1 번째 time step 의 시간 tk1 초기화
     tk1 = tk + delta_t
 
-    # to make t_end the last element of t_list
+    # t_list 의 마지막 요소가 매개변수로 주어졌던 t_end 값을 가지도록 delta_t 의 1/2 값 만큼 증가 시킴
     t_end += ((-0.5) * delta_t)
 
-    # time step loop
-    while tk < t_end:
+    # time step 반복문 시작
+    while tk1 < t_end:
+        # x_list 에 마지막으로 추가된 요소로 k번째 time step의 상태 변수를 정함
         xk = x_list[-1]
 
-        # step 1 : same as forward Euler
+        # step 1 : 전진 Euler 법과 같음. 이번 time step 에서의 기울기로 delta_t 만큼 전진
         sk = f(xk, tk)
+        # xk 의 모든 요소 x에 기울기 sk[i] 와 delta_t 의 곱을 더한 결과를 list 로 준비
+        # 3행이 필요한 for 문 대신 이와 같이 list comprehension 을 이용하면 한 행으로 쓸 수 있음
         xk1_p = [(x + sk[i] * delta_t) for i, x in enumerate(xk)]
 
-        # step 2 : calculate slope at (xk + f(xk, tk) * delta_t, tk + delta_t)
+        # step 2 : 위에서 예측한 상태 변수 값 xk1_p 으로 k + 1 번째 time step 에서의 기울기를 추정
         sk1_p = f(xk1_p, tk1)
 
-        # step 3 : average of f(xk, tk) and f(xk + f(xk, tk) * delta_t, tk + delta_t)
+        # step 3 : k번째 time step 과 k + 1 번째 time step 사이에서는 기울기가 선형적으로 변화 했을 것으로 가정하여
+        #          sk 와 sk1_p 의 산술 평균 값으로 대표 기울기 sk_c를 계산
         sk_c = [(0.5 * (s + sk1_p[i])) for (i, s) in enumerate(sk)]
 
-        # step 4 : go forward using averaged slope
+        # step 4 : 위에서 구한 평균 기울기와 k 번째 time step 로 k + 1 번째 time step 의 상태 변수를 계산
         xk1_c = [(x + sk_c[i] * delta_t) for i, x in enumerate(xk)]
 
+        # k + 1 번째 time step 의 상태 변수를 x_list 에 추가
         x_list.append(xk1_c)
 
-        # time advance
-        tk += delta_t
-        tk1 += delta_t
+        # tk1 값을 t_list 에 추가
+        t_list.append(tk1)
 
-        # append time
-        t_list.append(tk)
+        # tk, tk1 을 각각 delta_t 만큼 증가
+        tk = tk1
+        tk1 += delta_t
 
     return t_list, x_list
 
 
 def runge_while(f, x_init, t_init, t_end, delta_t):
     """
-    Runge Method Solver
-    Usage: listT, listX = runge_while(f, x_init, t_init, t_end, delta_t)
+    상미분 방정식의 초기값 문제를 위한 Runge Kutta 법
 
-    Calculate four slopes and take weighted average
+    t[k] 와 t[k+1] 사이에서 4 개의 기울기를 구해 가중 평균을 계산함
 
-    Parameters
-    ----------
-    f : callable(x, t)
-        Computes the derivatives of x at 0.
-        Returns a list of [x_init, x1, ... ]
-    x_init : list or tuple
-        Initial state of x
-    t_init : float
-        Initial time
-    t_end : float
-        Ending time
-    delta_t : float
-        Sampling time
-
-    Returns
-    -------
-    t_list : list, shape(int(te-ti)/deltaT + 1,1)
-    x_list : list, shape(int(te-ti)/deltaT + 1,len(x_init))
-
+    :param f: dx/dt = f(x,t)
+    :param x_init: x 의 초기값
+    :param t_start: 초기 시간
+    :param t_end: 끝 시간
+    :param delta_t: 시간 간격
+    :return: 시간, x 의 list
 
     Examples
     --------
@@ -185,47 +184,66 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
     [[0], [0.0076608912592762328], [0.029394418941171337], [0.062350250267466614], [0.10261479161461737], [0.14559255884915154]]
     """
 
-    listX = [x_init]  # init x buffer
-    listT = [t_init]
+    # 각 time step 에서의 상태 변수 값 x 와 시간 값 t 를 저장할 list 를 시작
+    # 한 time step 마다 하나씩 덧붙임
 
-    deltaThalf = 0.5 * delta_t
-    deltaTsixth = delta_t / 6.0
+    # x_list[0] 은 상태 변수의 초기값으로 바뀌지 않을 것이므로 tuple 형으로 저장
+    x_list = [x_init]  # init x buffer
+    t_list = [t_init]
 
+    # 기울기를 t + delta_t / 2 지점에서 구하기 위해 시간 증분 값을 미리 준비
+    delta_t_half = 0.5 * delta_t
+    # 가중 평균 계산을 위해 6으로 나누기 때문에 계수를 미리 준비
+    delta_t_sixth = delta_t / 6.0
+
+    # k 번째 time step 의 시간 tk 초기화
     tk = t_init
-    tk_half = tk + deltaThalf
+    # k + 1/2 번째 time step 의 시간 tk_half 초기화
+    tk_half = tk + delta_t_half
+    # k + 1 번째 time step 의 시간 tk1 초기화
     tk1 = tk + delta_t
 
-    # time step loop
-    while tk < t_end:
-        xk = listX[-1]
+    # t_list 의 마지막 요소가 매개변수로 주어졌던 t_end 값을 가지도록 delta_t 의 1/2 값 만큼 증가 시킴
+    t_end += ((-0.5) * delta_t)
 
-        # step 1
+    # time step 반복문 시작
+    while tk1 < t_end:
+        # x_list 에 마지막으로 추가된 요소로 k번째 time step의 상태 변수를 정함
+        xk = x_list[-1]
+
+        # step 1 : 전진 Euler 법과 같음. k 번째 time step 에서의 기울기 k1
         k1 = f(xk, tk)
 
-        # step 2
-        xk1_p = [(xk[i] + k * deltaThalf) for (i, k) in enumerate(k1)]
+        # step 2 : 위에서 계산한 기울기로 k + 1/2 번째 time step 의 상태 변수를 추정하여 기울기 k2를 계산
+        xk1_p = [(xk[i] + k * delta_t_half) for (i, k) in enumerate(k1)]
         k2 = f(xk1_p, tk_half)
 
-        # step 3
-        xk2_p = [(xk[i] + k * deltaThalf) for (i, k) in enumerate(k2)]
+        # step 3 : 위에서 계산한 기울기 k2 로 k + 1/2 번째 time step 의 상태 변수를 추정하여 기울기 k3를 계산
+        xk2_p = [(xk[i] + k * delta_t_half) for (i, k) in enumerate(k2)]
         k3 = f(xk2_p, tk_half)
 
-        # step 4
+        # step 4 : 기울기 k3 로 k + 1 번째 time step 의 상태 변수를 추정하여 기울기 k4를 계산
         xk3_p = [(xk[i] + k * delta_t) for (i, k) in enumerate(k3)]
         k4 = f(xk3_p, tk1)
 
-        # step 5
-        xk1_c = [x + deltaTsixth * (k1[i] + 2 * (k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
+        # step 5 : k1, k2, k3, k4 의 가중평균을 이용하여 k + 1 에서의 상태변수를 계산
+        xk1_c = [x + delta_t_sixth * (k1[i] + 2 * (k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
 
-        listX.append(xk1_c)
-        tk += delta_t
+        # k + 1 번째 time step 의 상태 변수를 x_list 에 추가
+        x_list.append(xk1_c)
+
+        # tk1 값을 t_list 에 추가
+        t_list.append(tk1)
+
+        # 시간 값을 전진
+        tk = tk1
         tk_half += delta_t
         tk1 += delta_t
-        listT.append(tk)
 
-    return listT, listX
+    return t_list, x_list
 
 
+# 미분방정식을 위한 계수
 tau = 0.5
 m_kg = 10.0
 c_newton_per_meter_per_sec = 100.0
@@ -234,64 +252,51 @@ k_newton_per_meter = 1000.0
 
 def func(xk, tk):
     """
-    Differential equation
+    dx/dt = f(x, t) 를 만족시키는 x(t) 를 구하고자 하는 f(x, t)
 
-    m_kg x2dot(t) + c_newton_per_meter_per_sec xdot(t) + k_newton_per_meter x(t) = u(t)
-    u(t) = 1
+    m d2x/dt2 + c dx/dt + k = u
 
-    Use m_kg, c_newton_per_meter_per_sec, k_newton_per_meter defined outside of this function
-
-    Parameters
-    ----------
-    xk: state vector at time step k_newton_per_meter
-        xk[0] = x
-        xk[1] = xdot
-
-    Returns
-    -------
-    ydot : list of derivatives
+    :param xk: x(tk) 에서의 상태변수
+    :param tk: 시간 tk
+    :return: 시간 tk 에서의 dx/dt
     """
-    # step input
+    # 계단 입력 u(t) = 1 if 0 <= t
     u = 1
 
     y1, y2 = xk[0], xk[1]
 
+    # 기울기 계산
     y1dot = y2
     y2dot = (u - (k_newton_per_meter * y1 + c_newton_per_meter_per_sec * y2)) / m_kg
 
     return (y1dot, y2dot)
 
 
-# end of function func()
-
-
 def exact(t):
     """
-    Exact solution of a  1-DOF mechanical vibration
+    1자유도 진동계 엄밀해
     Ref : Rao, Mechanical Vibration, 2nd ed,
         ISBN 0-201-55693-6, Example 4.3
     """
-    # step input
+    # 계단 입력
     u = 1
-    # natural frequency (rad/sec)
+    # 고유진동수 (rad/sec)
     wn = sqrt(k_newton_per_meter / m_kg)
-    # damping ratio
+    # 감쇠율
     zeta = c_newton_per_meter_per_sec / (2.0 * m_kg * wn)
 
     s = sqrt(1.0 - zeta * zeta)
     s1 = 1.0 / s
 
-    # damped frequency (rad/sec)
+    # 감쇠진동수 (rad/sec)
     wd = wn * s
-    # phase (rad)
+    # 위상 (rad)
     phi = atan(zeta * s)
 
+    # 엄밀해
     y1 = (u / k_newton_per_meter) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
 
     return (y1)
-
-
-# end of function exact()
 
 
 def main():
