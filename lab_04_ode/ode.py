@@ -111,40 +111,53 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
     [[0], [0.0077254248593736849], [0.029382595321196046], [0.062135518400607666], [0.10209697840236187], [0.14470734296725662]]
     """
 
+    # 각 time step 에서의 상태 변수 값 x 와 시간 값 t 를 저장할 list 를 시작
+    # 내용이 될 변수를 [ ] 로 감싸면 list 로 인식됨
+    # 한 time step 마다 하나씩 덧붙임
+    # 이런 방식은 Python의 list 형의 특성을 이용
+
+    # x_list[0] 은 상태 변수의 초기값으로 바뀌지 않을 것이므로 tuple 형으로 저장
     x_list = [tuple(x_init)]  # init x buffer
     t_list = [t_start]
 
+    # k 번째 time step 의 시간 tk 초기화
     tk = t_start
+    # k + 1 번째 time step 의 시간 tk1 초기화
     tk1 = tk + delta_t
 
-    # to make t_end the last element of t_list
+    # t_list 의 마지막 요소가 매개변수로 주어졌던 t_end 값을 가지도록 delta_t 의 1/2 값 만큼 증가 시킴
     t_end += ((-0.5) * delta_t)
 
-    # time step loop
-    while tk < t_end:
+    # time step 반복문 시작
+    while tk1 < t_end:
+        # x_list 에 마지막으로 추가된 요소로 k번째 time step의 상태 변수를 정함
         xk = x_list[-1]
 
-        # step 1 : same as forward Euler
+        # step 1 : 전진 Euler 법과 같음. 이번 time step 에서의 기울기로 delta_t 만큼 전진
         sk = f(xk, tk)
+        # xk 의 모든 요소 x에 기울기 sk[i] 와 delta_t 의 곱을 더한 결과를 list 로 준비
+        # 3행이 필요한 for 문 대신 이와 같이 list comprehension 을 이용하면 한 행으로 쓸 수 있음
         xk1_p = [(x + sk[i] * delta_t) for i, x in enumerate(xk)]
 
-        # step 2 : calculate slope at (xk + f(xk, tk) * delta_t, tk + delta_t)
+        # step 2 : 위에서 예측한 상태 변수 값 xk1_p 으로 k + 1 번째 time step 에서의 기울기를 추정
         sk1_p = f(xk1_p, tk1)
 
-        # step 3 : average of f(xk, tk) and f(xk + f(xk, tk) * delta_t, tk + delta_t)
+        # step 3 : k번째 time step 과 k + 1 번째 time step 사이에서는 기울기가 선형적으로 변화 했을 것으로 가정하여
+        #          sk 와 sk1_p 의 산술 평균 값으로 대표 기울기 sk_c를 계산
         sk_c = [(0.5 * (s + sk1_p[i])) for (i, s) in enumerate(sk)]
 
-        # step 4 : go forward using averaged slope
+        # step 4 : 위에서 구한 평균 기울기와 k 번째 time step 로 k + 1 번째 time step 의 상태 변수를 계산
         xk1_c = [(x + sk_c[i] * delta_t) for i, x in enumerate(xk)]
 
+        # k + 1 번째 time step 의 상태 변수를 x_list 에 추가
         x_list.append(xk1_c)
 
-        # time advance
-        tk += delta_t
-        tk1 += delta_t
+        # tk1 값을 t_list 에 추가
+        t_list.append(tk1)
 
-        # append time
-        t_list.append(tk)
+        # tk, tk1 을 각각 delta_t 만큼 증가
+        tk = tk1
+        tk1 += delta_t
 
     return t_list, x_list
 
