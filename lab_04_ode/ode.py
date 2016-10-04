@@ -164,30 +164,16 @@ def mod_euler(f, x_init, t_start, t_end, delta_t):
 
 def runge_while(f, x_init, t_init, t_end, delta_t):
     """
-    Runge Method Solver
-    Usage: listT, listX = runge_while(f, x_init, t_init, t_end, delta_t)
+    상미분 방정식의 초기값 문제를 위한 Runge Kutta 법
 
-    Calculate four slopes and take weighted average
+    t[k] 와 t[k+1] 사이에서 4 개의 기울기를 구해 가중 평균을 계산함
 
-    Parameters
-    ----------
-    f : callable(x, t)
-        Computes the derivatives of x at 0.
-        Returns a list of [x_init, x1, ... ]
-    x_init : list or tuple
-        Initial state of x
-    t_init : float
-        Initial time
-    t_end : float
-        Ending time
-    delta_t : float
-        Sampling time
-
-    Returns
-    -------
-    t_list : list, shape(int(te-ti)/deltaT + 1,1)
-    x_list : list, shape(int(te-ti)/deltaT + 1,len(x_init))
-
+    :param f: dx/dt = f(x,t)
+    :param x_init: x 의 초기값
+    :param t_start: 초기 시간
+    :param t_end: 끝 시간
+    :param delta_t: 시간 간격
+    :return: 시간, x 의 list
 
     Examples
     --------
@@ -198,45 +184,63 @@ def runge_while(f, x_init, t_init, t_end, delta_t):
     [[0], [0.0076608912592762328], [0.029394418941171337], [0.062350250267466614], [0.10261479161461737], [0.14559255884915154]]
     """
 
-    listX = [x_init]  # init x buffer
-    listT = [t_init]
+    # 각 time step 에서의 상태 변수 값 x 와 시간 값 t 를 저장할 list 를 시작
+    # 한 time step 마다 하나씩 덧붙임
 
-    deltaThalf = 0.5 * delta_t
-    deltaTsixth = delta_t / 6.0
+    # x_list[0] 은 상태 변수의 초기값으로 바뀌지 않을 것이므로 tuple 형으로 저장
+    x_list = [x_init]  # init x buffer
+    t_list = [t_init]
 
+    # 기울기를 t + delta_t / 2 지점에서 구하기 위해 시간 증분 값을 미리 준비
+    delta_t_half = 0.5 * delta_t
+    # 가중 평균 계산을 위해 6으로 나누기 때문에 계수를 미리 준비
+    delta_t_sixth = delta_t / 6.0
+
+    # k 번째 time step 의 시간 tk 초기화
     tk = t_init
-    tk_half = tk + deltaThalf
+    # k + 1/2 번째 time step 의 시간 tk_half 초기화
+    tk_half = tk + delta_t_half
+    # k + 1 번째 time step 의 시간 tk1 초기화
     tk1 = tk + delta_t
 
-    # time step loop
-    while tk < t_end:
-        xk = listX[-1]
+    # t_list 의 마지막 요소가 매개변수로 주어졌던 t_end 값을 가지도록 delta_t 의 1/2 값 만큼 증가 시킴
+    t_end += ((-0.5) * delta_t)
 
-        # step 1
+    # time step 반복문 시작
+    while tk1 < t_end:
+        # x_list 에 마지막으로 추가된 요소로 k번째 time step의 상태 변수를 정함
+        xk = x_list[-1]
+
+        # step 1 : 전진 Euler 법과 같음. k 번째 time step 에서의 기울기 k1
         k1 = f(xk, tk)
 
-        # step 2
-        xk1_p = [(xk[i] + k * deltaThalf) for (i, k) in enumerate(k1)]
+        # step 2 : 위에서 계산한 기울기로 k + 1/2 번째 time step 의 상태 변수를 추정하여 기울기 k2를 계산
+        xk1_p = [(xk[i] + k * delta_t_half) for (i, k) in enumerate(k1)]
         k2 = f(xk1_p, tk_half)
 
-        # step 3
-        xk2_p = [(xk[i] + k * deltaThalf) for (i, k) in enumerate(k2)]
+        # step 3 : 위에서 계산한 기울기 k2 로 k + 1/2 번째 time step 의 상태 변수를 추정하여 기울기 k3를 계산
+        xk2_p = [(xk[i] + k * delta_t_half) for (i, k) in enumerate(k2)]
         k3 = f(xk2_p, tk_half)
 
-        # step 4
+        # step 4 : 기울기 k3 로 k + 1 번째 time step 의 상태 변수를 추정하여 기울기 k4를 계산
         xk3_p = [(xk[i] + k * delta_t) for (i, k) in enumerate(k3)]
         k4 = f(xk3_p, tk1)
 
-        # step 5
-        xk1_c = [x + deltaTsixth * (k1[i] + 2 * (k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
+        # step 5 : k1, k2, k3, k4 의 가중평균을 이용하여 k + 1 에서의 상태변수를 계산
+        xk1_c = [x + delta_t_sixth * (k1[i] + 2 * (k2[i] + k3[i]) + k4[i]) for (i, x) in enumerate(xk)]
 
-        listX.append(xk1_c)
-        tk += delta_t
+        # k + 1 번째 time step 의 상태 변수를 x_list 에 추가
+        x_list.append(xk1_c)
+
+        # tk1 값을 t_list 에 추가
+        t_list.append(tk1)
+
+        # 시간 값을 전진
+        tk = tk1
         tk_half += delta_t
         tk1 += delta_t
-        listT.append(tk)
 
-    return listT, listX
+    return t_list, x_list
 
 
 tau = 0.5
