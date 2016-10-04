@@ -274,31 +274,29 @@ def func(xk, tk):
 
 def exact(t):
     """
-    Exact solution of a  1-DOF mechanical vibration
+    1자유도 진동계 엄밀해
     Ref : Rao, Mechanical Vibration, 2nd ed,
         ISBN 0-201-55693-6, Example 4.3
     """
-    # step input
+    # 계단 입력
     u = 1
-    # natural frequency (rad/sec)
+    # 고유진동수 (rad/sec)
     wn = sqrt(k_newton_per_meter / m_kg)
-    # damping ratio
+    # 감쇠율
     zeta = c_newton_per_meter_per_sec / (2.0 * m_kg * wn)
 
     s = sqrt(1.0 - zeta * zeta)
     s1 = 1.0 / s
 
-    # damped frequency (rad/sec)
+    # 감쇠진동수 (rad/sec)
     wd = wn * s
-    # phase (rad)
+    # 위상 (rad)
     phi = atan(zeta * s)
 
+    # 엄밀해
     y1 = (u / k_newton_per_meter) * (1.0 - s1 * exp(-zeta * wn * t) * cos(wd * t - phi))
 
     return (y1)
-
-
-# end of function exact()
 
 
 def main():
